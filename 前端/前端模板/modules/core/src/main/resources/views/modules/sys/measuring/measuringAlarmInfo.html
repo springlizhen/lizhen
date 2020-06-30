@@ -1,0 +1,275 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('测点报警信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${alarm}" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('编号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="id" maxlength="100" value="${alarm!=null?alarm.id:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('测点编号')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="pid" value="${alarm!=null?alarm.pid:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('观测点编号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="sctionId" maxlength="100" value="${alarm!=null?alarm.sctionId:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('基准点编号')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="pointId" value="${alarm!=null?alarm.pointId:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<% if(alarm.such=='水平') { %>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('期数')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dateNum" maxlength="100" value="${alarm!=null?alarm.dateNum:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('X轴初始值(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="inValue" value="${alarm!=null?alarm.inValue:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('Y轴初始值(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="yinValue" value="${alarm!=null?alarm.yinValue:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<% } else { %>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('期数')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dateNum" maxlength="100" value="${alarm!=null?alarm.dateNum:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('初始值(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="inValue" value="${alarm!=null?alarm.inValue:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<% } %>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('报警类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="type" maxlength="100" value="${alarm!=null?alarm.type:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('报警信息')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="msg" value="${alarm!=null?alarm.msg:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('测点种类')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="such" maxlength="100" value="${alarm!=null?alarm.such:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('处理状态')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="msg" value="${alarm.status==0?'未处理':'已处理'}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<%if(alarm.such=='高程') {%>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('高程(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="altitude" maxlength="100" value="${alarm!=null?alarm.altitude:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('高程中误差(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="altitudeError" value="${alarm!=null?alarm.altitudeError:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('本期沉浮(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="upDown" maxlength="100" value="${alarm!=null?alarm.upDown:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('累计沉浮(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="upDownSum" value="${alarm!=null?alarm.upDownSum:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<% } else { %>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('X轴(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="altitude" maxlength="100" value="${alarm!=null?alarm.altitude:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<!--<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('水平x轴中误差')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="altitudeError" value="${alarm!=null?alarm.altitudeError:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>-->
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('X变形量(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="upDown" maxlength="100" value="${alarm!=null?alarm.upDown:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('X累计变形量(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="upDownSum" value="${alarm!=null?alarm.upDownSum:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('Y轴(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="yaltitude" maxlength="100" value="${alarm!=null?alarm.yaltitude:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<!--<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('水平Y轴中误差')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="yaltitudeError" value="${alarm!=null?alarm.yaltitudeError:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>-->
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('Y变形量(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="yupDown" maxlength="100" value="${alarm!=null?alarm.yupDown:''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('Y累计变形量(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="yupDownSum" value="${alarm!=null?alarm.yupDownSum:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<%}%>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('本期下限(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nowLower" maxlength="100" value="${alarm!=null?alarm.nowLower :''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('本期上限(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nowUpper" value="${alarm!=null?alarm.nowUpper:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('累计下限(m)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="addLower" maxlength="100" value="${alarm!=null?alarm.addLower :''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('累计上限(m)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="addUpper" value="${alarm!=null?alarm.addUpper:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('填报时间')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createDate" maxlength="100" value="${alarm!=null?alarm.createDate :''}" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>

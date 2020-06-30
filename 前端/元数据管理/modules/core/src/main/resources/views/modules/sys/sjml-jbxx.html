@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>数据目录-基本信息</title>
+<link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+		<div class="topBoxBgColor">
+			<div class="logoBox">
+				<img src="${ctxStatic}/img/logo2.png">
+			</div>
+			<div class="searchBox">
+                <!--				<input type="text">
+                                <a href="">
+                                    <img src="${ctxStatic}/img/ss_icon.png">
+                                </a>-->
+			</div>
+		</div>
+		<div class="navBox">
+			<div class="navConter">
+                <a href="${ctx}/index"><div class="navList">首页</div></a>
+                <a href="${ctx}/sjml/index"><div class="navList active">数据目录</div></a>
+                <a href="${ctx}/sjfw/index"><div class="navList">数据服务</div></a>
+                <a href="${ctx}/daml/index"><div class="navList">档案目录</div></a>
+                <a href="${ctx}/service/record">
+                    <div class="navList">个人中心</div>
+                </a>
+			</div>
+			
+		</div>
+	<div class="contentBox2">
+		<div class="xxTitBox">
+			<div class="sjName">${name}</div>
+			<div class="colorBox">
+				<span class="span_a">XLS</span>
+				<span class="span_b">XML</span>
+				<span class="span_c">JSON</span>
+				<span class="span_d">CSN</span>
+			</div>
+			<div class="sjNumber">数据量：${mouth} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接口数量：2</div>
+		</div>
+	</div>
+    <div class="xNav">
+        <a href="${ctx}/sjml/jbxx?id=${id}&name=${name}&mouth=${mouth}"><div class="active marginLeft">基本信息</div></a>
+        <a href="${ctx}/sjml/sjx?id=${id}&name=${name}&mouth=${mouth}"><div>数据项</div></a>
+        <a href="${ctx}/sjml/sjyl?id=${id}&name=${name}&mouth=${mouth}"><div>数据预览</div></a>
+        <a href="${ctx}/sjml/wjxz?id=${id}&name=${name}&mouth=${mouth}"><div>文件下载</div></a>
+        <a href="${ctx}/sjml/APIfw?id=${id}&name=${name}&mouth=${mouth}"><div>API服务</div></a>
+    </div>
+<div class="TabBox">
+  <div class="jbxxStyle">基本信息</div>
+	<table width="100%" border="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <th scope="row" class="TabTh">数据目录名称</th>
+      <td class="TabTd">${object.nameCn}</td>
+      <td class="TabTh">开放状态</td>
+      <td class="TabTd">${object.status}</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">所属主题</th>
+      <td class="TabTd">${object.themeName}</td>
+      <td class="TabTh">最后更新</td>
+      <td class="TabTd">${object.updateDate}</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">来源部门</th>
+      <td class="TabTd">${object.provider}</td>
+      <td class="TabTh">部门地址</td>
+      <td class="TabTd">&nbsp;</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">标签</th>
+      <td class="TabTd" colspan="3">${object.remarks}</td>
+      </tr>
+    <tr>
+      <th scope="row" class="TabTh">更新频率</th>
+      <td class="TabTd">每天</td>
+      <td class="TabTh">数据格式</td>
+      <td class="TabTd">数据集,API服务</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">发布时间</th>
+      <td class="TabTd">${object.createDate}</td>
+
+    </tr>
+  </tbody>
+</table>
+ <div class="jbxxStyle">内容简介</div>
+	<table width="100%" border="0" cellspacing="0">
+  <tbody>
+		<tr>
+      <th scope="row" class="TabTh">简介</th>
+      <td class="TabTd" colspan="3">${object.sumup}</td>
+      </tr>
+ </tbody>
+</table>
+	 <div class="jbxxStyle">使用情况</div>
+	<table width="100%" border="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <th scope="row" class="TabTh">下载次数</th>
+      <td class="TabTd">${object.downNum}</td>
+      <td class="TabTh">浏览次数</td>
+      <td class="TabTd">${object.catNum}</td>
+    </tr>
+    <!--<tr>
+      <th scope="row" class="TabTh">评分人数</th>
+      <td class="TabTd">0</td>
+      <td class="TabTh">评价次数</td>
+      <td class="TabTd">0</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">评价总分</th>
+      <td class="TabTd">0</td>
+      <td class="TabTh">平均评分</td>
+      <td class="TabTd">0.0</td>
+    </tr>-->
+  </tbody>
+</table>
+	
+  </div>
+	
+	
+	<div class="bottomBox">
+		©胶东调水数据资源共享平台
+	</div>
+</body>
+</html>

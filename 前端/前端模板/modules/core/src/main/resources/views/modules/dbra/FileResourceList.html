@@ -1,0 +1,50 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('档案API管理')}
+            </div>
+            <br/>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/filere/listData" method="post" class="form-inline hide"
+                data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}">
+
+            </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("档案服务名称")}', name:'name', index:'name', width:160, align:"center",sortable:false},
+            {header:'${text("档案类型")}', name:'type', index:'type', width:200, align:"center",sortable:false},
+            {header:'${text("年度")}', name:'year', index:'year', width:120, align:"center",sortable:false},
+            {header:'${text("案卷号")}', name:'fileNo', index:'fileNo', width:120, align:"center",sortable:false},
+            {header:'${text("发布时间")}', name:'createDate', index:'createDate', width:120, align:"center",sortable:false},
+            {header:'${text("发布状态")}', name:'status', index:'status', width:60, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:150, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/filere/form?id='+row.id+'&fileId='+row.fileId+'" class="btnList" title="${text("档案服务编辑")}">编辑</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/filere/delete?id='+row.id+'" class="btnList" title="${text("删除")}" data-confirm="${text("确认要删除该档案服务吗？")}">删除</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/filere/info?id='+row.id+'" class="btnList" title="${text("档案服务详情")}">详情</a>&nbsp;&nbsp;');
+                    if (row.status == '禁用'){
+                        actions.push('<a href="${ctx}/filere/ups?id='+row.id+'&status=启用" class="btnList" title="${text("启用")}" data-confirm="${text("确认要启用该服务吗？")}">启用</a>&nbsp;&nbsp;');
+                    } else {
+                        actions.push('<a href="${ctx}/filere/ups?id='+row.id+'&status=禁用" class="btnList" title="${text("禁用")}" data-confirm="${text("确认要禁用该服务吗？")}">禁用</a>&nbsp;&nbsp;');
+                    }
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

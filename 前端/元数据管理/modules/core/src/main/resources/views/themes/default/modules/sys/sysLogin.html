@@ -1,0 +1,38 @@
+<% layout('/layouts/default.html', {title: '登录', libs: ['validate'], bodyClass: 'login-page'}){ %>
+<% include('/include/upgrade.html'){} // 如果客户浏览器版本过低，则显示浏览器升级提示。 %>
+<link rel="stylesheet" href="${ctxStatic}/icheck/1.0/square/blue.css?${_version}">
+<link rel="stylesheet" href="${ctxStatic}/jquery-toastr/2.0/toastr.min.css?${_version}">
+<link rel="stylesheet" href="${ctxStatic}/modules/sys/sysLogin.css?${_version}">
+<link rel="stylesheet" href="${ctxStatic}/file/css/indexStyle.css?${_version}">
+<div class="bgimgBox">
+	<a href="${ctx}/login"><div class="logoBox"><img src="${ctxStatic}/file/icon-photo/logo.png"/></div></a>
+	<#form:form id="loginForm" model="${user!}" action="${ctx}/login" method="post">
+	<div class="loginBox">
+		<div class="form-group has-feedback" style="padding-top: 30px;padding-right: 30px;">
+			<#form:input type="text" name="username" class="form-control required"
+			data-msg-required="${text('请填写登录账号.')}" placeholder="${text('登录账号')}"
+			value="${cookie('rememberUserCode')}"/>
+		</div>
+		<div class="form-group has-feedback"  style="padding-right: 30px;">
+			<#form:input id="password" type="password" name="password" class="form-control required"
+			data-msg-required="${text('请填写登录密码.')}" placeholder="${text('登录密码')}" autocomplete="off"/>
+		</div>
+
+		<input type="checkbox" id="checkbox1" class="duoxuan" name="rememberUserCode" ${isNotBlank(cookie('rememberUserCode'))?' checked':''}>
+		<label for="checkbox1"></label ><span class="jizhu">记住账号1</span>
+		<input type="checkbox" id="checkbox2" class="duoxuan" name="rememberMe" ${isNotBlank(cookie('rememberMe'))?' checked':''}>
+		<label for="checkbox2"></label ><span class="jizhu">记住密码1</span>
+		<!--		<a href="" class="loginBtn"></a>-->
+		<button type="submit" style="height: 44px;width: 260px;" class="btn btn-block btn-flat loginBtn"
+				id="btnSubmit" data-loading="${text('登录验证成功，正在进入...')}"
+				data-login-valid="${text('正在验证登录，请稍后...')}">${text('立即登录')}</button>
+		<input type="hidden" name="__url" value="${parameter.__url!}">
+		<a href="${ctxPath}/account/forgetPwd" class="wjmm">[忘记密码]</a>
+	</div>
+</#form:form>
+</div>
+<% } %>
+<script>var secretKey = '${@Global.getConfig("shiro.loginSubmit.secretKey")}';</script>
+<script src="${ctxStatic}/jquery-toastr/2.0/toastr.min.js?${_version}"></script>
+<script src="${ctxStatic}/common/des.js?${_version}"></script>
+<script src="${ctxStatic}/sysLogin.js?${_version}"></script>

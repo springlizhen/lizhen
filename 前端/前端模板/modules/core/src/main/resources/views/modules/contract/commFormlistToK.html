@@ -1,0 +1,105 @@
+<% layout('/layouts/default.html', {title: '合同计量信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('合同计量信息')}
+            </div>
+<!--            <div class="box-tools pull-right">-->
+<!--                <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>-->
+<!--            </div>-->
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/contract/listDataToKL?contractid=${id}" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+<!--            <div class="row">-->
+<!--                <div class="col-xs-12">-->
+<!--                    <div class="form-group col-xs-3">-->
+<!--                        <label class="control-label col-sm-4 ">${text('合同名称')}：</label>-->
+<!--                        <div class="control-inline ">-->
+<!--                            <#form:input path="title" class="form-control width-150"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group col-xs-3">-->
+<!--                        <label class="control-label col-sm-4 ">${text('合同编号')}：</label>-->
+<!--                        <div class="control-inline ">-->
+<!--                            <#form:input path="contractCode" class="form-control width-150"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group ">-->
+<!--                <button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>-->
+<!--                <button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>-->
+<!--            </div>-->
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            //{header:'${text("合同类型")}', name:'id', index:'a.id', width:150,fixed:true,  align:"center",hidden:true},
+            // {header:'${text("合同标题")}', name:'title', index:'title', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+            // 		return '<a href="http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId='+row.workId+'&trackId='+row.trackId+'&subjection='+row.subjection+'" target="_blank"  data-title="${text("编辑消息")}">'
+            // 				+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');
+            // }},
+            {header:'${text("计量日期")}', name:'TIME', index:'TIME', width:300,fixed:true,  align:"center",formatter: function(val, obj, row, act) {
+                    if (val !== undefined) {
+                        var d = new Date(val);
+                        d=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+                        return d.toString();
+                    }else{
+                        return ""
+                    }
+                }
+            },
+            {header:'${text("付款次数")}', name:'PAYTERM', index:'PAYTERM', width:200,fixed:true,  align:"center"},
+            {header:'${text("本次支付款项名称")}', name:'PAYAMOUNTNAME', index:'PAYAMOUNTNAME', width:300, fixed:true, align:"center"},
+            {header:'${text("本次支付金额")}', name:'INPUTAMOUNT', index:'INPUTAMOUNT', width:200,fixed:true,  align:"center"},
+            {header:'${text("已付金额")}', name:'PAYAMOUNT', index:'PAYAMOUNT', width:300,fixed:true,  align:"center"},
+            {header:'${text("状态")}', name:'STATUS', index:'STATUS', width:200, fixed:true, align:"center"},
+            {header:'${text("操作")}', name:'actions', width:200, sortable:false, fixed:true,title:false,formatter: function(val, obj, row, act){
+                    var actions = [];
+                    // var tu = 'D_37000000';
+                    var tu = row.SUBJECTION_TYPE +'_' +row.SENDSUBJECTIONID
+                    // actions.push('<a href="" onclick="check('+row.id+')" id="subcontract"  ></a>&nbsp;');
+                    //actions.push('<a href="${ctx}/contract/delete?id='+row.id+'" class="btnList" title="${text("删除消息")}" data-confirm="${text("确认要删除该消息吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+                    // 	actions.push('<a href="${ctx}/contract/viewSubContract?id='+row.id+'" class="btnList" id="btnList"   title="${text("查看子合同")}" >  查看子合同</a>&nbsp;');
+                    // 	actions.push('<a href="${ctx}/contract/viewUpdate?id='+row.id+'" class="btnList" title="${text("查看变更")}">     查看变更</a>&nbsp;');
+                    actions.push('<a href="http://10.0.2.8:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId='+row.WORK_ID+'&trackId='+row.TRACKID+'&subjection='+tu+'" target="_blank" class="btnList" title="${text("查看")}"><i class="fa icon-book-open"></i></a>&nbsp;&nbsp;&nbsp;');
+                    return actions.join('');
+                }}
+        ],
+
+        // 加载成功后执行事件
+        ajaxSuccess: function(data) {
+            // $("#subcontract").click();
+
+        }
+    });
+</script>
+<script>
+
+    // $("#subcontract").click();
+    //
+    // function check(id){
+    //     console.log(id);
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: "${ctx}/contract/listData?id=" + id,
+    //         async: false,
+    //         error: function (data) {
+    //             js.showErrorMessage(data.responseText);
+    //         }
+    //     })
+    //
+    //
+    // }
+</script>

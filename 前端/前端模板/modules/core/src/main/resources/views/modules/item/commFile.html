@@ -1,0 +1,109 @@
+<% layout('/layouts/default.html', {title: '文件信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('文件信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<a href="${ctx}/item/form" class="btn btn-default btnTool" title="${text('新增')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/item/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<div class="row">
+				<div class="col-xs-12">
+				<div class="form-group col-xs-6">
+					<label class="control-label col-sm-4">${text('文件名称')}：</label>
+					<div class="control-inline col-sm-6" >
+						<#form:input path="id" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group col-xs-6">
+					<label class="control-label col-sm-4">${text('时间')}：</label>
+					<div class="control-inline col-sm-6">
+						<#form:input path="uploadTime" class="form-control width-120"/>
+					</div>
+				</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+			<div class="form-group col-xs-6">
+				<label class="control-label col-sm-4">${text('下载地址')}：</label>
+				<div class="control-inline col-sm-6">
+					<#form:input path="fileAddresss" class="form-control width-120"/>
+				</div>
+			</div>
+			<!--<div class="form-group col-xs-6">
+				<label class="control-label col-sm-4">${text('标题')}：</label>
+				<div class="control-inline col-sm-6">
+					<#form:input path="title" class="form-control width-120"/>
+				</div>
+			</div>
+			-->
+			</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group ">
+						<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+						<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</#form:form>
+	<% for (file in comm){
+	%>
+	<div class="box-body">
+		<div class="form-unit"></div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="form-group ">
+					<label class="control-label col-sm-2" title="">${text('相关附件')}：</label>
+					<div class="col-sm-10">
+						<#form:fileupload id="uploadFile" bizKey="${file.itemUpload}" bizType="itemUpload" uploadType="all" class="" readonly="true" preview="weboffice"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<%
+	}%>
+
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+
+<script>
+
+			// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("文件名称")}', name:'id', index:'id', width:100, align:"left", frozen:true, formatter: function(val, obj, row, act){
+				return '<a href="${ctx}/item/listData?id='+row.id+'" class="btnList" data-title="${text("编辑消息")}">'
+						+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');
+		}},
+		{header:'${text("时间")}', name:'uploadTime', index:'a.uploadTime', width:150, align:"center"},
+		{header:'${text("下载地址")}', name:'fileAddresss', index:'fileAddresss', width:150, align:"center"},
+		{header:'${text("项目负责人")}', name:'contractObject', index:'contractObject', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+				var actions = [];
+				actions.push('<div class="col-sm-10"><#form:fileupload id="uploadFile" bizKey="'+row.itemUpload+'" bizType="itemUpload" uploadType="all" class="" readonly="true" preview="weboffice"/>');
+			}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+
+	}
+});
+</script>

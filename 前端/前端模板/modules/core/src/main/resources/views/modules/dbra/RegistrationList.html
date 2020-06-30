@@ -1,0 +1,90 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('注册审批')}
+            </div>
+            <br/>
+            <hr/>
+            <div class="row">
+                <div class="col-xs-pull-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            ${text('筛选')} ： <i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-3">
+                            <select name="service" id="service" class="form-control" >
+                                <option value="">全部</option>
+                                <option value="name">服务名称</option>
+                                <option value="applicant">申请人</option>
+                                <option value="status">审核状态</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <#form:input id="val" value="" maxlength="100" class="form-control"/>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-sm btn-primary" id="btnSubmit" onclick="search()"><i class="fa fa-fw icon-magnifier"></i> ${text('搜 索')}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                <#form:form id="searchForm" action="${ctx}/reg/listData" method="post" class="form-inline hide"
+                data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}">
+                <#form:hidden name="key" id="key" maxlength="100" class="form-control" value=""/>
+                <#form:hidden name="value" id="value" maxlength="100" class="form-control" value=""/>
+
+            </#form:form>
+            <table id="dataGrid"></table>
+            <div id="dataGridPage"></div>
+        </div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("服务名称")}', name:'name', index:'name', width:400, align:"center",sortable:false},
+            {header:'${text("申请人")}', name:'applicant', index:'applicant', width:200, align:"center",sortable:false},
+            {header:'${text("审核状态")}', name:'status', index:'status', width:200, align:"center",sortable:false},
+            {header:'${text("服务类别")}', name:'type', index:'type', width:400, align:"center",sortable:false, title:false, formatter: function(val, obj, row, act) {
+                    var actions = [];
+                    if (row.type == 'this') {
+                        actions.push('数据目录');
+                    } else if (row.type == 'other') {
+                        actions.push('数据服务');
+                    } else if (row.type == 'file') {
+                        actions.push('档案服务');
+                    }
+                    return actions.join('');
+                }},
+            {header:'${text("申请时间")}', name:'createDate', index:'createDate', width:200, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:100, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act) {
+                    var actions = [];
+                    if (row.status == '未审核') {
+                        actions.push('<a href="${ctx}/reg/ups?id=' + row.id + '&status=已审核" class="btnList" title="${text("通过")}" data-confirm="${text("确认要通过该申请吗？")}">&nbsp;&nbsp;通过</a>&nbsp;&nbsp;');
+                        actions.push('<a href="${ctx}/reg/ups?id=' + row.id + '&status=已拒绝" class="btnList" title="${text("拒绝")}" data-confirm="${text("确认要拒绝该申请吗？")}">拒绝</a>&nbsp;&nbsp;');
+                        actions.push('<a href="${ctx}/reg/info?id=' + row.id + '" class="btnList" title="${text("详情")}">详情</a>&nbsp;&nbsp;');
+                    } else {
+                        actions.push('<a href="${ctx}/reg/info?id=' + row.id + '" class="btnList" title="${text("详情")}">详情</a>&nbsp;&nbsp;');
+                    }
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+
+    function search() {
+        $("#key").val($('#service option:selected').val());
+        $("#value").val($('#val').val());
+        $('#dataGrid').dataGrid('refresh');
+    }
+</script>

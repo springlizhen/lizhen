@@ -1,0 +1,152 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('数据库详情')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${db}" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库id')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="id" maxlength="100" class="form-control required" value="${db!=null?db.id:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('连接协议')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="connPro" value="${db!=null?db.connPro:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="type" maxlength="100" class="form-control required" value="${db!=null?db.type:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库描述')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="describe" value="${db!=null?db.describe:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库名称')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" value="${db!=null?db.name:''}" maxlength="100" class="form-control required " readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="address" value="${db!=null?db.address:''}" maxlength="100" class="form-control required " readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('访问用户名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dbUser" value="${db!=null?db.dbUser:''}" maxlength="100" class="form-control required " readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('访问密码')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dbPwd" value="${db!=null?db.dbPwd:''}" maxlength="100" class="form-control required " readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('服务名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="serviceName" value="${db!=null?db.serviceName:'orcl'}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								 ${text('备注信息')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" value="${db!=null?db.remarks:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('创建者')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createBy" maxlength="100" class="form-control required" value="${db!=null?db.createBy:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('创建时间')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createDate" value="${db!=null?db.createDate:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('修改者')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="updateBy" maxlength="100" class="form-control required" value="${db!=null?db.updateBy:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('修改时间')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="updateDate" value="${db!=null?db.updateDate:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>

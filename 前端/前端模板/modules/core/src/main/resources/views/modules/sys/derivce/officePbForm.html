@@ -1,0 +1,125 @@
+<% layout('/layouts/default.html', {title: '公共分类管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> 公共分类管理
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${derviceOfficePb}" action="${ctx}/sys/derviceOfficePb/save" method="post" class="form-horizontal">
+		<#form:hidden name="id" id="id" value="${derviceOfficePb!=null?derviceOfficePb.id}"/>
+		<#form:hidden name="isNewRecord" id="isNewRecord" value="${derviceOfficePb!=null?derviceOfficePb.isNewRecord}"/>
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('类别名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="name" maxlength="50" value="${derviceOfficePb!=null?derviceOfficePb.name}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							${text('代码字段')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10" id="dmzd">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('备注信息')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10" id="check">
+							<#form:textarea name="remarks" value="${derviceOfficePb!=null?derviceOfficePb.remarks:''}" rows="4" maxlength="255" class="form-control "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<#form:extend collapsed="true" />-->
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+</div>
+<% } %>
+<script>
+	//全部
+	var all = eval('${bs}');
+	//公共
+	var bsp = eval('${bsp}');
+	//选中
+	var chec = "${derviceOfficePb!=null?derviceOfficePb.checked:''}".split(",");
+	$(function () {
+		console.log(all);
+		console.log(bsp);
+		console.log(chec);
+		$('#dmzd').html("" +
+				"<div><div>公共分组：</div><span id='checked' types='gg' class=\"icheck\"></span></div><div style='clear:both;'></div>" +
+				"<div><div>已分组：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><span id='checked' types='yf' class=\"icheck\"></span></div><div style='clear:both;'></div>" +
+				"<div><div>未分组：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><span id='checked' types='wf' class=\"icheck\"></span></div><div style='clear:both;'></div>");
+		for (var i = 0; i < all.length; i++) {
+			if($.inArray(all[i].id, chec)==-1){
+				if(bspStatus(all[i].id)){
+					$('span[types="gg"]').append(inputcheckbos(all[i].id,all[i].fieldName,false));
+				}else{
+					$('span[types="wf"]').append(inputcheckbos(all[i].id,all[i].fieldName,false));
+				}
+			}else{
+				$('span[types="yf"]').append(inputcheckbos(all[i].id,all[i].fieldName,true));
+			}
+		}
+		$('input[type="checkbox"]').iCheck({
+			checkboxClass:'icheckbox_minimal-grey'
+		})
+		//bsp
+
+	})
+	//input输出
+	function inputcheckbos(checkvalue, checktext, status){
+		if(status){
+			return "<div style='float: left'><input type='checkbox' name='checked' value='"+checkvalue+"' checked>&nbsp;"+checktext+"&nbsp;</div>";
+		}else{
+			return "<div style='float: left'><input type='checkbox' name='checked' value='"+checkvalue+"'>&nbsp;"+checktext+"&nbsp;</div>";
+		}
+	}
+	//判断是否为公共字段
+	function bspStatus(val){
+		for (var i = 0; i < bsp.length; i++) {
+			if(val==bsp[i].id){
+				return true;
+			}
+		}
+		return false;
+	}
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                    js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+                    });
+                }
+            }, "json");
+        }
+    });
+</script>

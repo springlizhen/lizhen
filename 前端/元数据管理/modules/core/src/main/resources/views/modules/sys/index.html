@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>首页</title>
+<link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+<script src="${ctxStatic}/js/jquery.min.js"></script>
+</head>
+
+<body>
+	<div class="bannerBox">
+		<div class="topBox">
+			<div class="logoBox">
+				<img src="${ctxStatic}/img/logo.png">
+			</div>
+			<div class="searchBox">
+				<!--				<input type="text">
+                                <a href="">
+                                    <img src="${ctxStatic}/img/ss_icon.png">
+                                </a>-->
+			</div>
+		</div>
+		<div class="navBox">
+			<div class="navConter">
+				<a href="${ctx}/index"><div class="navList active">首页</div></a>
+				<a href="${ctx}/sjml/index"><div class="navList">数据目录</div></a>
+				<a href="${ctx}/sjfw/index"><div class="navList">数据服务</div></a>
+				<a href="${ctx}/daml/index"><div class="navList">档案目录</div></a>
+				<a href="${ctx}/service/record"><div class="navList">个人中心</div></a>
+			</div>
+			
+		</div>	
+	</div>
+	<div class="dateBox">
+		<div class="date1200">
+			<div class="date_1">
+				<div class="date_1_a">${count}</div>
+				<div class="date_1_b">数据集</div>
+			</div>
+			<div class="date_1">
+				<div class="date_1_a">${dataSum}</div>
+				<div class="date_1_b">数据量</div>
+			</div>
+			<div class="date_1">
+				<div class="date_1_a">${downSum}</div>
+				<div class="date_1_b">下载量</div>
+			</div>
+		</div>
+	
+	</div>
+	<div class="btnBox">
+
+	</div>
+	
+	<div class="bottomBox">
+		©胶东调水数据资源共享平台
+	</div>
+</body>
+<script>
+    $.ajax({
+        type: 'GET',
+        url: "${ctx}/ztfl",
+        dataType: 'json',
+        async: false,
+        error: function(data){
+            js.showErrorMessage(data.responseText);
+        },
+        success: function(data, status, xhr) {
+            console.log(data)
+			var box = $('.btnBox');
+            for (var i=0;i<data.length;i++){
+				box.append('<a href="${ctx}/sjml/index?id='+data[i].id+'">\n' +
+                    '\t\t\t<img src="data:text/html;base64,'+data[i].img+'">\n' +
+                    '\t\t\t<span>'+data[i].name+'</span>\n' +
+                    '\t\t</a>');
+			}
+        }
+    });
+</script>
+</html>

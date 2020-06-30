@@ -1,0 +1,119 @@
+<% layout('/layouts/default.html', {title: '行政区划', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-map"></i> 区域信息
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${area}" action="${ctx}/area/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="form-unit">基本信息</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-9">
+						<div class="form-group">
+							<label class="control-label col-sm-4">上级区域：</label>
+							<div class="col-sm-8">
+								<#form:treeselect id="parent" title="上级区域"
+									path="parentCode" value="${area!=null?area.parentCode:''}" name="parentCode" defaultValue="0" labelValue="${area!=null?area.parentName:''}" labelName="treeNames"
+									url="${ctx}/area/treeData?excludeCode=${area!=null?area.id:''}"
+									class="" allowClear="true" canSelectRoot="true" canSelectParent="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-9">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 区域代码：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:hidden name="isNewRecord" value="${area!=null?area.isNewRecord}"/>
+								<#form:input name="areaCode" value="${area!=null?area.areaCode:''}" maxlength="100" readonly="${area!=null?!area.isNewRecord}" class="form-control required abc"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-9">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 区域名称：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input name="areaName" value="${area!=null?area.areaName:''}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-9">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 区域类型：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:radio name="areaType" value="${area!=null?area.areaType:''}" dictType="sys_area_type" blankOption="true" class="form-control required" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-9">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 排序号：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input name="treeSort" value="${area!=null?area.treeSort:''}" maxlength="10" class="form-control required digits"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-md-2 col-sm-3" title="">
+								<span class="required hide">*</span> 备注信息：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:textarea name="remarks" value="${area!=null?area.remarks:''}" rows="4" maxlength="500" class="form-control "/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> 保 存</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> 关 闭</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<script>
+    $(function () {
+        var isup = $('#isNewRecord').val();
+        console.log(isup);
+        if(!isup)
+            $('#isNewRecord').val(true);
+    })
+</script>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.$('#dataGrid').dataGrid('refreshTreeChildren',
+							$('#parentCode').val(), "${area!=null?area.id:''}");
+				});
+			}
+		}, "json");
+    }
+});
+</script>

@@ -1,0 +1,185 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<%
+				if(tb==null) {
+				%>
+				<i class="fa icon-speech"></i> ${text('数据表新增')}
+				<%
+				} else {
+				%>
+				<i class="fa icon-speech"></i> ${text('数据表编辑')}
+				<%
+				}
+				%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${tb}" action="${ctx}/tb/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="col-xs-offset-0">
+							<#form:hidden name="id" maxlength="100" class="form-control" value="${tb!=null?tb.id:''}"/>
+							<#form:hidden name="createBy" maxlength="100" class="form-control" value="${tb!=null?tb.createBy:''}"/>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+									if(tb==null) {
+								%>
+									<select onchange="findTableNameByDBId()" name="dbId" id="dbName" class="form-control required" >
+										<option value="">请选择</option>
+								<%
+										for(db in dbs) {
+								%>
+										<option value="${db.id}" >${db.name}</option>
+								<%
+										}
+								%>
+									</select>
+								<%
+									} else {
+										for(db in dbs) {
+											if(db.id == tb.dbId) {
+								%>
+									<#form:hidden name="dbId" maxlength="100" class="form-control" value="${tb!=null?tb.dbId:''}"/>
+									<#form:input readonly="true" name="" maxlength="100" class="form-control required" value="${db.name}"/>
+								<%
+									}}}
+								%>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据表')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+								if(tb==null) {
+								%>
+									<select onchange="findColumByTableName()" name="name" id="tbName" class="form-control required" >
+										<option value="">请选择</option>
+									</select>
+								<%
+								} else {
+								%>
+									<#form:input readonly="true" name="name" value="${tb!=null?tb.name:''}" maxlength="100" class="form-control required"/>
+								<%
+								}
+								%>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据表中文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameCn" value="${tb!=null?tb.nameCn:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据表注释')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="notes" value="${tb!=null?tb.notes:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+                                <span class="required ">*</span> ${text('数据表主键')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+								if(tb==null) {
+								%>
+								<select name="primaryKey" id="primaryKey" class="form-control required" >
+									<option value="">请选择</option>
+								</select>
+								<%
+								} else {
+								%>
+								<#form:input readonly="true" name="primaryKey" value="${tb!=null?tb.primaryKey:''}" maxlength="100" class="form-control"/>
+								<%
+								}
+								%>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据表备注')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" value="${tb!=null?tb.remarks:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+	function findTableNameByDBId() {
+		var databaseId = $('#dbName  option:selected').val();
+		$('#tbName').find("option").remove();
+		$('#tbName').append("<option value=''>请选择</option>");
+		$.ajax({
+			url:'${ctx}/tb/findTableNameByDbId?dbId='+databaseId,
+			type:'GET',
+			dataType:'json',
+			success:function(data){
+				for (var i=0;i<data.length;i++) {
+					$('#tbName').append("<option value='"+data[i]+"'>"+data[i]+"</option>");
+				}
+			}
+		});
+	}
+	function findColumByTableName() {
+		var databaseId = $('#dbName  option:selected').val();
+		var tableName = $('#tbName  option:selected').val();
+		$('#primaryKey').find("option").remove();
+		$('#primaryKey').append("<option value=''>请选择</option>");
+		$.ajax({
+			url:'${ctx}/tb/findColumByTableName?dbId='+databaseId+'&tableName='+tableName,
+			type:'GET',
+			dataType:'json',
+			success:function(data){
+				for (var i=0;i<data.length;i++) {
+					$('#primaryKey').append("<option value='"+data[i]+"'>"+data[i]+"</option>");
+				}
+			}
+		});
+	}
+</script>

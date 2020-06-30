@@ -1,0 +1,139 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['dataGrid','validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<%
+				if(schedulepro==null) {
+				%>
+				<i class="fa icon-speech"></i>  ${text('新增项目')}
+				<%
+				} else {
+				%>
+				<i class="fa icon-speech"></i>  ${text('编辑项目')}
+				<%
+				}
+				%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${schedulepro}" action="${ctx}/sys/device/schedulePro/save" method="post" class="form-horizontal">
+			<#form:hidden name="id" maxlength="100" class="form-control" value="${schedulepro!=null?schedulepro.id:''}"/>
+			<#form:hidden name="createBy" maxlength="100" class="form-control" value="${schedulepro!=null?schedulepro.createBy:''}"/>
+			<#form:hidden name="createDate" maxlength="100" class="form-control" value="${schedulepro!=null?schedulepro.createDate:''}"/>
+            <#form:hidden name="scheduleId" maxlength="100" class="form-control" value="${scheduleId}"/>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('项目名称')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" maxlength="100" class="form-control required" value="${schedulepro!=null?schedulepro.name:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('工程量比例')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="quantityRatio" type="number" min="0" maxlength="2" class="form-control required" value="${schedulepro!=null?schedulepro.quantityRatio:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('计划金额(万元)')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input type="number" min="0" name="planMoney" maxlength="100" class="form-control required" value="${schedulepro!=null?schedulepro.planMoney:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('实际金额(万元)')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input type="number" min="0" name="money" maxlength="100" class="form-control" value="${schedulepro!=null?schedulepro.money:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('状态')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="status" id="status" class="form-control" >
+									<option id="未启动" value="未启动">未启动</option>
+									<option id="进行中" value="进行中">进行中</option>
+									<option id="已完成" value="已完成">已完成</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('完成时间')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="endDate" path="endDate" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('备注')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:textarea name="remarks" rows="4" maxlength="300" class="form-control" value="${schedulepro!=null?schedulepro.remarks:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('相关附件')}：<i class="fa icon-question hide"></i></label>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-sm-11" style="left: 13%">
+							<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+									src="${ctx}/upload/list?pid=${schedulepro!=null?schedulepro.id:'schedulePro'}&readOnly=1"></iframe>
+						</div>
+					</div>
+				</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow) {
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+document.getElementById("endDate").value="${schedulepro!=null?schedulepro.endDate:''}";
+document.getElementById("${schedulepro!=null?schedulepro.status:'未启动'}").setAttribute("selected", "true");
+</script>

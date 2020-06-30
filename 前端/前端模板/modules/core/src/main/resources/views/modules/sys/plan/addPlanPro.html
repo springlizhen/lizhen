@@ -1,0 +1,55 @@
+<% layout('/layouts/default.html', {title: '计划管理', libs: ['validate','dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-body">
+            <div class="row" style="padding: 10px">
+                <div class="col-xs-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 col-xs-4" title="">
+                            <span class="required ">*</span> ${text('工程名称')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8 col-xs-8">
+                            <#form:input path="proName" maxlength="20" class="form-control required"/>
+                            <label id="proName-error" class="has-error" for="proName" style="top: 25px; left: 20px;">必填信息</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 col-xs-4" title="">
+                            <span class="required ">*</span> ${text('工程类型')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8 col-xs-8">
+                            <#form:select id="proType" name="proType" items="${type}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control"/>
+                            <label id="planType-error" class="has-error" for="proType" style="top: 25px; left: 20px;">必填信息</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#proName-error').hide();
+        $('#planType-error').hide();
+    })
+    $('#proName').keydown(function () {
+        $('#proName-error').hide();
+    });
+    $('#proType').keydown(function () {
+        $('#planType-error').hide();
+    });
+    $('#proName').click(function () {
+        $('#proName-error').hide();
+    });
+    $('#proType').change(function () {
+        $('#planType-error').hide();
+    });
+    function showMsg() {
+        var name = $('#proName').val();
+        var type = $('#proType').val();
+        return name+","+type;
+    }
+</script>
+<% } %>

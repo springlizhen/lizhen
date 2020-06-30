@@ -1,0 +1,217 @@
+<% layout('/layouts/default.html', {title: '工程安全阈值管理', libs: ['dataGrid']}){ %>
+<style>
+    .button-bg-border{
+        border: solid #ccc 1px;
+        border-bottom: 0px;
+        height: 36px;
+        padding: 0px;
+    }
+    .button-border{
+        float: left;
+        padding: 7px;
+    }
+    .button-color{
+        background-color: #cccccc57;
+    }
+</style>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i>工程安全阈值管理
+            </div>
+            <div class="box-tools pull-right">
+                <div class="box-tools pull-right">
+                    <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+                    <a href="${ctx}/sys/device/threshold/form"
+                       class="btn btn-default btnTool" title="${text('新增工程安全阈值信息')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/sys/device/threshold/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <#form:hidden name="measurePoint" maxlength="100" class="form-control" value="高程测点"/>
+            <div class="form-group">
+                <label class="control-label">${text('测点编号')}：</label>
+                <div class="control-inline">
+                    <#form:input path="deceiveCode" maxlength="100" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('所属机构')}：</label>
+                <div class="control-inline width-120">
+                    <#form:hidden id="deviceClass" name="deviceClass"/>
+                    <#form:treeselect id="orgId" title="${text('所属机构')}"
+                    name="orgId"
+                    url="${ctx}/sys/office/treeData" allowClear="true"
+                    canSelectRoot="true" canSelectParent="true" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('备注')}：</label>&nbsp;&nbsp;&nbsp;
+                <div class="control-inline">
+                    <#form:input path="remarks" maxlength="150" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+                <button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+            </div>
+        </#form:form>
+        <div class="button-bg-border">
+            <div id="gc" onclick="gccd()" class="button-border button-color">高程测点</div>
+            <div id="sp" onclick="spcd()" class="button-border">水平测点</div>
+        </div>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("测点编号")}', name:'deceiveCode', width:350, align:"center"},
+            {header:'${text("测点类型")}', name:'measureType', width:100, align:"center"},
+            {header:'${text("本期沉降阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                return row.nowLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.nowUpper;
+                }},
+            {header:'${text("累计沉降阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                    return row.addLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.addUpper;
+                }},
+            {header:'${text("是否启用")}', name:'isUse', width:100, align:"center", formatter: function(val, obj, row, act) {
+                    if(val==1){
+                        return "是";
+                    }else{
+                        return "否";
+                    }
+                }},
+            {header:'${text("备注")}', name:'remarks', width:200, align:"center"},
+            {header:'${text("操作")}', name:'actions', width:80, sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/sys/device/threshold/form?id='+row.id+'" class="btnList" title="${text("编辑工程安全阈值信息")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                    /*actions.push('<a href="${ctx}/sys/device/threshold/delete?id='+row.id+'" class="btnList" title="${text("删除工程安全阈值信息")}" data-confirm="${text("确认要删除该记录吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');*/
+                    if (row.isUse == 1){
+                        actions.push('<a href="${ctx}/sys/device/threshold/changeStatus?status=0&id='+row.id+'" class="btnList" title="停用安全阈值" data-confirm="确认要停用该安全阈值吗？"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+                    }
+                    if (row.isUse == 0){
+                        actions.push('<a href="${ctx}/sys/device/threshold/changeStatus?status=1&id='+row.id+'" class="btnList" title="启用安全阈值" data-confirm="确认要启用该安全阈值吗？"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+                    }
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+
+    /*点击高程测点*/
+    function gccd() {
+        document.getElementById("measurePoint").value='高程测点';
+        document.getElementById("gc").className='button-border button-color';
+        document.getElementById("sp").className='button-border';
+        //页码初始化
+        $("#pageNo").val("1");
+        $("#pageSize").val("20");
+        $('#dataGrid').jqGrid('GridUnload');
+        // 初始化DataGrid对象
+        $('#dataGrid').dataGrid({
+            searchForm: $("#searchForm"),
+            columnModel: [
+                {header:'${text("测点编号")}', name:'deceiveCode', width:350, align:"center"},
+                {header:'${text("测点类型")}', name:'measureType', width:100, align:"center"},
+                {header:'${text("本期沉降阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                        return row.nowLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.nowUpper;
+                    }},
+                {header:'${text("累计沉降阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                        return row.addLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.addUpper;
+                    }},
+                {header:'${text("是否启用")}', name:'isUse', width:100, align:"center", formatter: function(val, obj, row, act) {
+                        if(val==1){
+                            return "是";
+                        }else{
+                            return "否";
+                        }
+                    }},
+                {header:'${text("备注")}', name:'remarks', width:200, align:"center"},
+                {header:'${text("操作")}', name:'actions', width:80, sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+                        actions.push('<a href="${ctx}/sys/device/threshold/form?id='+row.id+'" class="btnList" title="${text("编辑工程安全阈值信息")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                        /*actions.push('<a href="${ctx}/sys/device/threshold/delete?id='+row.id+'" class="btnList" title="${text("删除工程安全阈值信息")}" data-confirm="${text("确认要删除该记录吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');*/
+                        if (row.isUse == 1){
+                            actions.push('<a href="${ctx}/sys/device/threshold/changeStatus?status=0&id='+row.id+'" class="btnList" title="停用安全阈值" data-confirm="确认要停用该安全阈值吗？"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+                        }
+                        if (row.isUse == 0){
+                            actions.push('<a href="${ctx}/sys/device/threshold/changeStatus?status=1&id='+row.id+'" class="btnList" title="启用安全阈值" data-confirm="确认要启用该安全阈值吗？"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+                        }
+                        return actions.join('');
+                    }}
+            ],
+            // 加载成功后执行事件
+            ajaxSuccess: function(data){
+
+            }
+        });
+        // $('#dataGrid').dataGrid('refresh');
+    }
+
+    /*点击水平测点*/
+    function spcd() {
+        document.getElementById("measurePoint").value='水平测点';
+        document.getElementById("sp").className='button-border button-color';
+        document.getElementById("gc").className='button-border';
+        //页码初始化
+        $("#pageNo").val("1");
+        $("#pageSize").val("20");
+        $('#dataGrid').jqGrid('GridUnload');
+        // 初始化DataGrid对象
+        $('#dataGrid').dataGrid({
+            searchForm: $("#searchForm"),
+            columnModel: [
+                {header:'${text("测点编号")}', name:'deceiveCode', width:300, align:"center"},
+                {header:'${text("测点类型")}', name:'measureType', width:80, align:"center"},
+                {header:'${text("x轴本期变形量阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                        return row.nowLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.nowUpper;
+                    }},
+                {header:'${text("x轴累计变形量阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                        return row.addLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.addUpper;
+                    }},
+                {header:'${text("y轴本期变形量阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                        return row.ynowLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.ynowUpper;
+                    }},
+                {header:'${text("y轴累计变形量阈值")}', sortable:false,  width:100, align:"center", formatter: function(val, obj, row, act) {
+                        return row.yaddLower+" &nbsp;&nbsp;-&nbsp;&nbsp; "+row.yaddUpper;
+                    }},
+                {header:'${text("是否启用")}', name:'isUse', width:80, align:"center", formatter: function(val, obj, row, act) {
+                        if(val==1){
+                            return "是";
+                        }else{
+                            return "否";
+                        }
+                    }},
+                {header:'${text("备注")}', name:'remarks', width:150, align:"center"},
+                {header:'${text("操作")}', name:'actions', width:80, sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+                        actions.push('<a href="${ctx}/sys/device/threshold/form?id='+row.id+'" class="btnList" title="${text("编辑工程安全阈值信息")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                        /*actions.push('<a href="${ctx}/sys/device/threshold/delete?id='+row.id+'" class="btnList" title="${text("删除工程安全阈值信息")}" data-confirm="${text("确认要删除该记录吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');*/
+                        if (row.isUse == 1){
+                            actions.push('<a href="${ctx}/sys/device/threshold/changeStatus?status=0&id='+row.id+'" class="btnList" title="停用安全阈值" data-confirm="确认要停用该安全阈值吗？"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+                        }
+                        if (row.isUse == 0){
+                            actions.push('<a href="${ctx}/sys/device/threshold/changeStatus?status=1&id='+row.id+'" class="btnList" title="启用安全阈值" data-confirm="确认要启用该安全阈值吗？"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+                        }
+                        return actions.join('');
+                    }}
+            ],
+            // 加载成功后执行事件
+            ajaxSuccess: function(data){
+
+            }
+        });
+        // $('#dataGrid').dataGrid('refresh');
+    }
+</script>

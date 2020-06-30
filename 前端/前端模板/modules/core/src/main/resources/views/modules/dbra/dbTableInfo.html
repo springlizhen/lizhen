@@ -1,0 +1,133 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('数据表详情')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${tb}" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据表id')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="id" maxlength="100" class="form-control required" value="${tb!=null?tb.id:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+								for(db in dbs) {
+									if(db.id == tb.dbId) {
+								%>
+									<#form:input readonly="true" name="" maxlength="100" class="form-control required" value="${db.name}"/>
+								<%
+									}}
+								%>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据表主键')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="primaryKey" maxlength="100" class="form-control required" value="${tb!=null?tb.primaryKey:''}" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据表')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" maxlength="100" class="form-control required" value="${tb!=null?tb.name:''}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据表中文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameCn" value="${tb!=null?tb.nameCn:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据表注释')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="notes" value="${tb!=null?tb.notes:''}" maxlength="100" class="form-control required " readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据表备注')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" value="${tb!=null?tb.remarks:''}" maxlength="100" class="form-control required " readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('创建者')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createBy" maxlength="100" class="form-control required" value="${tb!=null?tb.createBy:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('创建时间')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createDate" value="${tb!=null?tb.createDate:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('修改者')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="updateBy" maxlength="100" class="form-control required" value="${tb!=null?tb.updateBy:'oracle'}" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('修改时间')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="updateDate" value="${tb!=null?tb.updateDate:''}" maxlength="100" class="form-control" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>

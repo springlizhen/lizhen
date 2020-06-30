@@ -1,0 +1,98 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('数据服务注册')}
+            </div>
+            <br/>
+            <hr/>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            ${text('数据库')} ： <i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-3">
+                            <select onchange="findByDBId()" name="dbId" id="dbName" class="form-control required" >
+                                <option value="">请选择</option>
+                                <% if(dbs != null) {
+                                for(db in dbs){ %>
+                                    <option value="${db.id}" >${db.name}</option>
+                                <% } }%>
+                            </select>
+                        </div>
+                        <label class="control-label col-sm-2" title="">
+                            ${text('数据表')} ： <i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-3">
+                            <select onchange="findById()" name="tbId" id="tbName" class="form-control required" >
+                                <option value="">请选择</option>
+                                <% if(tbs != null) {
+                                for(tb in tbs){
+
+                                %>
+                                <option value="${tb.id}" >${tb.name}</option>
+                                <% } }%>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/res/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+                <#form:hidden name="dbId" id="dbid" maxlength="100" class="form-control" value=""/>
+                <#form:hidden name="id" id="id" maxlength="100" class="form-control" value=""/>
+            </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("数据表")}', name:'name', index:'name', width:160, align:"center",sortable:false},
+            {header:'${text("数据目录名称")}', name:'nameCn', index:'describe', width:200, align:"center",sortable:false},
+            {header:'${text("发布时间")}', name:'createDate', index:'remarks', width:150, align:"center",sortable:false},
+            {header:'${text("最后更新")}', name:'updateDate', index:'remarks', width:150, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:120, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/res/form?tbId='+row.id+'&dbId='+row.dbId+'" class="btnList" title="${text("注册")}">&nbsp;&nbsp;注册</a>&nbsp;&nbsp;');
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+    function findByDBId() {
+        $("#dbid").val($('#dbName  option:selected').val());
+        $("#id").val('');
+        var dbid = $('#dbName  option:selected').val();
+        var table=${tbs};
+        $('#tbName').find("option").remove();
+        $('#tbName').append("<option value='' selected='true'>请选择</option>");
+        for (var i=0;i<table.length;i++) {
+            if (dbid!='') {
+                if (table[i].dbId==dbid) {
+                    $('#tbName').append("<option value='"+table[i].id+"'>"+table[i].name+"</option>");
+                }
+            } else {
+                $('#tbName').append("<option value='"+table[i].id+"'>"+table[i].name+"</option>");
+            }
+        }
+        $('#dataGrid').dataGrid('refresh');
+    }
+    function findById() {
+        $("#id").val($('#tbName  option:selected').val());
+        $('#dataGrid').dataGrid('refresh');
+    }
+</script>

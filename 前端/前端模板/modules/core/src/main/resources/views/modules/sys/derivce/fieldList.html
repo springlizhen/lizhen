@@ -1,0 +1,92 @@
+<% layout('/layouts/default.html', {title: '设备代码管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-user"></i> ${text('设备代码管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<a href="${ctx}/sys/field/formpb" class="btn btn-default btnTool" title="${text('新增设备代码')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/sys/field/listData" method="post" class="form-inline "
+			data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<#form:hidden id="fieldPb" name="fieldPb" value="1"/>
+			<div class="form-group">
+				<label class="control-label">${text('字段')}：</label>
+				<div class="control-inline">
+					<#form:input path="fieldName" maxlength="100" class="form-control width-90"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('字段代码')}：</label>
+				<div class="control-inline">
+					<#form:input path="fieldCode" maxlength="100" class="form-control width-90"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('字段类型')}：</label>
+				<div class="control-inline width-90">
+					<#form:select name="fieldType" items="${sys_field_type}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('字段归类')}：</label>
+				<div class="control-inline width-120">
+					<#form:select name="fieldClass" items="${sys_field_fieldClass}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+				<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+			</div>
+		</#form:form>
+		<table id="dataGrid"></table>
+		<div id="dataGridPage"></div>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+	// 初始化DataGrid对象
+	$('#dataGrid').dataGrid({
+		searchForm: $("#searchForm"),
+		columnModel: [
+			{header:'${text("字段")}', name:'fieldName', index:'fieldName', width:200, align:"center"},
+			{header:'${text("字段代码")}', name:'fieldCode', index:'fieldCode', width:200, align:"center"},
+			{header:'${text("字段类型")}', name:'fieldType', index:'fieldType', width:200, align:"center", formatter: function(val, obj, row, act){
+					return js.getDictLabel(${sysFieldType}, val, '未知', true);
+				}},
+			{header:'${text("单位")}', name:'fieldUnit', index:'fieldUnit', width:200, align:"center"},
+			{header:'${text("字段归类")}', name:'fieldClass', index:'fieldClass', width:200, align:"center", formatter: function(val, obj, row, act){
+					return js.getDictLabel(${sysFieldFieldClass}, val, '未知', true);
+				}},
+			{header:'${text("是否必填")}', name:'fieldRequired', index:'fieldRequired', width:200, align:"center", formatter: function(val, obj, row, act){
+					return js.getDictLabel(${sys_field_fieldRequired}, val, '未知', true);
+				}},
+			{header:'${text("操作")}', name:'actions', width:260, sortable:false, title:false, formatter: function(val, obj, row, act){
+					var actions = [];
+						actions.push('<a href="${ctx}/sys/field/formpb?id='+row.id+'&op=edit" class="btnList" title="${text("编辑设备代码")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+						actions.push('<a href="${ctx}/sys/field/delete?id='+row.id+'" class="btnList" title="${text("删除设备代码")}" data-confirm="${text("删除设备代码会导致数据丢失，确认要删除吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+					return actions.join('');
+				}}
+		],
+		defaultExpandLevel: 0,	// 默认展开的层次
+		expandNodeClearPostData: 'fieldName,fieldCode,fieldType,fieldClass', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+		// 加载成功后执行事件
+		ajaxSuccess: function(data){
+
+		}
+	});
+
+</script>
+
+<!--查询时重置页码，否则有可能数据无法显示出来-->
+<script type="text/javascript">
+	function change() {
+		$("#pageNo").val("");
+		$("#pageSize").val("");
+	}
+</script>

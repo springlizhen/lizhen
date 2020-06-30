@@ -1,0 +1,234 @@
+<% layout('/layouts/default.html', {title: '测点信息维护', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> 测点信息维护
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" action="${ctx}/sys/measuring/save" method="post" class="form-horizontal">
+		<#form:hidden name="updateBy" maxlength="100" class="form-control" value="${point!=null?point.updateBy:''}"/>
+		<#form:hidden name="id" maxlength="100" class="form-control" value="${point!=null?point.id:''}"/>
+		<#form:hidden name="sctionId" maxlength="100" class="form-control" value="${point!=null?point.sctionId:''}"/>
+		<#form:hidden name="subCenter" maxlength="100" class="form-control" value="${point!=null?point.subCenter:''}"/>
+		<#form:hidden name="station" maxlength="100" class="form-control" value="${point!=null?point.station:''}"/>
+		<#form:hidden name="office" maxlength="100" class="form-control" value="${point!=null?point.office:''}"/>
+		<#form:hidden name="equ" maxlength="100" class="form-control" value="${point!=null?point.equ:''}"/>
+		<#form:hidden name="pid" maxlength="100" class="form-control" value="${point!=null?point.pid:''}"/>
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required ">*</span> ${text('测点编号')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="pointId" maxlength="50" value="${point!=null?point.pointId:''}" readonly="true" class="form-control required "/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('测点类型')}：<i class="fa icon-question hide"></i></label>
+						<!--<div class="col-sm-8">
+							<#form:input name="type" maxlength="50" value="${point!=null?point.type:''}" readonly="true" class="form-control required "/>
+						</div>-->
+						<div class="col-sm-8">
+							<#form:input name="type" maxlength="50" value="人工测点" readonly="true" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('测点种类')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="such" maxlength="50" value="${point!=null?point.such:''}" readonly="true" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<% if(point.such=='水平') { %>
+							<span class="required ">*</span> ${text('X轴初始值(m)')}：<i class="fa icon-question hide"></i></label>
+							<% } else { %>
+							<span class="required ">*</span> ${text('初始值(m)')}：<i class="fa icon-question hide"></i></label>
+							<% } %>
+						<div class="col-sm-8">
+							<#form:input name="inValue"  readonly="true" type="number" value="${point!=null?point.inValue:0}" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% if(point.such=='水平') { %>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('Y轴初始值(m)')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="yinValue" readonly="true" type="number" value="${point!=null?point.yinValue:0}" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% }%>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('填报期数')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input path="dateNum" readonly="true" maxlength="20" class="form-control Wdate "
+							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyyMM',isShowClear:false});"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<% if(point!=null && point.such=='水平') { %>
+								<span class="required">*</span> ${text('X轴(m)')}：<i class="fa icon-question hide"></i></label>
+							<% } else { %>
+								<span class="required">*</span> ${text('高程(m)')}：<i class="fa icon-question hide"></i></label>
+							<% } %>
+						<div class="col-sm-8">
+							<#form:input name="altitude" type="number" value="${point!=null?point.altitude:0}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% if(point!=null && point.such=='水平') { %>
+			<!--<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('X轴中误差')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input name="altitudeError" type="number" value="${point!=null?point.altitudeError:0}" class="form-control required "/>
+							</div>
+					</div>
+				</div>
+			</div>-->
+			<% } else { %>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('高程中误差(m)')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="altitudeError" type="number" value="${point.altitudeError!=null?point.altitudeError:0.0}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+			<% if(point!=null && point.such=='水平') { %>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+						<span class="required">*</span> ${text('Y轴(m)')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="yaltitude" type="number" value="${point!=null?point.yaltitude:0}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+			<% if(point!=null && point.such=='水平') { %>
+			<!--<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('y轴中误差')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="yaltitudeError" type="number" value="${point!=null?point.yaltitudeError:0}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>-->
+			<% } %>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('填报人')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input readonly="true" name="createBy" maxlength="50" value="${point!=null?point.createBy:''}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('填报日期')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input readonly="true" name="createDate" maxlength="50" value="${point!=null?point.createDate:''}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<#form:extend collapsed="true" />-->
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+</div>
+<% } %>
+<script>
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                    js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+                    });
+                }
+            }, "json");
+        }
+    });
+	var myDate = new Date();
+	var tYear = myDate.getFullYear();
+	var tMonth = myDate.getMonth() + 1;
+	var day = myDate.getDate();
+	if (day < 10) {
+		day='0'+day;
+	}
+	if (tMonth < 10) {
+		tMonth='0' + tMonth;
+	}
+	var month = tYear + '' + tMonth;
+	var dd=tYear + '-' + tMonth + '-' + day;
+	document.getElementById("createDate").value="${point!=null?point.createDate:''}";
+	if(${point.dateNum!=0?true:false}) {
+		document.getElementById("dateNum").value="${point.dateNum}";
+	} else {
+		document.getElementById("dateNum").value=month;
+		document.getElementById("createDate").value=dd;
+	}
+
+</script>

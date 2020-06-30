@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据目录-API服务</title>
+    <link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+    <link href="${ctxStatic}/css/layer.css" type="text/css" rel="stylesheet">
+    <script src="${ctxStatic}/js/jquery.min.js"></script>
+    <script src="${ctxStatic}/js/yyui.js"></script>
+    <script src="${ctxStatic}/js/layer.js"></script>
+</head>
+
+<body>
+<div class="topBoxBgColor">
+    <div class="logoBox">
+        <img src="${ctxStatic}/img/logo2.png">
+    </div>
+    <div class="searchBox">
+        <!--				<input type="text">
+                        <a href="">
+                            <img src="${ctxStatic}/img/ss_icon.png">
+                        </a>-->
+    </div>
+</div>
+<div class="navBox">
+    <div class="navConter">
+        <a href="${ctx}/index">
+            <div class="navList">首页</div>
+        </a>
+        <a href="${ctx}/sjml/index">
+            <div class="navList active">数据目录</div>
+        </a>
+        <a href="${ctx}/sjfw/index">
+            <div class="navList">数据服务</div>
+        </a>
+        <a href="${ctx}/daml/index">
+            <div class="navList">档案目录</div>
+        </a>
+        <a href="${ctx}/service/record">
+            <div class="navList">个人中心</div>
+        </a>
+    </div>
+</div>
+<div class="contentBox2">
+    <div class="xxTitBox">
+        <div class="sjName">${name}</div>
+        <div class="colorBox">
+            <span class="span_a">XLS</span>
+            <span class="span_b">XML</span>
+            <span class="span_c">JSON</span>
+            <span class="span_d">CSN</span>
+        </div>
+        <div class="sjNumber">数据量：${mouth} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接口数量：2</div>
+    </div>
+</div>
+<div class="xNav">
+    <a href="${ctx}/sjml/jbxx?id=${id}&name=${name}&mouth=${mouth}">
+        <div class="marginLeft">基本信息</div>
+    </a>
+    <a href="${ctx}/sjml/sjx?id=${id}&name=${name}&mouth=${mouth}">
+        <div>数据项</div>
+    </a>
+    <a href="${ctx}/sjml/sjyl?id=${id}&name=${name}&mouth=${mouth}">
+        <div>数据预览</div>
+    </a>
+    <a href="${ctx}/sjml/wjxz?id=${id}&name=${name}&mouth=${mouth}">
+        <div>文件下载</div>
+    </a>
+    <a href="${ctx}/sjml/APIfw?id=${id}&name=${name}&mouth=${mouth}">
+        <div class="active">API服务</div>
+    </a>
+</div>
+<div class="TabBox first">
+    <div class="fwBox">
+        <div class="fwTitle">
+            <div class="div01">${resourceApi.sumup}</div>
+            <div class="div01">版本：${resourceApi.version}</div>
+<!--            <div class="div02">[收起]</div>-->
+        </div>
+        <div class="gnsm">
+            <span></span><span class="textStyle">功能说明</span><br>
+            <div class="fwsm">${resourceApi.sumup}</div>
+        </div>
+        <div class="gnsm">
+            <span></span><span class="textStyle">服务调用</span><br>
+            <div class="fwsm">${resourceApi.apiHost}</div>
+            <div class="fwsm">接口版本：${resourceApi.version}</div>
+        </div>
+        <div class="gnsm">
+            <span></span><span class="textStyle">请求参数</span><br>
+            <div class="fwsm">所有参数都需要进行URL编码，编码时请遵守RFC 1738</div>
+            <div class="fwsm">通用参数</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+                <tbody class="tongyong">
+                <tr>
+                    <th scope="col">参数名称</th>
+                    <th scope="col">是否必须</th>
+                    <th scope="col">类型</th>
+                    <th scope="col">描述</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="gnsm">
+            <div class="fwsm">私有参数</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+                <tbody class="siyou">
+                <tr>
+                    <th scope="col">参数名称</th>
+                    <th scope="col">是否必须</th>
+                    <th scope="col">类型</th>
+                    <th scope="col">描述</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="gnsm">
+            <div class="fwsm">返回参数</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+                <tbody>
+                <tr>
+                    <th scope="col">返回属性名称</th>
+                    <th scope="col">描述</th>
+                </tr>
+                <tr>
+                    <td colspan="2">无数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button onclick="applyService()" class="sqfuBtn" style="cursor: pointer">申请服务</button>
+<!--        <a href="#" class="zxcsBtn">在线测试</a>-->
+    </div>
+</div>
+<div class="TabBox second" style="display: none">
+	<div class="fwBox">
+		<div class="fwTitle">
+			<div class="div01">${resourceApi.sumup}</div>
+			<div class="div01">版本：${resourceApi.version}</div>
+			<!--            <div class="div02">[收起]</div>-->
+		</div>
+		<div class="gnsm">
+			<span></span><span class="textStyle">功能说明</span><br>
+			<div class="fwsm">${resourceApi.sumup}</div>
+		</div>
+		<div class="gnsm">
+			<span></span><span class="textStyle">服务调用</span><br>
+			<div class="fwsm">${resourceApi.apiCountHost}</div>
+			<div class="fwsm">接口版本：${resourceApi.version}</div>
+		</div>
+		<div class="gnsm">
+			<span></span><span class="textStyle">请求参数</span><br>
+			<div class="fwsm">所有参数都需要进行URL编码，编码时请遵守RFC 1738</div>
+			<div class="fwsm">通用参数</div>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+				<tbody class="tongyong">
+				<tr>
+					<th scope="col">参数名称</th>
+					<th scope="col">是否必须</th>
+					<th scope="col">类型</th>
+					<th scope="col">描述</th>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="gnsm">
+			<div class="fwsm">返回参数</div>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+				<tbody>
+				<tr>
+					<th scope="col">返回属性名称</th>
+					<th scope="col">描述</th>
+				</tr>
+				<tr>
+					<td colspan="2">无数据</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<button onclick="applyService()" class="sqfuBtn" style="cursor: pointer">申请服务</button>
+<!--		<a href="#" class="zxcsBtn">在线测试</a>-->
+	</div>
+</div>
+<div class="TabBox">
+	<div style="float: right;width: 80%;background: #fff;/* padding-bottom: 10px; */">
+		<div class="fyBox" style="margin-top: 4px;padding-bottom: 4px;">
+<!--			<a href="javascript:;" class="onPage" onclick="toFirstApi()" style="display: none">上一页</a>-->
+			<a href="javascript:;" class="numberPage firstBtn active" onclick="toFirstApi()">1</a>
+			<a href="javascript:;" class="numberPage secondBtn" onclick="toSecondApi()">2</a>
+<!--			<a href="javascript:;" class="nextPage" onclick="toSecondApi()">下一页</a>-->
+		</div>
+	</div>
+</div>
+<div class="bottomBox">
+    ©胶东调水数据资源共享平台
+</div>
+</body>
+<script>
+
+    const resourceId = '${id}';
+    const name = '${name}';
+
+    function applyService() {
+        $.ajax({
+            type: 'POST',
+            url: "${ctx}/service/applyService",
+            dataType: 'json',
+            data: {
+                resourceId: resourceId,
+                name: name,
+                type: 'this'
+            },
+            async: false,
+            error: function(data){
+                console.log(data.responseText);
+            },
+            success: function(data) {
+                if (data.status) {
+                    layer.open({title:"申请结果",content:data.message});
+                } else {
+                    layer.open({title:"申请结果",content:data.message});
+                }
+            }
+        });
+    }
+
+	function toFirstApi() {
+		$('.first').css('display', 'block');
+		$('.second').css('display', 'none');
+		$('.firstBtn').addClass('active');
+		$('.secondBtn').removeClass('active');
+		// $('.onPage').css('display', 'none');
+		// $('.nextPage').css('display', 'block');
+	}
+
+	function toSecondApi() {
+		$('.first').css('display', 'none');
+		$('.second').css('display', 'block');
+		$('.firstBtn').removeClass('active');
+		$('.secondBtn').addClass('active');
+		// $('.onPage').css('display', 'block');
+		// $('.nextPage').css('display', 'none');
+	}
+
+	$(function () {
+
+		const tyParams = ${tyParams};
+		const syParams = ${syParams};
+
+		$.each(tyParams, function (i, n) {
+			$('.tongyong').append('<tr>\n' +
+					'                    <td>'+n.name+'</td>\n' +
+					'                    <td>'+n.isNull+'</td>\n' +
+					'                    <td>'+n.colType+'</td>\n' +
+					'                    <td>'+n.remarks+'</td>\n' +
+					'                </tr>');
+		});
+
+		$.each(syParams, function (i, n) {
+			$('.siyou').append('<tr>\n' +
+					'                    <td>'+n.name+'</td>\n' +
+					'                    <td>'+n.isNull+'</td>\n' +
+					'                    <td>'+n.colType+'</td>\n' +
+					'                    <td>'+n.remarks+'</td>\n' +
+					'                </tr>');
+		});
+
+	});
+
+</script>
+</html>

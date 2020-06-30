@@ -1,0 +1,107 @@
+<section class="sidebar">
+	<div class="user-panel">
+		<div class="pull-left image">
+			<img data-href="${ctx}/sys/user/info" data-title="${text('个人中心')}" class="img-circle pointer"
+				 src="${@user.getAvatarUrl().replaceFirst('/ctxPath', ctxPath)}">
+			<script>
+				$('.user-panel .img-circle').click(function(){
+					if (!$('.main-header').is(':hidden')){
+						$('.main-header').slideUp(300);
+						$('[data-toggle="push-menu"]').click();
+					}else{
+						$('.main-header').slideDown(300);
+					}
+				});
+			</script>
+		</div>
+		<div class="pull-left info">
+			<p>${user.userName}</p>
+			<a href="javascript:"><i class="fa fa-circle text-success"></i> ${text('在线')}</a>
+			<a href="${ctx}/logout"><i class="fa fa-sign-out text-danger"></i> ${text('注销')}</a>
+		</div>
+	</div>
+	<%/*<!--%>
+	<form action="#" method="get" class="sidebar-form">
+		<div class="input-group">
+			<input type="text" name="q" class="form-control" placeholder="查询...">
+			<span class="input-group-btn">
+				<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i
+					class="fa fa-search"></i></button>
+			</span>
+		</div>
+	</form>
+	<%-->*/%>
+	<%/*<!--%>
+	<ul class="sidebar-menu">
+		<% var menuSysCode = @ObjectUtils.toStringIgnoreNull(session.sysCode, 'default'); %>
+		<li class="header">${@DictUtils.getDictLabel('sys_menu_sys_code', menuSysCode, '')}</li>
+	</ul>
+	<%-->*/%>
+	<div id="leftMenu" data-widget="tree">
+
+		<ul class="sidebar-menu" style="display: block;" id="leftTree">
+		</ul>
+		<script>
+			$.ajax({
+				type: 'GET',
+				url: "${ctx}/menuTree",
+				dataType: 'json',
+				async: false,
+				error: function(data){
+					js.showErrorMessage(data.responseText);
+				},
+				success: function(data, status, xhr){
+					var a = $('#leftTree');
+					for(var i=0;i<data.length;i++) {
+						var hrefs = data[i].menuHref;
+						var target = null;
+						var clas = null;
+						if (hrefs) {
+
+							if (hrefs.indexOf('http') == -1) {
+								hrefs = "${ctx}" + data[i].menuHref;
+								clas = "addTabPage";
+							}
+						}
+						if(data[i].parentCode=="0"){
+							if(data[i].treeLeaf=="1"){
+								a.append("<li class=\"treeview\"><a target=\""+data[i].menuTarget+"\" title=\""+data[i].menuName+"\" href=\""+hrefs+"\"  data-href=\""+hrefs+"\" class=\""+clas+"\" data-code=\""+data[i].menuCode+"\"><i class=\"fa fa-fw "+(data[i].menuIcon?data[i].menuIcon:"icon-user")+"\"></i> <span>"+data[i].menuName+"</span></a></li>")
+							}else{
+								if(data[i].menuHref)
+									a.append("<li class=\"treeview\"><a target=\""+data[i].menuTarget+"\" title=\""+data[i].menuName+"\" href=\""+hrefs+"\" data-href=\""+hrefs+"\" class=\""+clas+"\" data-code=\""+data[i].menuCode+"\"><i class=\"fa fa-fw "+(data[i].menuIcon?data[i].menuIcon:"icon-user")+"\"></i> <span>"+data[i].menuName+"</span></a></li>")
+								else
+									a.append("<li class=\"treeview\" ><a title=\""+data[i].menuName+"\" href=\"javascript:\" data-href=\"blank\" class=\"addTabPage\" data-code=\""+data[i].menuCode+"\"><i class=\"fa fa-fw "+(data[i].menuIcon?data[i].menuIcon:"icon-user")+"\"></i> <span>"+data[i].menuName+"</span>\n" +
+											"\t\t\t\t<span class=\"pull-right-container\"><i class=\"fa fa-angle-left pull-right\"></i></span></a><ul id=\""+data[i].menuCode+"\" class=\"treeview-menu\">\n" +
+											"\t\t\t</ul></li>");
+							}
+						}else{
+							if(data[i].treeLeaf=="1"){
+								var b = $('#'+data[i].parentCode);
+								b.append("<li class=\"treeview\"><a target=\""+data[i].menuTarget+"\" title=\""+data[i].menuName+"\" href=\""+hrefs+"\"  data-href=\""+hrefs+"\" class=\""+clas+"\" data-code=\""+data[i].menuCode+"\"><i class=\"fa fa-fw "+(data[i].menuIcon?data[i].menuIcon:"icon-user")+"\"></i> <span>"+data[i].menuName+"</span></a></li>")
+							}else{
+								if(data[i].menuHref){
+									var b = $('#'+data[i].parentCode);
+									b.append("<li class=\"treeview\"><a  target=\""+data[i].menuTarget+"\" title=\""+data[i].menuName+"\" href=\""+hrefs+"\"  data-href=\""+hrefs+"\" class=\""+clas+"\" data-code=\""+data[i].menuCode+"\"><i class=\"fa fa-fw "+(data[i].menuIcon?data[i].menuIcon:"icon-user")+"\"></i> <span>"+data[i].menuName+"</span></a></li>")
+								}else{
+									var b = $('#'+data[i].parentCode);
+									b.append("<li class=\"treeview\" ><a title=\""+data[i].menuName+"\" href=\"javascript:\" data-href=\"blank\" class=\"addTabPage\" data-code=\""+data[i].menuCode+"\"><i class=\"fa fa-fw "+(data[i].menuIcon?data[i].menuIcon:"icon-user")+"\"></i> <span>"+data[i].menuName+"</span>\n" +
+											"\t\t\t\t<span class=\"pull-right-container\"><i class=\"fa fa-angle-left pull-right\"></i></span></a><ul id=\""+data[i].menuCode+"\" class=\"treeview-menu\">\n" +
+											"\t\t\t</ul></li>");
+								}
+							}
+						}
+
+					}
+				}
+			});
+		</script>
+	</div>
+	<%/*<!--%>
+	<ul class="sidebar-menu">
+		<li class="header">快捷菜单</li>
+		<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>快捷菜单1</span></a></li>
+		<li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>快捷菜单2</span></a></li>
+		<li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>快捷菜单3</span></a></li>
+	</ul>
+	<%-->*/%>
+</section>

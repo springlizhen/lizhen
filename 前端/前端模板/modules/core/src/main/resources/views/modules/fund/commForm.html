@@ -1,0 +1,363 @@
+<% layout('/layouts/default.html', {title: '合同信息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('合同信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${comm}" action="${ctx}/contract/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="form-unit">${text('合同信息')}</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('合同编码')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-6">
+								<#form:input name="id" maxlength="100" class="form-control required" value="${comm!=null?comm.id:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('合同类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-6">
+								<#form:input name="contractType" maxlength="100" class="form-control required" value="${comm!=null?comm.contractType:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+		        <div class="row">
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('合同标题')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-6">
+							<#form:input name="title" maxlength="100" class="form-control required" value="${comm!=null?comm.title:''}"/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('合同金额')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-6">
+							<#form:input name="money" maxlength="100" class="form-control required" value="${comm!=null?comm.money:''}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		        <div class="row">
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('合同对象')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-6">
+							<#form:input name="contractObject" maxlength="100" class="form-control required" value="${comm!=null?comm.contractObject:''}"/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('合同跟进人')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-6">
+							<#form:input name="follow" maxlength="100" class="form-control required" value="${comm!=null?comm.follow:''}"/>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('合同客户')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-6">
+							<#form:input name="customer" maxlength="100" class="form-control required" value="${comm!=null?comm.customer:''}"/>
+						</div>
+					</div>
+				</div>
+				</div>
+
+					</div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('甲方')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="owner" maxlength="100" class="form-control required" value="${comm!=null?comm.owner:''}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('甲方地址')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="ownerAddress" maxlength="100" class="form-control required" value="${comm!=null?comm.ownerAddress:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('甲方电话')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="ownerPhone" maxlength="100" class="form-control required" value="${comm!=null?comm.ownerPhone:''}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('甲方签字')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="ownerSign" maxlength="100" class="form-control required" value="${comm!=null?comm.ownerSign:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                     ${text('甲方签字时间')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+									<#form:input path="ownerSigntime" readonly="true" maxlength="20" class="form-control Wdate required"
+									dataFormat="date" value="${comm!=null?comm.ownerSigntime:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('乙方')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="otherOwner" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwner:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('乙方地址')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="otherOwnerAddress" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwnerAddress:''}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('乙方电话')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="otherOwnerPhone" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwnerPhone:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('乙方签字')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="otherOwnerSign" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwnerSign:''}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('乙方签字时间')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+									<#form:input path="otherOwnerSigntime" readonly="true" maxlength="20" class="form-control Wdate required"
+									dataFormat="date"  value="${comm!=null?comm.otherOwnerSigntime:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('款项性质')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="fund" maxlength="100" class="form-control required" value="${comm!=null?comm.fund:''}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('款项类别')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="fundType" maxlength="100" class="form-control required" value="${comm!=null?comm.fundType:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('款项金额')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="fundMoney" maxlength="100" class="form-control required" value="${comm!=null?comm.fundMoney:''}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('打款方式')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="remitType" maxlength="100" class="form-control required" value="${comm!=null?comm.remitType:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('打款账号')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="remitAccount" maxlength="100" class="form-control required" value="${comm!=null?comm.remitAccount:''}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label class="control-label col-sm-4" title="">
+                                    <span class="required ">*</span> ${text('打款时间')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+									<#form:input path="remitTime" readonly="true" maxlength="20" class="form-control Wdate required"
+									dataFormat="date" value="${comm!=null?comm.remitTime:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+	<!--	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" title="">
+                                    <span class="required ">*</span> ${text('系统名称')}：<i class="fa icon-question hide"></i></label>
+                                <div class="col-sm-6">
+                                    <#form:input name="authName" maxlength="100" class="form-control required" value="${comm!=null?comm.authName:''}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" title="">
+                                        <span class="required ">*</span> ${text('编码')}：<i class="fa icon-question hide"></i></label>
+                                    <div class="col-sm-6">
+                                        <#form:input name="authCode" maxlength="100" class="form-control required" value="${comm!=null?comm.authCode:''}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" title="">
+                                        <span class="required ">*</span> ${text('网址')}：<i class="fa icon-question hide"></i></label>
+                                    <div class="col-sm-6">
+                                        <#form:input name="authUrl" rows="4" class="form-control required" value="${comm!=null?comm.authUrl:''}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                        -->
+
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>

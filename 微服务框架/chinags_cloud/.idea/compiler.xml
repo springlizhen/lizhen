@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="service_dbra" />
+        <module name="service_phone" />
+        <module name="service_gis" />
+        <module name="chinags_eureka" />
+        <module name="chinags_config" />
+        <module name="service_contract" />
+        <module name="zipkin" />
+        <module name="chinags_common" />
+        <module name="service_auth" />
+        <module name="service_dervice" />
+        <module name="chinags_actuator" />
+        <module name="chinags_turbine" />
+        <module name="archives" />
+        <module name="service_file" />
+        <module name="service_user" />
+        <module name="chinags_zuul" />
+        <module name="chinags_admin" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="archives" target="1.8" />
+      <module name="chinags_actuator" target="1.8" />
+      <module name="chinags_admin" target="1.8" />
+      <module name="chinags_cloud" target="1.8" />
+      <module name="chinags_common" target="1.8" />
+      <module name="chinags_config" target="1.8" />
+      <module name="chinags_eureka" target="1.8" />
+      <module name="chinags_turbine" target="1.8" />
+      <module name="chinags_zuul" target="1.8" />
+      <module name="service_auth" target="1.8" />
+      <module name="service_contract" target="1.8" />
+      <module name="service_dbra" target="1.8" />
+      <module name="service_dervice" target="1.8" />
+      <module name="service_file" target="1.8" />
+      <module name="service_gis" target="1.8" />
+      <module name="service_phone" target="1.8" />
+      <module name="service_user" target="1.8" />
+      <module name="zipkin" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="archives" options="-parameters" />
+      <module name="chinags_actuator" options="-parameters" />
+      <module name="chinags_admin" options="-parameters" />
+      <module name="chinags_common" options="-parameters" />
+      <module name="chinags_config" options="-parameters" />
+      <module name="chinags_eureka" options="-parameters" />
+      <module name="chinags_turbine" options="-parameters" />
+      <module name="chinags_zuul" options="-parameters" />
+      <module name="service_auth" options="-parameters" />
+      <module name="service_contract" options="-parameters" />
+      <module name="service_dbra" options="-parameters" />
+      <module name="service_dervice" options="-parameters" />
+      <module name="service_file" options="-parameters" />
+      <module name="service_gis" options="-parameters" />
+      <module name="service_phone" options="-parameters" />
+      <module name="service_user" options="-parameters" />
+      <module name="zipkin" options="-parameters" />
+    </option>
+  </component>
+</project>

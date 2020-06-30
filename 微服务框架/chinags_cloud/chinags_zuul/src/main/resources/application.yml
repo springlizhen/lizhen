@@ -1,0 +1,53 @@
+server:
+  port: 9901
+
+spring:
+  boot:
+    admin:
+      client:
+        url: http://10.0.2.2:9902
+  zipkin:
+    base-url: http://10.0.2.2:9921
+  application:
+    name: chinags-zuul
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.0.2.2:9900/eureka/
+  instance:
+    prefer-ip-address: true
+zuul:
+  host:
+    socket-timeout-millis: 600000
+    connect-timeout-millis: 600000
+  sensitive-headers: true
+  routes:
+    static: #静态资源配置
+      path: /static/**
+      serviceId: service-auth
+      strip-prefix: false #访问不去掉前缀
+    service-user:
+      path: /service-user/**
+    service-auth:
+      path: /service-auth/**
+    service-dervice:
+      path: /service-dervice/**
+  system: /service-auth/auth2/**,/service-auth/message/** #系统拦截路径配置，多个路径请使用,隔开
+  no-filter: /service-auth/auth2/getToken,/service-auth/sso/**,/service-auth/static/**,/static/** #系统拦截路径配置，多个路径请使用,隔开
+  retryable: true #是否开启重试功能
+ribbon:
+  MaxAutoRetries: 2 #对当前服务的重试次数
+  MaxAutoRetriesNextServer: 0 #切换相同Server的次数
+  # 请求连接的超时时间
+  ConnectTimeout: 10000
+    # 请求处理的超时时间
+  ReadTimeout: 10000
+feign:
+ hystrix:
+   enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #开启熔断

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c6b1d626-ef08-44f2-9fa9-158007d2262e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="JRebelWorkspace">
+    <option name="jrebelEnabledAutocompile" value="true" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\BaiduNetdiskDownload\repository" />
+        <option name="mavenHome" value="D:/BaiduNetdiskDownload/apache-maven-3.3.9" />
+        <option name="userSettingsFile" value="D:\BaiduNetdiskDownload\apache-maven-3.3.9\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1c9GoWv8KfP8sLf4FixF1OabWi9" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\diaoshui1\微服务框架\chinags_cloud\service_gis\target\classes\com\chinags\layer\controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AuthApplication">
+    <configuration name="ActuatorApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="chinags_actuator" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.actuator.ActuatorApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="chinags_admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.admin.AdminApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ArchivesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="archives" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.archives.ArchivesApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_auth" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.auth.AuthApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ContractApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_contract" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.auth.ContractApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DbraApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_dbra" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.dbra.DbraApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EurekaServer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="chinags_eureka" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.eureka.EurekaServer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_file" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.file.FileApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceDeviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_dervice" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.device.ServiceDeviceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceGisApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_gis" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.layer.ServiceGisApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServicePhoneApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="service_phone" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.phone.ServicePhoneApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TurbineApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="chinags_turbine" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.turbine.TurbineApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ZipkinApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="zipkin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.zipkin.ZipkinApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ZuulApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="chinags_zuul" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chinags.zuul.ZuulApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c6b1d626-ef08-44f2-9fa9-158007d2262e" name="Default Changelist" comment="" />
+      <created>1589933570634</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589933570634</updated>
+      <workItem from="1589933576785" duration="18499000" />
+      <workItem from="1590021143111" duration="175000" />
+      <workItem from="1590021507565" duration="11153000" />
+      <workItem from="1590106058084" duration="5555000" />
+      <workItem from="1590365895898" duration="2611000" />
+      <workItem from="1590988029310" duration="7863000" />
+      <workItem from="1591056662769" duration="7972000" />
+      <workItem from="1591143092007" duration="13516000" />
+      <workItem from="1591230327033" duration="2710000" />
+      <workItem from="1591316541868" duration="21565000" />
+      <workItem from="1591347124892" duration="3359000" />
+      <workItem from="1591575399572" duration="198000" />
+      <workItem from="1591575822746" duration="22589000" />
+      <workItem from="1591661954023" duration="19608000" />
+      <workItem from="1591689000144" duration="11000" />
+      <workItem from="1591689108453" duration="287000" />
+      <workItem from="1591690264166" duration="86000" />
+      <workItem from="1591690411244" duration="189000" />
+      <workItem from="1591690675444" duration="88000" />
+      <workItem from="1591690944112" duration="4027000" />
+      <workItem from="1591748214892" duration="1316000" />
+      <workItem from="1591749727382" duration="16952000" />
+      <workItem from="1591834294341" duration="5698000" />
+      <workItem from="1591842477861" duration="21038000" />
+      <workItem from="1591920961154" duration="13351000" />
+      <workItem from="1592180217229" duration="2308000" />
+      <workItem from="1592182647274" duration="14388000" />
+      <workItem from="1592266349984" duration="24328000" />
+      <workItem from="1592353060095" duration="21223000" />
+      <workItem from="1592439333491" duration="19793000" />
+      <workItem from="1592525702987" duration="20609000" />
+      <workItem from="1592785061128" duration="4331000" />
+      <workItem from="1592883973042" duration="3245000" />
+      <workItem from="1592895623994" duration="7263000" />
+      <workItem from="1592959206814" duration="18923000" />
+      <workItem from="1593303438860" duration="19845000" />
+      <workItem from="1593390226602" duration="6396000" />
+      <workItem from="1593397666826" duration="652000" />
+      <workItem from="1593399513072" duration="15473000" />
+      <workItem from="1593416712973" duration="5577000" />
+      <workItem from="1593476274585" duration="4517000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser" timestamp="1591861384825">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1591861384825" />
+    <state x="336" y="337" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1592290074685">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="336" y="337" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1592290074685" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1593390269959">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1593390269959" />
+    <state width="1493" height="487" key="GridCell.Tab.0.bottom" timestamp="1593476405378">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1593476405378" />
+    <state width="1493" height="487" key="GridCell.Tab.0.center" timestamp="1593476405377">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1593476405377" />
+    <state width="1493" height="487" key="GridCell.Tab.0.left" timestamp="1593476405377">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1593476405377" />
+    <state width="1493" height="487" key="GridCell.Tab.0.right" timestamp="1593476405378">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1593476405378" />
+    <state width="1493" height="464" key="GridCell.Tab.1.bottom" timestamp="1593476405106">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="464" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1593476405106" />
+    <state width="1493" height="464" key="GridCell.Tab.1.center" timestamp="1593476405106">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="464" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1593476405106" />
+    <state width="1493" height="464" key="GridCell.Tab.1.left" timestamp="1593476405106">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="464" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1593476405106" />
+    <state width="1493" height="464" key="GridCell.Tab.1.right" timestamp="1593476405106">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="464" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1593476405106" />
+    <state width="1493" height="487" key="GridCell.Tab.2.bottom" timestamp="1593423033886">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.2.bottom/0.0.1536.824@0.0.1536.824" timestamp="1593423033886" />
+    <state width="1493" height="487" key="GridCell.Tab.2.center" timestamp="1593423033886">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.2.center/0.0.1536.824@0.0.1536.824" timestamp="1593423033886" />
+    <state width="1493" height="487" key="GridCell.Tab.2.left" timestamp="1593423033886">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.2.left/0.0.1536.824@0.0.1536.824" timestamp="1593423033886" />
+    <state width="1493" height="487" key="GridCell.Tab.2.right" timestamp="1593423033886">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="487" key="GridCell.Tab.2.right/0.0.1536.824@0.0.1536.824" timestamp="1593423033886" />
+    <state x="272" y="72" width="996" height="707" key="SettingsEditor" timestamp="1592372237298">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="272" y="72" width="996" height="707" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1592372237298" />
+    <state x="449" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1593399533873">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="449" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1593399533873" />
+    <state x="314" y="15" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1591593507980">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="314" y="15" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824@0.0.1536.824" timestamp="1591593507980" />
+    <state x="405" y="136" width="841" height="534" key="find.popup" timestamp="1593420311385">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="405" y="136" width="841" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1593420311385" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1592530180889">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1592530180889" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1593409876966">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1593409876966" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="list.get(0)" />
+        <watch expression="dataQuery" />
+        <watch expression="page.page.content.get(0)" />
+        <watch expression="list1.get(0)" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

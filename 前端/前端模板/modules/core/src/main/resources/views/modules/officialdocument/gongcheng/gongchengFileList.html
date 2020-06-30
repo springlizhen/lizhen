@@ -1,0 +1,156 @@
+<% layout('/layouts/default.html', {title: '案卷卷内文件管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i>案卷卷内文件管理
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+					<a href="${ctx}/projectfile/fileForm?clerkDocumentId=${clerkDocumentId}"
+					   class="btn btn-default btnTool" title="${text('新增案卷卷内文件')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/projectfile/fileListData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<#form:hidden name="clerkDocumentId2" value="${clerkDocumentId}"/>
+			<div class="form-group">
+				<label class="control-label">${text('案卷题名')}：</label>
+				<div class="control-inline">
+					<#form:input path="title" maxlength="150" class="form-control width-120"/>
+				</div>
+			</div>
+				<div class="form-group">
+					<label class="control-label">${text('案卷号')}：</label>
+					<div class="control-inline">
+						<#form:input path="archivesNo" maxlength="150" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('所属案卷')}：</label>
+					<div class="control-inline width-120">
+						<#form:treeselect id="clerkDocumentId" title="${text('案卷列表')}" name="clerkDocumentId"
+							url="${ctx}/projectfile/listData2"
+							class="required" allowClear="true" canSelectParent="false"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('责任者')}：</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="control-inline">
+						<#form:input path="responsiblePerson" maxlength="50" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('工程档案分类')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="documentType" dictType="eng_file_type" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+			<div class="form-row"></div>
+				<div class="form-group">
+					<label class="control-label">${text('档号')}：</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="control-inline">
+						<#form:input path="boxNo" maxlength="150" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('备注')}：</label>&nbsp;&nbsp;&nbsp;
+					<div class="control-inline">
+						<#form:input path="remarks" maxlength="150" class="form-control width-120"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label">${text('保管期限')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="storageTime" dictType="storage_time" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否公共档案')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="isPublic" dictType="document_is_public" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+			<div class="form-row"></div>
+				<div class="form-group">
+					<label class="control-label">${text('起始时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="startDate_gte" readonly="true" maxlength="20" class="form-control Wdate-date"
+						dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,onpicked:function(){startDate_lte.click()}});"/>
+						&nbsp;--&nbsp;
+						<#form:input path="startDate_lte" readonly="true" maxlength="20" class="form-control Wdate-date"
+						dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+					</div>
+				</div>
+			<div class="form-group">
+				<label class="control-label">${text('终止时间')}：</label>
+				<div class="control-inline">
+					<#form:input path="endDate_gte" readonly="true" maxlength="20" class="form-control Wdate-date"
+					dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,onpicked:function(){endDate_lte.click()}});"/>
+					&nbsp;--&nbsp;
+					<#form:input path="endDate_lte" readonly="true" maxlength="20" class="form-control Wdate-date"
+					dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				</div>
+			</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("案卷号")}', name:'archivesNo', width:150, align:"center"},
+		{header:'${text("所属案卷")}', name:'clerkDocumentId',sortable:false, width:150, align:"center", formatter: function(val, obj, row, act){
+			var title="";
+			$.ajax({
+				url:"${ctx}/projectfile/findCd?id="+val,
+				type:"get",
+				dataType: "json",
+				async: false,
+				success:function (data) {
+					title = data.title;
+				}
+			});
+			return title;
+		}},
+		{header:'${text("档号")}', name:'boxNo',  width:150, align:"center"},
+		{header:'${text("案卷题名")}', name:'title', width:150, align:"center"},
+		{header:'${text("年度")}', name:'year', width:150, align:"center"},
+		{header:'${text("责任者")}', name:'responsiblePerson',  width:150, align:"center"},
+		{header:'${text("是否为公共档案")}', name:'isPublic',  width:180, align:"center", formatter: function(val, obj, row, act){
+				return js.getDictLabel(${@DictUtils.getDictListJson('document_is_public')}, val, '${text("未知")}', true);
+			}},
+		{header:'${text("工程档案分类")}', name:'documentType',  width:150, align:"center", formatter: function(val, obj, row, act){
+				return js.getDictLabel(${@DictUtils.getDictListJson('eng_file_type')}, val, '${text("未知")}', true);
+			}},
+		{header:'${text("保管期限")}', name:'storageTime',  width:150, align:"center", formatter: function(val, obj, row, act){
+				return js.getDictLabel(${@DictUtils.getDictListJson('storage_time')}, val, '${text("未知")}', true);
+			}},
+		{header:'${text("起始时间")}', name:'startDate',  width:150, align:"center"},
+		{header:'${text("终止时间")}', name:'endDate',  width:150, align:"center"},
+		{header:'${text("存放地点")}', name:'place',  width:150, align:"center"},
+		{header:'${text("备注")}', name:'remarks', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			actions.push('<a href="${ctx}/projectfile/fileForm?id='+row.id+'" class="btnList" title="${text("编辑卷内文件")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+			actions.push('<a href="${ctx}/projectfile/deleteFile?id='+row.id+'" class="btnList" title="${text("删除卷内文件")}" data-confirm="${text("确认要删除该案卷卷内文件吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

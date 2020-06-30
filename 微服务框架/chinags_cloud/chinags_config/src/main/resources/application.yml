@@ -1,0 +1,12 @@
+server:
+  port: 9903
+spring:
+  application:
+    name: chinags-config
+  profiles:
+    active: native
+  cloud:
+      config:
+        server:
+          native:
+            search-locations: classpath:config/

@@ -1,0 +1,31 @@
+.bg-image1{
+    background-image: url(../icon-photo/1.png);
+}
+.bg-image2{
+    background-image: url(../icon-photo/2.png);
+}
+.bg-image3{
+    background-image: url(../icon-photo/3.png);
+}
+.bg-image4{
+    background-image: url(../icon-photo/4.png);
+}
+.border-color{
+    border-bottom:1px solid #17ADF5;
+}
+.font-color{
+    color: #17ADF5;
+}
+.right-style{
+    height: 46px;
+    padding: 10px;
+    border-bottom: 2px solid #EDEDED;
+    color: #4466A4;
+    font-weight: bold;
+    padding-left: 20px;
+}
+.icon-i-style{
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+}

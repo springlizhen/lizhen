@@ -1,0 +1,224 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('资源服务详情')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${resource}" action="${ctx}/res/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<h4 style="color: #1ab7ea">资源服务信息</h4>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('资源服务编码')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="id" readonly="true" value="${resource!=null?resource.id:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('资源服务中文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameCn" readonly="true" value="${resource!=null?resource.nameCn:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('资源服务英文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameUs" readonly="true" value="${resource!=null?resource.nameUs:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('简介')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="sumup" readonly="true" value="${resource!=null?resource.sumup:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('提供单位')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="provider" readonly="true" value="${resource!=null?resource.provider:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('所属行业')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="subBusiness" readonly="true" value="${resource!=null?resource.subBusiness:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('备注')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" readonly="true" value="${resource!=null?resource.remarks:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('所属主题')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="theme" readonly="true" value="${resource!=null?resource.theme:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('开放状态')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="status" readonly="true" value="${resource!=null?resource.status:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库id')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dbId" readonly="true" value="${resource!=null?resource.dbId:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据表id')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="tbId" readonly="true" value="${resource!=null?resource.tbId:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('发布人')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createBy" readonly="true" value="${resource!=null?resource.createBy:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('发布日期')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="createDate" readonly="true" value="${resource!=null?resource.createDate:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('修改人')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="updateBy" readonly="true" value="${resource!=null?resource.updateBy:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('修改日期')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="updateDate" readonly="true" value="${resource!=null?resource.updateDate:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('下载次数')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="downNum" readonly="true" value="${resource!=null?resource.downNum:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('浏览次数')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="catNum" readonly="true" value="${resource!=null?resource.catNum:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4 style="color: #1ab7ea">服务接口</h4>
+				<hr/>
+				<% if(reApi!=null && reApi.apiHost!=null) { %>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								${text('数据接口地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="apiHost" value="${reApi!=null?reApi.apiHost:''}" maxlength="100" class="form-control required" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<% } %>
+				<% if(reApi!=null && reApi.apiCountHost!=null) { %>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								${text('数据量统计接口地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="apiCountHost" value="${reApi!=null?reApi.apiCountHost:''}" maxlength="100" class="form-control required" readonly="true"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<% } %>
+			</div>
+			<div class="box-footer">
+				<div class="row col-xs-8">
+					<div class="col-sm-offset-6 col-sm-10">
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+</script>

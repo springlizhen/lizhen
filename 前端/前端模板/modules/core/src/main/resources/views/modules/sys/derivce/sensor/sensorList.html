@@ -1,0 +1,42 @@
+<% layout('/layouts/default.html', {title: '传感器管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-trophy"></i> ${text('传感器管理')}-${deviceName}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="${ctx}/sys/sensor/form?deviceCode=${deviceCode}" class="btn btn-default btnTool" title="${text('新增传感器')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/sys/sensor/listData" method="post" class="form-inline hide"
+			data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<#form:hidden name="fieldCode" value="${deviceCode}"/>
+			</#form:form>
+		<table id="dataGrid"></table>
+		<div id="dataGridPage"></div>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("名称")}', name:'sensorName', index:'sensorName', width:130, align:"center", frozen:true},
+            {header:'${text("排序")}', name:'sensorCode', index:'sensorCode', width:80, align:"center"},
+            {header:'${text("操作")}', name:'actions', width:130, sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+					actions.push('<a href="${ctx}/sys/sensor/form?id='+row.id+'&deviceCode=${deviceCode}" class="btnList" title="${text("编辑传感器")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+					actions.push('<a href="${ctx}/sys/sensor/delete?id='+row.id+'" class="btnList" title="${text("删除传感器")}" data-confirm="${text("确认要删除该传感器吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

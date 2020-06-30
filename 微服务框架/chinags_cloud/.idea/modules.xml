@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/service_archives/archives.iml" filepath="$PROJECT_DIR$/service_archives/archives.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_actuator/chinags_actuator.iml" filepath="$PROJECT_DIR$/chinags_actuator/chinags_actuator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_admin/chinags_admin.iml" filepath="$PROJECT_DIR$/chinags_admin/chinags_admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_cloud.iml" filepath="$PROJECT_DIR$/chinags_cloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_common/chinags_common.iml" filepath="$PROJECT_DIR$/chinags_common/chinags_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_config/chinags_config.iml" filepath="$PROJECT_DIR$/chinags_config/chinags_config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_eureka/chinags_eureka.iml" filepath="$PROJECT_DIR$/chinags_eureka/chinags_eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_turbine/chinags_turbine.iml" filepath="$PROJECT_DIR$/chinags_turbine/chinags_turbine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinags_zuul/chinags_zuul.iml" filepath="$PROJECT_DIR$/chinags_zuul/chinags_zuul.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_auth/service_auth.iml" filepath="$PROJECT_DIR$/service_auth/service_auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_contract/service_contract.iml" filepath="$PROJECT_DIR$/service_contract/service_contract.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_dbra/service_dbra.iml" filepath="$PROJECT_DIR$/service_dbra/service_dbra.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_device/service_dervice.iml" filepath="$PROJECT_DIR$/service_device/service_dervice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_file/service_file.iml" filepath="$PROJECT_DIR$/service_file/service_file.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_gis/service_gis.iml" filepath="$PROJECT_DIR$/service_gis/service_gis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_phone/service_phone.iml" filepath="$PROJECT_DIR$/service_phone/service_phone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service_user/service_user.iml" filepath="$PROJECT_DIR$/service_user/service_user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zipkin/zipkin.iml" filepath="$PROJECT_DIR$/zipkin/zipkin.iml" />
+    </modules>
+  </component>
+</project>

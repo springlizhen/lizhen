@@ -1,0 +1,19 @@
+server:
+  port: 9904
+
+spring:
+  application:
+    name: chinags-turbine
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9900/eureka/
+  instance:
+    prefer-ip-address: true
+turbine:
+  combine-host-port: true
+  app-config: chinags-zuul
+  cluster-name-expression: metadata['cluster']
+  aggregator:
+    cluster-config: chinags-zuul
+  instanceUrlSuffix: /hystrix.stream

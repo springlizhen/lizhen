@@ -1,0 +1,202 @@
+<% layout('/layouts/default.html', {title: '新增巡检记录', libs: ['validate','fileupload']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<% if(check==null){ %>
+				<i class="fa icon-grid"></i> 新增巡检记录
+				<% }else{ %>
+				<i class="fa icon-grid"></i> 编辑巡检记录
+				<%}%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${check}" action="${ctx}/sys/checkNote/save" method="post" class="form-horizontal">
+		<#form:hidden name="id" value="${check!=null?check.id:''}"/>
+		<#form:hidden name="checkCenter"  maxlength="200"   />
+		<#form:hidden name="manageStation"  maxlength="200"  />
+		<#form:hidden name="manageOffice"  maxlength="200"   />
+		<div class="box-body">
+			<div class="form-unit">
+				<% if(check==null){ %>
+				<i class="fa icon-grid"></i> ${text('新增巡检记录')}
+				<% }else{ %>
+				<i class="fa icon-grid"></i> ${text('编辑巡检记录')}
+				<%}%></div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4"><span class="required ">*</span> ${text('巡检人员')}：</label>
+						<div class="col-sm-8">
+							<#form:input name="checkPerson" value="${check!=null?check.checkPerson:''}" maxlength="200" class="form-control required "  />
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('巡检点名称')}：</label>
+						<div class="col-sm-8">
+							<select name="checkName" id="checkName" class="form-control required">
+								<option value="">请选择</option>
+								<% for (e in checkName){%>
+								<option <% if(check!=null&&e.CHECK_NAME==check.checkName){%> selected="selected" <%}%>  value="${e.ID}">${e.CHECK_NAME}</option>
+								<%}%>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('巡检结果')}：</label>
+						<div class="col-sm-8">
+							<select name="status" id="status" class="form-control required">
+								<option value="0">正常</option>
+								<option value="1">损坏</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!--<#form:extend collapsed="true" />-->
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required ">*</span> ${text('巡检内容描述')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="checkDescription" maxlength="64" value="${check!=null?check.checkDescription:''}"  class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('巡检结果说明')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:textarea name="checkResultDescription" value="${check!=null?check.checkResultDescription:''}" rows="4" maxlength="500" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+
+				<!--<#form:extend collapsed="true" />-->
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('经度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="longitude" maxlength="64" value="${check!=null?check.longitude:''}"  class="form-control required "/>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('纬度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="latitude" maxlength="64" value="${check!=null?check.latitude:''}"  class="form-control required "/>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('巡检日期')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="partoal" readonly="true" maxlength="20" class="form-control Wdate required"
+							value="${check!=null?check.partoal:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('上传附件')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 300px"
+									src="${ctx}/upload/list?pid=${check!=null?check.id:'checkNote'}&readOnly=1"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+
+	</div>
+</div>
+
+
+<% } %>
+
+
+<script>
+	$("#checkName").change(function(){
+		var checkName=$("#checkName").val();
+		var checkName1=$("#checkName option:selected").text();
+		console.log(checkName);
+		console.log(checkName1);
+		$.ajax({
+			url:'http://10.0.2.7:9920/checkNote/selectCheckLongitudeById?id='+checkName,
+			cache:false,
+			type:'get',
+			async:false,
+			success:function (data) {
+				$("#longitude").val(data.data[0].LONGITUDE);
+				$("#latitude").val(data.data[0].LATITUDE);
+				$("#checkCenter").val(data.data[0].CHECK_CENTER);
+				$("#manageStation").val(data.data[0].MANAGE_STATION);
+				$("#manageOffice").val(data.data[0].MANAGE_OFFICE);
+
+			}
+		})
+	});
+
+
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			var checkName1=$("#checkName option:selected").text();
+			$("#checkName option:selected").val(checkName1);
+			console.log($("#checkName").val());
+
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+</script>

@@ -1,0 +1,173 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('数据资源共享')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<br/>
+		<#form:form id="inputForm" model="${reApi}" action="${ctx}/re/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<#form:hidden name="tbId" maxlength="100" class="form-control" value="${tbId!=null?tbId:''}"/>
+				<#form:hidden name="dbId" maxlength="100" class="form-control" value="${dbId!=null?dbId:''}"/>
+				<#form:hidden name="reId" maxlength="100" class="form-control" value="${reId!=null?reId:''}"/>
+				<#form:hidden name="id" maxlength="100" class="form-control" value="${reApi!=null?reApi.id:''}"/>
+				<#form:hidden name="createDate" maxlength="100" class="form-control" value="${reApi!=null?reApi.createDate:''}"/>
+				<#form:hidden name="createBy" maxlength="100" class="form-control" value="${reApi!=null?reApi.createBy:''}"/>
+				<#form:hidden  name="countSql" maxlength="1000" value="${reApi!=null?reApi.countSql:''}" class="form-control" />
+				<#form:hidden  name="allSql" maxlength="1000" value="${reApi!=null?reApi.allSql:''}" class="form-control" />
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('功能说明')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="sumup" value="${reApi!=null?reApi.sumup:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('版本号')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="version" value="${reApi!=null?reApi.version:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('提供查询字段：')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:checkbox name="columns" value="${reApi!=null?reApi.columns:''}" id="columns" items="${bs}" itemLabel="name" itemValue="name" class="form-control required" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('生成SQL：')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:textarea value="${reApi!=null?reApi.sql:''}" id="sql" name="sql" rows="5" maxlength="1000" class="form-control required" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								${text('接口地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="apiHost" readonly="true" value="${reApi!=null?reApi.apiHost:''}" maxlength="100" class="form-control"/>
+							</div>
+							<button type="button" onclick="testApi()" class="btn btn-sm btn-primary" id="apiTest"> ${text('接口测试')}</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-10">
+							<label class="control-label col-sm-4" title="">
+								${text('统计接口地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="apiCountHost" readonly="true" value="${reApi!=null?reApi.apiCountHost:''}" maxlength="100" class="form-control"/>
+							</div>
+							<button type="button" onclick="testCount()" class="btn btn-sm btn-primary" id="countTest"> ${text('接口测试')}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row col-xs-8">
+					<div class="col-sm-offset-6 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+	$('#columns').on('ifChanged', function(event){
+		var tbId='${tbId}';
+		obj = document.getElementsByName("columns");
+		var cols = null;
+		for (k in obj) {
+			if (obj[k].checked) {
+				if (cols == null) {
+					cols = obj[k].value;
+				} else {
+					cols = cols +'*'+ obj[k].value;
+				}
+			}
+		}
+		$.ajax({
+			url:'${ctx}/re/findSql?tbId='+tbId+'&cols='+cols,
+			type:'GET',
+			datatype:'json',
+			success:function(data){
+				$("#sql").val(data);
+			}
+		});
+	});
+	var databaseId=document.getElementById("dbId").value;
+	var tabId=document.getElementById("tbId").value;
+	function testApi() {
+		var sql=document.getElementById("sql").value;
+		var data = {
+			dbId:databaseId,
+			sql:sql
+		};
+		$.ajax({
+			url:'${ctx}/re/testApi',
+			type:'GET',
+			datatype:'json',
+			data: data,
+			success: function (data) {
+				if (data)
+					alert(data);
+				else
+					alert("接口测试失败");
+			}
+		});
+	}
+	function testCount() {
+		$.ajax({
+			url:'${ctx}/re/testCount?tbId=' + tabId,
+			type:'GET',
+			datatype:'json',
+			success: function (data) {
+				if (data)
+					alert(data);
+				else
+					alert("接口测试失败");
+			}
+		});
+	}
+</script>

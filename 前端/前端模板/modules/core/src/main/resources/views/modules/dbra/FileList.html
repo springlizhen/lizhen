@@ -1,0 +1,53 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('档案注册')}
+            </div>
+            <br/>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/filere/listFileData" method="post" class="form-inline hide"
+                data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}">
+
+            </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("档案标题")}', name:'title', index:'title', width:60, align:"center",sortable:false},
+            {header:'${text("档案类型")}', name:'docClass', index:'docClass', width:60, align:"center",sortable:false},
+            {header:'${text("密级")}', name:'secretLevel', index:'secretLevel', width:60, align:"center",sortable:false},
+            {header:'${text("案卷号")}', name:'archivesNo', index:'archivesNo', width:60, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:100, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    if (${files != null}) {
+                        for (var i=0; i<${files}.length; i++) {
+                            if (${files}[i].fileId == row.id) {
+                                actions.push('已注册');
+                                break;
+                            }
+                        }
+                        if (actions.length == 0) {
+                            actions.push('<a href="${ctx}/filere/form?id=&fileId='+row.id+'" class="btnList" title="${text("档案服务编辑")}">注册</a>&nbsp;&nbsp;');
+                        }
+                    } else {
+                        actions.push('<a href="${ctx}/filere/form?id=&fileId='+row.id+'" class="btnList" title="${text("档案服务编辑")}">注册</a>&nbsp;&nbsp;');
+                    }
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

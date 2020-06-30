@@ -1,0 +1,145 @@
+<% layout('/layouts/default.html', {title: '案卷著录管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i>案卷著录管理
+            </div>
+            <div class="box-tools pull-right">
+                <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+                <a href="${ctx}/projectfile/form" class="btn btn-default btnTool" title="${text('新增案卷著录')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/projectfile/listData"  method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <input type="hidden" name="docClass" value="gongcheng"/>
+            <div class="form-group">
+                <label class="control-label">${text('项目名称')}：</label>
+                <div class="control-inline">
+                    <#form:input path="item" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('全宗号')}：</label>
+                <div class="control-inline">
+                    <#form:input path="caseNo" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('分类号')}：</label>&nbsp;&nbsp;&nbsp;
+                <div class="control-inline">
+                    <#form:input path="catalogNo" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('案卷号')}：</label>
+                <div class="control-inline">
+                    <#form:input path="archivesNo" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('档号')}：</label>
+                <div class="control-inline">
+                    <#form:input path="boxNo" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+        <div class="form-row"></div>
+            <div class="form-group">
+                <label class="control-label">${text('保管期限')}：</label>
+                <div class="control-inline width-120">
+                    <#form:select path="storageTime" dictType="storage_time" blankOption="true" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('密级')}：</label>&nbsp;&nbsp;&nbsp;
+                <div class="control-inline width-120">
+                    <#form:select path="secretLevel" dictType="secret_level" blankOption="true" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('案卷标题')}：</label>
+                <div class="control-inline">
+                    <#form:input path="title" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('责任者')}：</label>
+                <div class="control-inline">
+                    <#form:input path="responsiblePerson" maxlength="50" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('年度')}：</label>
+                <div class="control-inline">
+                    <#form:input path="year" readonly="true" maxlength="20" class="form-control Wdate-date"
+                    dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:true});"/>
+                </div>
+            </div>
+        <div class="form-row"></div>
+            <div class="form-group">
+                <label class="control-label">${text('备注')}：</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="control-inline">
+                    <#form:input path="remarks" maxlength="500" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+                <button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+            </div>
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("项目名称")}', name:'item', width:130, align:"center"},
+            {header:'${text("全宗号")}', name:'caseNo', width:130, align:"center"},
+            {header:'${text("分类号")}', name:'catalogNo', width:130, align:"center"},
+            {header:'${text("案卷号")}', name:'archivesNo', width:130, align:"center"},
+            {header:'${text("年度")}', name:'year', width:130, align:"center", formatter: function(val, obj, row, act){
+                    if(val){
+                        val = val.substring(0,4);
+                    }
+                    return val;
+                }},
+            {header:'${text("档号")}', name:'boxNo', width:130, align:"center"},
+            {header:'${text("案卷标题")}', name:'title',  width:150, align:"center"},
+            {header:'${text("密级")}', name:'secretLevel', width:150, align:"center", formatter: function(val, obj, row, act){
+                    return js.getDictLabel(${@DictUtils.getDictListJson('secret_level')}, val, '${text("未知")}', true);
+                }},
+            {header:'${text("保管期限")}', name:'storageTime', width:150, align:"center", formatter: function(val, obj, row, act){
+                    return js.getDictLabel(${@DictUtils.getDictListJson('storage_time')}, val, '${text("未知")}', true);
+                }},
+            {header:'${text("责任者")}', name:'responsiblePerson', width:150, align:"center"},
+            {header:'${text("件数")}', name:'pieceNo', width:150, align:"center"},
+            {header:'${text("页数")}', name:'pages', width:150, align:"center"},
+            {header:'${text("备注")}', name:'remarks', width:150, align:"center"},
+            {header:'${text("操作")}', name:'actions', width:130, sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/projectfile/form?id='+row.id+'" class="btnList" title="${text("编辑案卷著录")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                    actions.push('<a href="${ctx}/projectfile/fileList?clerkDocumentId='+row.id+'" class="btnList" title="${text("添加卷内文件")}"><i class="fa fa-navicon"></i></a>');
+                    actions.push('<a href="${ctx}/projectfile/delete?id='+row.id+'" class="btnList" title="${text("删除案卷著录")}" data-confirm="${text("确认要删除该案卷著录吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+
+    /*默认展开查询按钮*/
+    $(function () {
+        var flag = $("#flag").val();
+        if(flag == "false"){
+            $("#btnSearch").click();
+        }
+    });
+</script>

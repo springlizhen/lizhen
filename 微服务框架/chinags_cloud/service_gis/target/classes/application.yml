@@ -1,0 +1,105 @@
+chinags:
+  name: gis  #\u7CFB\u7EDF\u7684\u540D\u79F0\uFF0C\u5FC5\u586B
+server:
+  port: 9930
+spring:
+  application:
+    name: service-gis #\u6307\u5B9A\u670D\u52A1\u540D
+  datasource:
+    primary:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      #jdbc-url: jdbc:oracle:thin:@192.168.1.2:1521:orcl
+      jdbc-url: jdbc:oracle:thin:@10.0.2.5:1521:orcl
+      #username: busi
+      username: c##busi
+      password: busi
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 1
+      minIdle: 3
+      maxActive: 20
+      maxWait: 30000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 30000
+      validationQuery: select 1 from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,slf4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    base:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbc-url: jdbc:oracle:thin:@10.0.2.5:1521:orcl
+      username: c##base
+      password: base
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 1
+      minIdle: 3
+      maxActive: 20
+      maxWait: 30000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 30000
+      validationQuery: select 1 from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,slf4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    secondary:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbc-url: jdbc:oracle:thin:@10.0.2.5:1521:orcl
+      #username: moni
+      username: c##moni
+      password: moni
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 1
+      minIdle: 3
+      maxActive: 20
+      maxWait: 30000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 30000
+      validationQuery: select 1 from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,slf4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  jpa:
+    database: oracle
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle10gDialect
+
+eureka:
+  client:
+    service-url:
+      #defaultZone: http://127.0.0.1:9900/eureka/
+      defaultZone: http://10.0.2.1:9900/eureka/
+  instance:
+    prefer-ip-address: true
+
+swagger:
+  base-package: com.chinags
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: trace  #\u6253\u5370sql\u53C2\u6570
+#actuator\u7AEF\u53E3
+management:
+  #\u4FEE\u6539\u8BBF\u95EE\u8DEF\u5F84  2.0\u4E4B\u524D\u9ED8\u8BA4\u662F/   2.0\u9ED8\u8BA4\u662F /actuator  \u53EF\u4EE5\u901A\u8FC7\u8FD9\u4E2A\u5C5E\u6027\u503C\u4FEE\u6539
+  endpoints:
+    web:
+      #      base-path: /monitor
+      #\u5F00\u653E\u6240\u6709\u9875\u9762\u8282\u70B9  \u9ED8\u8BA4\u53EA\u5F00\u542F\u4E86health\u3001info\u4E24\u4E2A\u8282\u70B9
+      exposure:
+        include: "*"
+  #\u663E\u793A\u5065\u5EB7\u5177\u4F53\u4FE1\u606F  \u9ED8\u8BA4\u4E0D\u4F1A\u663E\u793A\u8BE6\u7EC6\u4FE1\u606F
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,165 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<% if(fileRe == null) { %>
+                    <i class="fa icon-speech"></i> ${text('档案API新增')}
+                <% } else { %>
+                    <i class="fa icon-speech"></i> ${text('档案API编辑')}
+                <% } %>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${fileRe}" action="${ctx}/filere/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="col-xs-offset-0">
+							<#form:hidden name="id" maxlength="100" class="form-control" value="${fileRe!=null?fileRe.id:''}"/>
+							<#form:hidden name="createBy" maxlength="100" class="form-control" value="${fileRe!=null?fileRe.createBy:''}"/>
+							<#form:hidden name="createDate" maxlength="100" class="form-control" value="${fileRe!=null?fileRe.createDate:''}"/>
+							<#form:hidden name="host" maxlength="100" class="form-control" value="${fileRe!=null?fileRe.host:''}"/>
+							<#form:hidden name="fileId" maxlength="100" class="form-control" value="${fileRe!=null?fileRe.fileId:file.id}"/>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('档案服务名称')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" value="${fileRe!=null?fileRe.name:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('档案类型')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="type" value="${fileRe!=null?fileRe.type:file.docClass}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('案卷号')} ： <i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-7">
+                                <#form:input name="fileNo" value="${fileRe!=null?fileRe.fileNo:file.archivesNo}" maxlength="100" class="form-control required"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+                                <span class="required ">*</span> ${text('年度')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="year" path="year" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+							</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+								${text('编制单位')} ： <i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-7">
+                                <#form:input name="company" value="${fileRe!=null?fileRe.company:''}" maxlength="100" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+                                ${text('责任人')} ： <i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-7">
+								<#form:input name="leader" value="${fileRe!=null?fileRe.leader:file.responsiblePerson}" maxlength="100" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('页号')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="pageNum" value="${fileRe!=null?fileRe.pageNum:file.pageNumber}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('页数')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="pageNumber" value="${fileRe!=null?fileRe.pageNumber:file.pages}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+                                <span class="required ">*</span> ${text('开放状态')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="status" id="status" class="form-control required" >
+									<% if(fileRe != null && fileRe.status == "禁用") { %>
+										<option value="禁用">禁用</option>
+										<option value="启用" >启用</option>
+									<% } else { %>
+										<option value="启用" >启用</option>
+										<option value="禁用">禁用</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('案卷名称')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+                                <#form:input name="fileName" value="${fileRe!=null?fileRe.fileName:file.title}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('备注')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:textarea name="remarks" value="${fileRe!=null?fileRe.remarks:''}" rows="3" maxlength="1000" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+						if (${fileRe==null}) {
+							parent.window.location.reload();
+						}
+					});
+				}
+			}, "json");
+		}
+	});
+	document.getElementById("year").value="${fileRe!=null?fileRe.year:''}";
+</script>

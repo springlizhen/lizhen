@@ -1,0 +1,108 @@
+<% layout('/layouts/default.html', {title: '字典数据管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-social-dropbox"></i> 字典
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" action="${ctx}/sys/dicData/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="form-unit">基本信息</div>
+				<#form:hidden name="dictCode" value="${dicData!=null?dicData.dictCode}"/>
+				<#form:hidden name="dictType" value="${dicData!=null?dicData.dictType:dictType}"/>
+				<#form:hidden name="id" value="${dicData!=null?dicData.id}"/>
+				<#form:hidden id="sfjx" value="0"/>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 字典标签：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input name="dictLabel" value="${dicData!=null?dicData.dictLabel}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 字典键值：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input name="dictValue" value="${dicData!=null?dicData.dictValue}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="当前字典树结构层次级别的排序号">
+								<span class="required ">*</span> 排序号：<i class="fa icon-question "></i></label>
+							<div class="col-sm-8">
+								<#form:input name="treeSort" value="${dicData!=null?dicData.treeSort}" maxlength="10" class="form-control required digits"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="工具提示，如select鼠标放到option上去会显示该描述信息">
+								<span class="required hide">*</span> 字典描述：<i class="fa icon-question "></i></label>
+							<div class="col-sm-10">
+								<#form:input name="description" value="${dicData!=null?dicData.description}" maxlength="500" class="form-control "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-unit">其它信息</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required hide">*</span> 备注信息：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-10">
+								<#form:textarea name="remarks" value="${dicData!=null?dicData.remarks}" rows="4" maxlength="500" class="form-control "/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-sm btn-primary" id="btnSubmit" onclick="{
+						$('#sfjx').val(0);$('#inputForm').submit();
+					}"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<%if(dicData!=null?dicData.isNewRecord:true){%>
+						<button type="button" class="btn btn-sm btn-primary" id="btnzdy" onclick="{
+						$('#sfjx').val(1);$('#inputForm').submit();
+					}"><i class="fa fa-check"></i> ${text('保存继续添加')}</button>&nbsp;
+						<%}%>
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> 关 闭</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				if($('#sfjx').val()==0) {
+					js.closeCurrentTabPage(function (contentWindow) {
+						contentWindow.page();
+					});
+				}
+			}
+		}, "json");
+    }
+});
+</script>

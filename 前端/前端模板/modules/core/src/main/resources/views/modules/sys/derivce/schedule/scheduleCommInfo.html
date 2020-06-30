@@ -1,0 +1,220 @@
+<% layout('/layouts/default.html', {title: '进度验收', libs: ['dataGrid','validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-fire"></i> ${text('进度验收')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="${ctx}/sys/device/scheduleComm/form?scheduleId=${scheduleId}" class="btn btn-default btnTool" title="${text('新增验收')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<% if(scheduleComms!=null) { %>
+				<#form:form id="inputForm" model="" action="${ctx}/sys/device/scheduleComm/saves" method="post" class="form-horizontal">
+					<% var num=1; for(scheduleComm in scheduleComms) { %>
+						<#form:hidden name="id" maxlength="100" class="form-control" value="${scheduleComm.id}"/>
+						<#form:hidden name="scheduleId" maxlength="100" class="form-control" value="${scheduleComm.scheduleId}"/>
+						<#form:hidden name="createBy" maxlength="100" class="form-control" value="${scheduleComm.createBy}"/>
+						<#form:hidden name="createDate" maxlength="100" class="form-control" value="${scheduleComm.createDate}"/>
+						<#form:hidden name="status" maxlength="100" class="form-control" value="${scheduleComm.status}"/>
+						<h4 style="color: #1ab7ea">验收进度${num}</h4>
+						<hr/>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('验收类型')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="ysType" maxlength="100" class="form-control required" value="${scheduleComm.ysType}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('验收单位')} ： <i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="company" maxlength="100" class="form-control required" value="${scheduleComm.company}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('验收时间')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<% if(scheduleComm.status == 0) { %>
+											<#form:input id="${scheduleComm.id}" path="ysDate" readonly="true" maxlength="20" class="form-control Wdate "
+											dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+										<% } else { %>
+											<#form:input id='${scheduleComm.id}' name="ysDate" maxlength="100" class="form-control required" value=""/>
+										<% } %>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('验收内容描述')} ： <i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="content" maxlength="100" class="form-control" value="${scheduleComm.content}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('验收负责人')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="proLeader" maxlength="100" class="form-control" value="${scheduleComm.proLeader}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('工程科负责人')} ： <i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="engLeader" maxlength="100" class="form-control" value="${scheduleComm.engLeader}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('项目专业工程师')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="engineer" maxlength="100" class="form-control" value="${scheduleComm.engineer}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('设计单位')} ： <i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="desCompany" maxlength="100" class="form-control" value="${scheduleComm.desCompany}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('监理单位')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="supCompany" maxlength="100" class="form-control" value="${scheduleComm.supCompany}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('施工单位名称')} ： <i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="conCompany" maxlength="100" class="form-control" value="${scheduleComm.conCompany}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('施工单位负责人')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="conCompanyLeader" maxlength="100" class="form-control" value="${scheduleComm.conCompanyLeader}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('验收结论')} ： <i class="fa icon-question hide"></i></label>
+									<div class="col-sm-7">
+										<#form:input id='${scheduleComm.id}' name="verdict" maxlength="100" class="form-control" value="${scheduleComm.verdict}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('相关附件')}：<i class="fa icon-question hide"></i></label>
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<% if(scheduleComm.status == 0) { %>
+									<div class="form-group col-sm-11" style="left: 13%">
+										<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+												src="${ctx}/upload/list?pid=${scheduleComm.id}&readOnly=1"></iframe>
+									</div>
+								<% } else { %>
+									<div class="form-group col-sm-11" style="left: 13%">
+										<iframe id="upload-readonly" name="upload" class="form-control" style="width: 88%;height: 350px"
+												src="${ctx}/upload/list?pid=${scheduleComm.id}&readOnly=0"></iframe>
+									</div>
+								<% } %>
+							</div>
+						</div>
+				<% num++;} %>
+				<div class="box-footer">
+					<div class="row">
+						<div class="col-sm-offset-3 col-sm-10">
+							<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type="button" class="btn btn-sm btn-primary" id="btnGuiDang" onclick="guidang()"><i class="fa icon-drawer"></i> ${text('归 档')}</button>&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+						</div>
+					</div>
+				</div>
+				</#form:form>
+			<% } %>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow) {
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+
+var comms=${scheduleComms};
+for (var a=0; a<comms.length; a++) {
+	var id=comms[a].id;
+	var status=comms[a].status;
+	var inputs = document.querySelectorAll('input');
+	for (var i=0; i<inputs.length; i++) {
+		if (status==1 && inputs[i].getAttribute('id')==id) {
+			inputs[i].setAttribute("readonly", "true");
+		}
+		if (inputs[i].getAttribute('name')=='ysDate' && inputs[i].getAttribute('id')==id) {
+			inputs[i].value=comms[a].ysDate;
+		}
+	}
+}
+
+function guidang() {
+	$.ajax({
+		type: 'GET',
+		url: "${ctx}/sys/device/scheduleComm/file?scheduleId=${scheduleId}",
+		dataType: 'json',
+		error:function(data) {
+			js.showMessage(data.message);
+		},
+		success: function (data) {
+			js.showMessage(data.message);
+			if (data.result == Global.TRUE) {
+				js.closeCurrentTabPage(function(contentWindow) {
+					contentWindow.page();
+				});
+			}
+		}
+	});
+}
+</script>

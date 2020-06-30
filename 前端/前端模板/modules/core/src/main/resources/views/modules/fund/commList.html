@@ -1,0 +1,82 @@
+<% layout('/layouts/default.html', {title: '合同信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('合同信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/contract/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<div class="row">
+				<div class="col-xs-12">
+				<div class="form-group col-xs-3">
+					<label class="control-label col-sm-4">${text('编码')}：</label>
+					<div class="control-inline " >
+						<#form:input path="id" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group col-xs-3">
+					<label class="control-label col-sm-4">${text('名称')}：</label>
+					<div class="control-inline ">
+						<#form:input path="title" class="form-control width-120"/>
+					</div>
+				</div>
+				</div>
+			</div>
+
+
+				<div class="form-group ">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+				</div>
+			</div>
+		</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("合同编码")}', name:'id', index:'id', width:100, align:"left", frozen:true, formatter: function(val, obj, row, act){
+				return '<a href="${ctx}/contract/listData?id='+row.id+'" class="btnList" data-title="${text("编辑消息")}">'
+						+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');
+			}},
+		{header:'${text("合同类型")}', name:'contractType', index:'a.contractType', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同标题")}', name:'title', index:'title', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同金额")}', name:'money', index:'a.money', width:150, fixed:true, align:"center"},
+		{header:'${text("合同对象")}', name:'contractObject', index:'contractObject', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同跟进人")}', name:'follow', index:'a.follow', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同客户")}', name:'customer', index:'customer', width:150, fixed:true, align:"center"},
+		{header:'${text("款项性质")}', name:'fund', index:'fund', width:150, fixed:true, align:"center"},
+		{header:'${text("款项类别")}', name:'fundType', index:'a.fundType', width:150,fixed:true,  align:"center"},
+		{header:'${text("款项金额")}', name:'fundMoney', index:'fundMoney', width:150,fixed:true,  align:"center"},
+		{header:'${text("打款方式")}', name:'remitType', index:'a.remitType', width:150, fixed:true, align:"center"},
+		{header:'${text("打款账号")}', name:'remitAccount', index:'remitAccount', width:150, fixed:true, align:"center"},
+		{header:'${text("打款时间")}', name:'remitTime', index:'a.remitTime', width:150,fixed:true,  align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+				var actions = [];
+				actions.push('<a href="${ctx}/contract/form?id='+row.id+'" class="btnList" title="${text("新增结算")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/contract/delete?id='+row.id+'" class="btnList" title="${text("删除消息")}" data-confirm="${text("确认要删除该消息吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/contract/view?id='+row.id+'" class="btnList" title="${text("查看")}"><i class="fa fa-book"></i></a>&nbsp;');
+
+				return actions.join('');
+			}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+
+	}
+});
+</script>

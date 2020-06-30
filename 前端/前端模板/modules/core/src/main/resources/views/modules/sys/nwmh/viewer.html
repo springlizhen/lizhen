@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="${ctxStatic}/file/js/pdfobject.js"></script>
+  <script>
+    var path = '${path}';
+    window.onload = function (){
+      var myPDF = new PDFObject({ url: "${fileService}/file/preview?path=" + path }).embed();
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>

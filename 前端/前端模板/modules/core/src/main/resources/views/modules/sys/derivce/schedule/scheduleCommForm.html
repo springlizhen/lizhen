@@ -1,0 +1,152 @@
+<% layout('/layouts/default.html', {title: '新增验收', libs: ['dataGrid','validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-fire"></i>  ${text('新增验收')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="" action="${ctx}/sys/device/scheduleComm/save" method="post" class="form-horizontal">
+            <#form:hidden name="scheduleId" maxlength="100" class="form-control" value="${scheduleId}"/>
+		<div class="box-body">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('验收类型')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="ysType" maxlength="100" class="form-control required" value=""/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('验收单位')} ： <i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="company" maxlength="100" class="form-control required" value=""/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('验收时间')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input path="ysDate" readonly="true" maxlength="20" class="form-control required Wdate "
+							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('验收内容描述')} ： <i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="content" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('验收负责人')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="proLeader" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('工程科负责人')} ： <i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="engLeader" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('项目专业工程师')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="engineer" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('设计单位')} ： <i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="desCompany" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('监理单位')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="supCompany" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('施工单位名称')} ： <i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="conCompany" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('施工单位负责人')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="conCompanyLeader" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('验收结论')} ： <i class="fa icon-question hide"></i></label>
+						<div class="col-sm-7">
+							<#form:input name="verdict" maxlength="100" class="form-control" value=""/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-xs-6">
+						<label class="control-label col-sm-4" title="">
+							${text('相关附件')}：<i class="fa icon-question hide"></i></label>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="form-group col-sm-11" style="left: 13%">
+						<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+								src="${ctx}/upload/list?pid=scheduleComm&readOnly=1"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;&nbsp;&nbsp;&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow) {
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>

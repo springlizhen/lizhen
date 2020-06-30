@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>山东省调水工程运行维护中心内网门户</title>
+    <link rel="shortcut icon" href="${ctxStatic}/favicon.ico"/>
+    <link rel="bookmark" href="${ctxStatic}/favicon.ico"/>
+    <link href="${ctxStatic}/nwmh/css/style.css?${_version}" rel="stylesheet"/>
+    <script src="${ctxStatic}/nwmh/js/jquery.min.js?${_version}"></script>
+    <script src="/jdds/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/jdds/static/select2/4.0/select2.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/select2/4.0/i18n/zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/layer/3.1/layer.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/my97/WdatePicker.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/jquery.validate.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/localization/messages_zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/jquery.validate.extend.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/jeesite.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/i18n/jeesite_zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/common.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/des.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-plugins/jquery.strength.js?1.0 V-06231011"></script>
+</head>
+<body>
+<div class="content">
+    <div class="main-top">
+        <!--logo-->
+        <div class="logoBox">
+            <img class="logoImg" src="${ctxStatic}/nwmh/img/logo.png">
+            <p class="logoText">山东省调水工程运行维护中心</p>
+            </img>
+        </div>
+        <!--搜索-->
+        <!--<div class="searchBox">
+            <div class="searchImg"></div>
+            <form action="${ctx}/portal/newsSearchList" method="get">
+                <input type="search" class="searchInput" name="articleTitle" placeholder="全局搜索">
+                <button class="searchBtn" style="cursor:pointer;" type="submit">搜索</button>
+                </input>
+            </form>
+        </div>-->
+        <!--右边头像等内容-->
+        <div class="top-right">
+            <!--<div class="tips">
+                <div class="tips-y"></div>
+                <img src="${ctxStatic}/nwmh/img/tips.png">
+            </div>-->
+            <div class="top-name" id="username">${user.userName}</div>
+            <div class="top-xtx"><img width="30px" height="30px" src="${@user.getAvatarUrl().replaceFirst('/ctxPath', ctxPath)}"></div>
+            <div style="position: absolute; right: 50px">
+                <a href="#" onclick="personalCenter(this)" data-layer="true" data-layer-width="1000" data-layer-height="560">
+                    <span style="color: #ffffff; font-size: 14px">[个人中心]</span>
+                </a>
+            </div>
+            <div style="position: absolute; right: 0">
+                <a href="${ctx}/logout">
+                    <span style="color: #ffffff; font-size: 14px">[退出]</span>
+                </a>
+            </div>
+            <!--<div class="font-jt">简体</div>
+            <div class="font-sx"></div>
+            <div class="font-ft">繁体</div>-->
+        </div>
+    </div>
+    <!--导航-->
+    <div class="navBtn">
+        <!--选中状态添加class"active"  img加A -->
+        <a href="${ctx}/portal/index">
+            <div class="btn">
+                <div class="icon"><img src="${ctxStatic}/nwmh/img/icon_sy.png"></div>
+                <div class="text syStyle">首页</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${ctx}/portal/newsList">
+        <div class="btn">
+            <div class="icon"><img src="${ctxStatic}/nwmh/img/icon_news.png"></div>
+            <div class="text">新闻中心</div>
+        </div>
+        </a>
+        <div class="st "></div>
+        <a href="${ctx}/portal/newsTzggList">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_fawen.png"></div>
+                <div class="text">通知公告</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${oaUrl}/jdds/chinags/logins?token=${token}#/jdds/a/message/oaMessage" target="_blank">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_liuyan.png"></div>
+                <div class="text">留言条</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${ctx}/portal/downloadList">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_dangan.png"></div>
+                <div class="text">下载中心</div>
+            </div>
+        </a>
+    </div>
+    <div class="main">
+        <!--<div class="main-nav">
+            <p>当前位置：</p>
+            <a>新闻中心</a>
+        </div>-->
+        <div class="newsBox">
+            <!--<div class="leftBtnBox">
+                <div class="TabBtn" id="categoryBox">
+                    &lt;!&ndash;选中效果class “ active ”  img加A&ndash;&gt;
+                    &lt;!&ndash;<div class="btn01 active">
+                        <img src="${ctxStatic}/nwmh/img/btn01A.png">
+                        <p>时政要闻</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn02"><img src="${ctxStatic}/nwmh/img/btn02.png">
+                        <p>水利要闻</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn03"><img src="${ctxStatic}/nwmh/img/btn03.png">
+                        <p>工作动态</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn04"><img src="${ctxStatic}/nwmh/img/btn04.png">
+                        <p>部门动态</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn05"><img src="${ctxStatic}/nwmh/img/btn05.png">
+                        <p>专题专栏</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn06"><img src="${ctxStatic}/nwmh/img/btn06.png">
+                        <p>媒体动态</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn07"><img src="${ctxStatic}/nwmh/img/btn07.png">
+                        <p>图像资料</p>
+                        <div class="icon-bg"></div>
+                    </div>
+                    <div class="btn08"><img src="${ctxStatic}/nwmh/img/btn08.png">
+                        <p>热点信息</p>
+                        <div class="icon-bg"></div>
+                    </div>&ndash;&gt;
+                </div>
+            </div>-->
+            <div class="rightNewsListBox" style="width: 100%">
+                <div class="title">
+                    <div class="xt"></div>
+                    <p id="categoryName">新闻列表</p>
+                </div>
+                <div class="newsMain">
+                    <div class="newbg"></div>
+                    <div id="dataList">
+                        <!--<a href="">
+                            <div class="icon"><img src="${ctxStatic}/nwmh/img/icon-new.png"></div>
+                            <span class="text">习近平在决战全面胜利 汪洋主持习近平在决战全面胜利 汪洋主持习近平在决战全面胜利 汪洋主持习近平在决战全面胜利 汪洋主持习近平在决战全面胜利 汪洋主持习近平在决战全面胜利 汪洋主持</span>
+                            <span class="data">2020-3-11</span>
+                        </a>-->
+                    </div>
+                </div>
+                <div class="fyBox">
+                    <!--<a href="" class="upPage">上一页</a>
+                    <a href="" class="number active">1</a>
+                    <a href="" class="number">2</a>
+                    <a href="" class="downPage">下一页</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--底部版权信息-->
+<div class="bottomBox">
+    <img class="bqImg" src="${ctxStatic}/nwmh/img/bqImg.png" style="margin-top: 18.5px;margin-right: 24px;float: left;position: absolute;left: 30%;">
+    <p style="position: absolute;left: 32%;float: left;">版权所有：山东省调水工程运行维护中心&nbsp;&nbsp;&nbsp;&nbsp;技术支持：伊工&nbsp;&nbsp;&nbsp;&nbsp;电话：15588640015</p>
+</div>
+<script>
+
+    // 个人中心
+    function personalCenter(dom) {
+        var url = '${ctx}/portal/personalCenter';
+        js.addTabPage($(dom), '个人中心', url, true, true);
+    }
+
+    $(function () {
+
+        //新闻中心二级分类
+        /*$.ajax({
+            type: 'GET',
+            url: "${ctx}/sys/nwmh/articleCategory/selectByLevelAndParentName?level=1&parentName=新闻中心",
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+                js.showErrorMessage(data.responseText);
+            },
+            success: function (data) {
+                $.each(data, function (i, n) {
+                    var active = '';
+                    var imgShow = '<img name="img1" src="${ctxStatic}/nwmh/img/btn0' + (i + 1) + 'A.png" style="display: none">';
+                    var imgHide = '<img name="img2" src="${ctxStatic}/nwmh/img/btn0' + (i + 1) + '.png" style="display: block">';
+                    if (i == 0) {
+                        active = 'active';
+                        imgShow = '<img name="img1" src="${ctxStatic}/nwmh/img/btn0' + (i + 1) + 'A.png" style="display: block">';
+                        imgHide = '<img name="img2" src="${ctxStatic}/nwmh/img/btn0' + (i + 1) + '.png" style="display: none">';
+                    }
+                    $('#categoryBox').append('<div class="navBtn btn0' + (i + 1) + ' ' + active + '" style="cursor:pointer;" onclick="reLoadArticleList(this, \'' + n.categoryCode + '\',\'' + n.categoryName + '\')">' +
+                        imgShow + imgHide +
+                        '<p>' + n.categoryName + '</p>' +
+                        '<div class="icon-bg"></div>' +
+                        '</div>');
+                });
+                $('#categoryName').html(data[0].categoryName);
+                categoryCode = data[0].categoryCode;
+                loadArticleList();
+            }
+        });*/
+
+    });
+
+    //重置加载
+    /*function reLoadArticleList(dom, code, name) {
+        if (categoryCode == code) {
+            return false;
+        }
+        categoryCode = code;
+        $('#categoryName').html(name);
+        $('.navBtn').removeClass('active');
+        $(dom).addClass('active');
+        $('.navBtn').find('img[name=img1]').css('display', 'none');
+        $('.navBtn').find('img[name=img2]').css('display', 'block');
+        $(dom).find('img[name=img1]').css('display', 'block');
+        $(dom).find('img[name=img2]').css('display', 'none');
+        pageNo = 1;
+        pageSize = 10;
+        pageNoMax = 1;
+        loadArticleList();
+    }*/
+
+    var pageNo = 1;
+    var pageSize = 10;
+    var pageNoMax = 1;
+    // var categoryCode = '';
+    var articleTitle = '${articleTitle}';
+    var orderBy = 'articleDate';
+
+    loadArticleList();
+
+    //加载列表
+    function loadArticleList() {
+        $.ajax({
+            type: 'GET',
+            url: "${ctx}/sys/nwmh/article/listData?pageNo=" + pageNo + "&pageSize=" + pageSize + "&articleTitle=" + articleTitle + "&isShow=1" + "&orderBy=" + orderBy,
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+            },
+            success: function (data) {
+                if (data == null) {
+                    $('#dataList').empty();
+                    pageNoMax = 0;
+                } else {
+                    pageNoMax = Math.ceil(data.count / data.pageSize);
+                    data = data.list;
+                    $('#dataList').empty();
+                    $.each(data, function (i, n) {
+                        $('#dataList').append('<a href="${ctx}/portal/newsDetail?articleCode=' + n.articleCode + '">\n' +
+                            '                      <div class="icon"><img src="${ctxStatic}/nwmh/img/icon-new.png"></div>\n' +
+                            '                      <span class="text">' + n.articleTitle + '</span>\n' +
+                            '                      <span class="data">' + n.articleDate + '</span>\n' +
+                            '                  </a>');
+                    });
+                }
+            }
+        });
+        pageMouth();
+    }
+
+    //重置分页
+    function pageMouth() {
+        $('.fyBox').empty();
+        if (pageNoMax != 0) {
+            var box = $('.fyBox');
+            if (pageNo != 1) {
+                box.append('<a href="javascript:;" class="upPage" onclick="getDataDown()">上一页</a>');
+            } else {
+                box.append('<a href="javascript:;" class="upPage">上一页</a>');
+            }
+            if (pageNo - 2 > 0) {
+                box.append('<a href="javascript:;" mout="' + (pageNo - 2) + '" class="number" onclick="getDataMou(' + (pageNo - 2) + ')">' + (pageNo - 2) + '</a>');
+            }
+            if (pageNo - 1 > 0) {
+                box.append('<a href="javascript:;" mout="' + (pageNo - 1) + '" class="number" onclick="getDataMou(' + (pageNo - 1) + ')">' + (pageNo - 1) + '</a>');
+            }
+            box.append('<a href="javascript:;" mout="' + pageNo + '" class="number" onclick="getDataMou(' + pageNo + ')">' + pageNo + '</a>');
+            if (pageNo + 1 <= pageNoMax) {
+                box.append('<a href="javascript:;" mout="' + (pageNo + 1) + '" class="number" onclick="getDataMou(' + (pageNo + 1) + ')">' + (pageNo + 1) + '</a>');
+            }
+            if (pageNo + 2 <= pageNoMax) {
+                box.append('<a href="javascript:;" mout="' + (pageNo + 2) + '" class="number" onclick="getDataMou(' + (pageNo + 2) + ')">' + (pageNo + 2) + '</a>');
+            }
+            if (pageNo != pageNoMax) {
+                box.append('<a href="javascript:;" class="downPage" onclick="getDataAdd()">下一页</a>');
+            } else {
+                box.append('<a href="javascript:;" class="downPage">下一页</a>');
+            }
+            console.log($('a[mout="' + pageNo + '"]').text());
+            $('a[mout="' + pageNo + '"]').addClass("active");
+        }
+    }
+
+    //上一页
+    function getDataAdd() {
+        pageNo += 1;
+        loadArticleList();
+    }
+
+    //下一页
+    function getDataDown() {
+        if (pageNo != 0) {
+            pageNo -= 1;
+        }
+        loadArticleList();
+    }
+
+    //点击数字跳转
+    function getDataMou(mou) {
+        if (pageNo != mou) {
+            pageNo = mou;
+            loadArticleList();
+        }
+    }
+
+</script>
+</body>
+</html>

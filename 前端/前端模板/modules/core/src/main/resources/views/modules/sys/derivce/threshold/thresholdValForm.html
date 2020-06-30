@@ -1,0 +1,289 @@
+<% layout('/layouts/default.html', {title: '工程安全阈值设置管理', libs: ['validate']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header with-border">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i> ${text(isNewRecord ? '新增工程安全阈值' : '编辑工程安全阈值')}
+            </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <#form:form id="inputForm" model="${thresholdVal}" action="${ctx}/sys/device/threshold/save" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-unit">${text('基本信息')}</div>
+            <#form:hidden name="id" id="id" value="${thresholdVal!=null?thresholdVal.id:''}"/>
+            <#form:hidden name="isShow" value="1"/>
+            <#form:hidden name="createBy" value="${thresholdVal!=null?thresholdVal.createBy:''}"/>
+            <#form:hidden name="createDate" value="${thresholdVal!=null?thresholdVal.createDate:''}"/>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required hidden">*</span> ${text('测点类型')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="measureType" maxlength="75" class="form-control required" value="人工" readonly="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required hidden">*</span> ${text('测点种类')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="measurePoint" id="measurePoint" maxlength="75" class="form-control required" readonly="true" value="${thresholdVal!=null?thresholdVal.measurePoint:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('测点编号')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8" id="cedianDIV1">
+                            <#form:treeselect id="deceiveId" title="${text('列表')}" name="deceiveId"
+                                url="${ctx}/sys/device/treeData3" value="${thresholdVal!=null?thresholdVal.deceiveId:''}"
+                                class="required" allowClear="false" canSelectParent="false"/>
+                        </div>
+                        <div class="col-sm-8" id="cedianDIV2">
+                            <#form:input class="form-control" readonly="true" value="${thresholdVal!=null?thresholdVal.deceiveCode:''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('是否启用')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:select name="isUse" items="${is_use}" itemLabel="dictValue" itemValue="dictCode" class="form-control required" value="${thresholdVal!=null?thresholdVal.isUse:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--高程部分-->
+            <div id="gaochengDIV">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> <span id="benqishangxian">本期沉降阈值上限：</span><i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="nowUpper" id="nowUpper" maxlength="75" class="form-control number required"
+                                maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.nowUpper:''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> <span id="benqixiaxian">本期沉降阈值下限：</span><i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="nowLower" id="nowLower" maxlength="75" class="form-control number required"
+                            maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.nowLower:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> <span id="leijishangxian">累计沉降阈值上限：</span><i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="addUpper" id="addUpper" maxlength="75" class="form-control number required"
+                            maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.addUpper:''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> <span id="leijixiaxian">累计沉降阈值下限：</span><i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="addLower" id="addLower" maxlength="75" class="form-control number required"
+                            maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.addLower:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!--水平部分-->
+            <div id="shuipingDIV" >
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" title="">
+                                <span class="required ">*</span> ${text('y轴本期变形量阈值上限')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-8">
+                                <#form:input name="ynowUpper" id="ynowUpper" maxlength="75" class="form-control number required"
+                                maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.ynowUpper:''}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" title="">
+                                <span class="required ">*</span> ${text('y轴本期变形量阈值下限')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-8">
+                                <#form:input name="ynowLower" id="ynowLower" maxlength="75" class="form-control number required"
+                                maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.ynowLower:''}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" title="">
+                                <span class="required ">*</span> ${text('y轴累计变形量阈值上限')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-8">
+                                <#form:input name="yaddUpper" id="yaddUpper" maxlength="75" class="form-control number required"
+                                maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.yaddUpper:''}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" title="">
+                                <span class="required ">*</span> ${text('y轴累计变形量阈值下限')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-8">
+                                <#form:input name="yaddLower" id="yaddLower" maxlength="75" class="form-control number required"
+                                maxlength="8" max="999999" min="-9999" value="${thresholdVal!=null?thresholdVal.yaddLower:''}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" title="">
+                            <span class="required hide">*</span> ${text('备注')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-11">
+                            <#form:textarea name="remarks" rows="4" placeholder="不能大于500字符!" maxlength="500" class="form-control" value="${thresholdVal!=null?thresholdVal.remarks:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+                    <button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+                </div>
+            </div>
+        </div>
+    </#form:form>
+
+    <#form:hidden id="deceiveCode2" value="${thresholdVal!=null?thresholdVal.deceiveCode:''}"/>
+</div>
+</div>
+<% } %>
+<script>
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                    js.closeCurrentTabPage(function(contentWindow){
+                        contentWindow.page();
+                    });
+                }
+            }, "json");
+        }
+    });
+
+    $(function () {
+        /*设备编码初始化*/
+        var deceiveCode = $("#deceiveCode2").val();
+        if(deceiveCode){
+            $("#deceiveIdName").val(deceiveCode);
+        }
+
+
+        /*进入页面时，新增默认展示高程阈值，修改页面根据实际情况进行阈值输入展示*/
+        //获取测点种类
+        var measurePoint = $("#measurePoint").val();
+        //获取id，看id是否为空
+        var id = $("#id").val();
+        if(id){  //修改页面
+            //测点编号不可选择
+            $("#cedianDIV1").hide();
+            if(measurePoint=="高程测点"){
+                //修改div展示情况
+                $("#shuipingDIV").hide();
+            }else if(measurePoint=="水平测点"){
+                //修改div展示情况
+                $("#shuipingDIV").show();
+                //修改字段标题
+                $("#benqishangxian").html("x轴本期变形量阈值上限：");
+                $("#benqixiaxian").html("x轴本期变形量阈值下限：");
+                $("#leijishangxian").html("x轴累计变形量阈值上限：");
+                $("#leijixiaxian").html("x轴累计变形量阈值下限：");
+            }
+        }else{  //新增页面
+            //测点编号可选择
+            $("#cedianDIV2").hide();
+            //修改div展示情况
+            $("#shuipingDIV").hide();
+        }
+
+        /*给测点编号添加改变事件*/
+        $("#deceiveIdCode").change(function() {
+            //获取改变后的设备id
+            var deceiveId = $("#deceiveIdCode").val();
+            $.ajax({
+                url:'${ctx}/sys/device/getDeviceInfo?id='+deceiveId,
+                type:'GET',
+                datatype:'json',
+                success:function(data){
+                    //获取设备测点类型，值为高程或水平
+                    var cgqTypeName = data.cgqTypeName;
+                    if(cgqTypeName == "高程"){
+                        $("#measurePoint").val("高程测点");
+                        //修改div展示情况
+                        $("#shuipingDIV").hide();
+                        //修改字段标题
+                        $("#benqishangxian").html("本期沉降阈值上限：");
+                        $("#benqixiaxian").html("本期沉降阈值下限：");
+                        $("#leijishangxian").html("累计沉降阈值上限：");
+                        $("#leijixiaxian").html("累计沉降阈值下限：");
+                        //重置认值
+                        $("#nowUpper").val("");
+                        $("#nowLower").val("");
+                        $("#addUpper").val("");
+                        $("#addLower").val("");
+                        $("#ynowUpper").val("0");
+                        $("#ynowLower").val("0");
+                        $("#yaddUpper").val("0");
+                        $("#yaddLower").val("0");
+                    }else if(cgqTypeName=="水平"){
+                        $("#measurePoint").val("水平测点");
+                        //修改div展示情况
+                        $("#shuipingDIV").show();
+                        //修改字段标题
+                        $("#benqishangxian").html("x轴本期变形量阈值上限：");
+                        $("#benqixiaxian").html("x轴本期变形量阈值下限：");
+                        $("#leijishangxian").html("x轴累计变形量阈值上限：");
+                        $("#leijixiaxian").html("x轴累计变形量阈值下限：");
+                        //重置认值
+                        $("#nowUpper").val("");
+                        $("#nowLower").val("");
+                        $("#addUpper").val("");
+                        $("#addLower").val("");
+                        $("#ynowUpper").val("");
+                        $("#ynowLower").val("");
+                        $("#yaddUpper").val("");
+                        $("#yaddLower").val("");
+                    }
+                }
+            });
+        });
+    });
+</script>

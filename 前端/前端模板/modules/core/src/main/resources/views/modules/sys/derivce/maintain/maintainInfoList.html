@@ -1,0 +1,75 @@
+<% layout('/layouts/default.html', {title: '养护记录管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i>养护记录管理
+            </div>
+            <div class="box-tools pull-right">
+                <div class="box-tools pull-right">
+                    <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+                    <a href="${ctx}/sys/device/maintain/form"
+                       class="btn btn-default btnTool" title="${text('新增养护记录')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/sys/device/maintain/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <div class="form-group">
+                <label class="control-label">${text('设施名称')}：</label>
+                <div class="control-inline">
+                    <#form:input path="deceiveName" maxlength="100" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('所属机构')}：</label>
+                <div class="control-inline width-120">
+                    <#form:hidden id="deviceClass" name="deviceClass"/>
+                    <#form:treeselect id="orgId" title="${text('所属机构')}"
+                    name="orgId"
+                    url="${ctx}/sys/office/treeData" allowClear="false"
+                    canSelectRoot="true" canSelectParent="true" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('备注')}：</label>&nbsp;&nbsp;&nbsp;
+                <div class="control-inline">
+                    <#form:input path="remarks" maxlength="150" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+                <button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+            </div>
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("部位名称")}', name:'deceiveName',sortable:false, width:150, align:"center"},
+            {header:'${text("维护完成时间")}', name:'endTime',  width:120, align:"center"},
+            {header:'${text("维护责任人")}', name:'responsiblePerson',  width:120, align:"center"},
+            {header:'${text("施工单位")}', name:'workCompany',  width:120, align:"center"},
+            {header:'${text("备注")}', name:'remarks', width:200, align:"center"},
+            {header:'${text("操作")}', name:'actions', width:80, sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/sys/device/maintain/form?id='+row.id+'" class="btnList" title="${text("编辑养护记录")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                    // actions.push('<a href="${ctx}/sys/device/maintain/listTo?id='+row.id+'" class="btnList" title="${text("维护养护记录")}"><i class="fa fa-plus"></i></a>&nbsp;');
+                    actions.push('<a href="${ctx}/sys/device/maintain/delete?id='+row.id+'" class="btnList" title="${text("删除养护记录")}" data-confirm="${text("确认要删除该记录吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

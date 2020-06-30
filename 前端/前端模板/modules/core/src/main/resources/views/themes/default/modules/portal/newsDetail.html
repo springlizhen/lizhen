@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>山东省调水工程运行维护中心内网门户</title>
+    <link rel="shortcut icon" href="${ctxStatic}/favicon.ico"/>
+    <link rel="bookmark" href="${ctxStatic}/favicon.ico"/>
+    <link href="${ctxStatic}/nwmh/css/style.css?${_version}" rel="stylesheet"/>
+    <script src="${ctxStatic}/nwmh/js/jquery.min.js?${_version}"></script>
+    <script src="/jdds/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/jdds/static/select2/4.0/select2.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/select2/4.0/i18n/zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/layer/3.1/layer.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/my97/WdatePicker.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/jquery.validate.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/localization/messages_zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/jquery.validate.extend.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/jeesite.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/i18n/jeesite_zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/common.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/des.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-plugins/jquery.strength.js?1.0 V-06231011"></script>
+</head>
+<body>
+<div class="content">
+    <div class="main-top">
+        <!--logo-->
+        <div class="logoBox">
+            <img class="logoImg" src="${ctxStatic}/nwmh/img/logo.png">
+            <p class="logoText">山东省调水工程运行维护中心</p>
+            </img>
+        </div>
+        <!--搜索-->
+        <div class="searchBox">
+            <div class="searchImg"></div>
+            <form action="${ctx}/portal/newsSearchList" method="get">
+                <input type="search" class="searchInput" name="articleTitle" placeholder="全局搜索">
+                <button class="searchBtn" style="cursor:pointer;" type="submit">搜索</button>
+                </input>
+            </form>
+        </div>
+        <!--右边头像等内容-->
+        <div class="top-right">
+            <!--<div class="tips">
+                <div class="tips-y"></div>
+                <img src="${ctxStatic}/nwmh/img/tips.png">
+            </div>-->
+            <div class="top-name" id="username">${user.userName}</div>
+            <div class="top-xtx"><img width="30px" height="30px" src="${@user.getAvatarUrl().replaceFirst('/ctxPath', ctxPath)}"></div>
+            <div style="position: absolute; right: 50px">
+                <a href="#" onclick="personalCenter(this)" data-layer="true" data-layer-width="1000" data-layer-height="560">
+                    <span style="color: #ffffff; font-size: 14px">[个人中心]</span>
+                </a>
+            </div>
+            <div style="position: absolute; right: 0">
+                <a href="${ctx}/logout">
+                    <span style="color: #ffffff; font-size: 14px">[退出]</span>
+                </a>
+            </div>
+            <!--<div class="font-jt">简体</div>
+            <div class="font-sx"></div>
+            <div class="font-ft">繁体</div>-->
+        </div>
+    </div>
+    <!--导航-->
+    <div class="navBtn">
+        <!--选中状态添加class"active"  img加A -->
+        <a href="${ctx}/portal/index">
+            <div class="btn">
+                <div class="icon"><img src="${ctxStatic}/nwmh/img/icon_sy.png"></div>
+                <div class="text syStyle">首页</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${ctx}/portal/newsList">
+            <div class="btn">
+                <div class="icon"><img src="${ctxStatic}/nwmh/img/icon_news.png"></div>
+                <div class="text">新闻中心</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${ctx}/portal/newsTzggList">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_fawen.png"></div>
+                <div class="text">通知公告</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${oaUrl}/jdds/chinags/logins?token=${token}#/jdds/a/message/oaMessage" target="_blank">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_liuyan.png"></div>
+                <div class="text">留言条</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${ctx}/portal/downloadList">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_dangan.png"></div>
+                <div class="text">下载中心</div>
+            </div>
+        </a>
+    </div>
+    <div class="main">
+        <div class="main-nav">
+            <p>当前位置：&nbsp;</p>
+            <span style="color: #999">${article.articleCategory.categoryName}</span>
+            <span style="color: #999">-</span>
+            <span style="color: #999">${article.articleTitle}</span>
+        </div>
+        <div class="newsBox">
+            <div class="newsContent">
+                <div class="newsMain">
+                    <div class="newbg"></div>
+                    <div class="title">
+                        ${article.articleTitle}
+                    </div>
+                    <div class="data">${article.articleDate}</div>
+                    <div class="main">
+                        ${article.articleContent}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--底部版权信息-->
+    <div class="bottomBox">
+        <img class="bqImg" src="${ctxStatic}/nwmh/img/bqImg.png">
+        <p>版权所有：山东省调水工程运行维护中心&nbsp;&nbsp;&nbsp;&nbsp;技术支持：伊工&nbsp;&nbsp;&nbsp;&nbsp;电话：15588640015</p>
+    </div>
+</div>
+<script>
+    // 个人中心
+    function personalCenter(dom) {
+        var url = '${ctx}/portal/personalCenter';
+        js.addTabPage($(dom), '个人中心', url, true, true);
+    }
+</script>
+</body>
+</html>

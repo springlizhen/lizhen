@@ -1,0 +1,14 @@
+server:
+  port: 9921
+spring:
+  application:
+    name: chinags_zipkin
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9900/eureka/
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false

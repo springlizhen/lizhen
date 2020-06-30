@@ -1,0 +1,85 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('基础数据管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${cols}" action="${ctx}/basic/save" method="post" class="form-horizontal">
+		<#form:hidden name="dbId" maxlength="100" class="form-control" value="${dbId!=null?dbId:''}"/>
+		<#form:hidden name="tbName" maxlength="100" class="form-control" value="${tbName!=null?tbName:''}"/>
+			<div class="box-body">
+				<span class="required ">*</span> ${text('增加/编辑数据')}：<i class="fa icon-question hide"></i></label>
+				<div class="row">
+					<div class="col-xs-12">
+				<% if(cols!=null) { for(col in cols) {
+						if(col.able=='N') {
+							if(col.key=='P' && col.value!=null) {
+				%>
+						<div class="form-group col-xs-5">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${col!=null?col.comments:''} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="${col.name}" value="${col!=null?col.value:''}" maxlength="100" class="form-control required" readonly="true"/>
+							</div>
+						</div>
+							<% } else if(col.type == 'DATE' && col.value == null) { %>
+						<div class="form-group col-xs-5">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${col!=null?col.comments:''} ：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input path="${col.name}" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+							</div>
+						</div>
+							<% } else { %>
+						<div class="form-group col-xs-5">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${col!=null?col.comments:''} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="${col.name}" value="${col!=null?col.value:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+				<% }} else { %>
+
+						<div class="form-group col-xs-5">
+							<label class="control-label col-sm-4" title="">
+								${col!=null?col.comments:''} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="${col.name}" value="${col!=null?col.value:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+				<% }}} %>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+</script>

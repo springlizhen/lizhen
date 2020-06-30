@@ -1,0 +1,53 @@
+<% layout('/layouts/default.html', {title: '明细记录', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> ${text('明细记录')}
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/sys/measuring/listDataReads?pid=${pid}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}" method="post" class="form-inline hide">
+		</#form:form>
+		<table id="dataGrid"></table>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+    var such = '${such}';
+    var dataList = [];
+    if (such=='水平') {
+        dataList.push(
+            {header:'${text("测点编号")}', name:'pointId', width:120, align:"center",sortable:false},
+            {header:'${text("期数")}', name:'dateNum',  width:120, align:"center",sortable:false},
+            {header:'${text("X轴(m)")}', name:'altitude',  width:120, align:"center",sortable:false},
+            /*{header:'${text("X轴中误差")}', name:'altitudeError',  width:120, align:"center",sortable:false},*/
+            {header:'${text("X变形量(m)")}', name:'upDown',  width:120, align:"center",sortable:false},
+            {header:'${text("X累计变形量(m)")}', name:'upDownSum',  width:120, align:"center",sortable:false},
+            {header:'${text("Y轴(m)")}', name:'yaltitude',  width:120, align:"center",sortable:false},
+            /*{header:'${text("Y轴中误差")}', name:'yaltitudeError',  width:120, align:"center",sortable:false},*/
+            {header:'${text("Y变形量(m)")}', name:'yupDown',  width:120, align:"center",sortable:false},
+            {header:'${text("Y累计变形量(m)")}', name:'yupDownSum',  width:120, align:"center",sortable:false}
+        );
+    } else {
+        dataList.push(
+            {header:'${text("测点编号")}', name:'pointId', width:120, align:"center",sortable:false},
+            {header:'${text("期数")}', name:'dateNum',  width:120, align:"center",sortable:false},
+            {header:'${text("高程(m)")}', name:'altitude',  width:120, align:"center",sortable:false},
+            {header:'${text("高程中误差(m)")}', name:'altitudeError',  width:120, align:"center",sortable:false},
+            {header:'${text("本期沉降(m)")}', name:'upDown',  width:120, align:"center",sortable:false},
+            {header:'${text("累计沉降(m)")}', name:'upDownSum',  width:120, align:"center",sortable:false}
+        );
+    }
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: dataList,
+        defaultExpandLevel: 0,	// 默认展开的层次
+        expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

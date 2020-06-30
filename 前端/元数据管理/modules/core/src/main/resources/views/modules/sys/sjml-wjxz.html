@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据目录-文件下载</title>
+    <link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+    <script src="${ctxStatic}/js/xlsx.full.min.js"></script>
+    <script src="${ctxStatic}/js/jquery.min.js"></script>
+    <script src="${ctxStatic}/js/yyui.js"></script>
+</head>
+<body class="damuXq">
+<div class="topBoxBgColor">
+    <div class="logoBox">
+        <img src="${ctxStatic}/img/logo2.png">
+    </div>
+    <div class="searchBox">
+        <!--				<input type="text">
+                        <a href="">
+                            <img src="${ctxStatic}/img/ss_icon.png">
+                        </a>-->
+    </div>
+</div>
+<div class="navBox">
+    <div class="navConter">
+        <a href="${ctx}/index">
+            <div class="navList">首页</div>
+        </a>
+        <a href="${ctx}/sjml/index">
+            <div class="navList active">数据目录</div>
+        </a>
+        <a href="${ctx}/sjfw/index">
+            <div class="navList">数据服务</div>
+        </a>
+        <a href="${ctx}/daml/index">
+            <div class="navList">档案目录</div>
+        </a>
+        <a href="${ctx}/service/record">
+            <div class="navList">个人中心</div>
+        </a>
+    </div>
+</div>
+<div class="contentBox2">
+    <div class="xxTitBox">
+        <div class="sjName">${name}</div>
+        <div class="colorBox">
+            <span class="span_a">XLS</span>
+            <span class="span_b">XML</span>
+            <span class="span_c">JSON</span>
+            <span class="span_d">CSN</span>
+        </div>
+        <div class="sjNumber">数据量：${mouth} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接口数量：2</div>
+    </div>
+</div>
+<div class="xNav">
+    <a href="${ctx}/sjml/jbxx?id=${id}&name=${name}&mouth=${mouth}">
+        <div class="marginLeft">基本信息</div>
+    </a>
+    <a href="${ctx}/sjml/sjx?id=${id}&name=${name}&mouth=${mouth}">
+        <div>数据项</div>
+    </a>
+    <a href="${ctx}/sjml/sjyl?id=${id}&name=${name}&mouth=${mouth}">
+        <div>数据预览</div>
+    </a>
+    <a href="${ctx}/sjml/wjxz?id=${id}&name=${name}&mouth=${mouth}">
+        <div class="active">文件下载</div>
+    </a>
+    <a href="${ctx}/sjml/APIfw?id=${id}&name=${name}&mouth=${mouth}">
+        <div>API服务</div>
+    </a>
+</div>
+<div class="TabBox">
+    <div class="yyui_tab_card">
+        <ul>
+            <li class="yyui_tab_title_this">JSON</li>
+            <li class="yyui_tab_title">XML</li>
+            <li class="yyui_tab_title">EXCEL</li>
+            <li class="yyui_tab_title">CSV</li>
+        </ul>
+        <div class="yyui_tab_content_this">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wjxzTab">
+                <tbody>
+                <tr>
+                    <th width="42%" scope="col">文件名称</th>
+                    <th width="11%" scope="col">操作</th>
+                </tr>
+                <tr>
+                    <td>${name}.json</td>
+                    <td class="tdCenter"><a href="#" onclick="saveJson('${name}')">下载</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="yyui_tab_content">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wjxzTab">
+                <tbody>
+                <tr>
+                    <th width="42%" scope="col">文件名称</th>
+                    <th width="11%" scope="col">操作</th>
+                </tr>
+                <tr>
+                    <td>${name}.xml</td>
+                    <td class="tdCenter"><a href="#" onclick="saveXml('${name}')">下载</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="yyui_tab_content">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wjxzTab">
+                <tbody>
+                <tr>
+                    <th width="42%" scope="col">文件名称</th>
+                    <th width="11%" scope="col">操作</th>
+                </tr>
+                <tr>
+                    <td>${name}.xlsx</td>
+                    <td class="tdCenter"><a href="#" onclick="saveExcel('${name}')">下载</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="yyui_tab_content">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wjxzTab">
+                <tbody>
+                <tr>
+                    <th width="42%" scope="col">文件名称</th>
+                    <th width="11%" scope="col">操作</th>
+                </tr>
+                <tr>
+                    <td>${name}.csv</td>
+                    <td class="tdCenter"><a href="#" onclick="saveCsv('${name}')">下载</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="bottomBox">
+    ©胶东调水数据资源共享平台
+</div>
+<script>
+
+    const jsonData = ${jsonData};
+    const json = JSON.stringify(jsonData, undefined, 4);
+
+    function saveJson(filename) {
+        const blob = new Blob([json], {type: 'text/json'});
+        const e = document.createEvent('MouseEvents');
+        const a = document.createElement('a');
+        a.download = filename + '.json';
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+    }
+
+    function saveExcel(filename) {
+        filename = filename + ".xlsx";
+        var ws_name = "Sheet1";
+        if (typeof XLSX == 'undefined') XLSX = require('xlsx');
+        var wb = XLSX.utils.book_new();
+        var ws = XLSX.utils.json_to_sheet(jsonData);
+        XLSX.utils.book_append_sheet(wb, ws, ws_name);
+        XLSX.writeFile(wb, filename);
+    }
+
+    function saveXml(filename) {
+        var xmlStr = json2xml(eval("(" + json + ")"));
+        const blob = new Blob([xmlStr], {type: 'text/xml'});
+        const e = document.createEvent('MouseEvents');
+        const a = document.createElement('a');
+        a.download = filename + '.xml';
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl = ['text/xml', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+    }
+
+    function saveCsv(filename) {
+        JSonToCSV.setDataConver({
+            data: jsonData,
+            fileName: filename
+        });
+    }
+
+    var JSonToCSV = {
+        setDataConver: function (obj) {
+            var data = obj['data'],
+                ShowLabel = typeof obj['showLabel'] === 'undefined' ? true : obj['showLabel'],
+                fileName = (obj['fileName'] || 'UserExport') + '.csv',
+                columns = obj['columns'] || {
+                    title: [],
+                    key: [],
+                    formatter: undefined
+                };
+            var ShowLabel = typeof ShowLabel === 'undefined' ? true : ShowLabel;
+            var row = "", CSV = '', key;
+            // 如果要现实表头文字
+            if (ShowLabel) {
+                // 如果有传入自定义的表头文字
+                if (columns.title.length) {
+                    columns.title.map(function (n) {
+                        row += n + ',';
+                    });
+                } else {
+                    // 如果没有，就直接取数据第一条的对象的属性
+                    for (key in data[0]) row += key + ',';
+                }
+                row = row.slice(0, -1); // 删除最后一个,号，即a,b, => a,b
+                CSV += row + '\r\n'; // 添加换行符号
+            }
+            // 具体的数据处理
+            data.map(function (n) {
+                row = '';
+                // 如果存在自定义key值
+                if (columns.key.length) {
+                    columns.key.map(function (m) {
+                        row += '"' + (typeof columns.formatter === 'function' ? columns.formatter(m, n[m]) || n[m] : n[m]) + '",';
+                    });
+                } else {
+                    for (key in n) {
+                        row += '"' + (typeof columns.formatter === 'function' ? columns.formatter(key, n[key]) || n[key] : n[key]) + '",';
+                    }
+                }
+                row.slice(0, row.length - 1); // 删除最后一个,
+                CSV += row + '\r\n'; // 添加换行符号
+            });
+            if (!CSV) return;
+            this.SaveAs(fileName, CSV);
+        },
+        SaveAs: function (fileName, csvData) {
+            var bw = this.browser();
+            if (!bw['edge'] || !bw['ie']) {
+                var alink = document.createElement("a");
+                alink.id = "linkDwnldLink";
+                alink.href = this.getDownloadUrl(csvData);
+                document.body.appendChild(alink);
+                var linkDom = document.getElementById('linkDwnldLink');
+                linkDom.setAttribute('download', fileName);
+                linkDom.click();
+                document.body.removeChild(linkDom);
+            }
+        },
+        getDownloadUrl: function (csvData) {
+            var _utf = "\uFEFF"; // 为了使Excel以utf-8的编码模式，同时也是解决中文乱码的问题
+            return 'data:attachment/csv;charset=utf-8,' + _utf + encodeURIComponent(csvData);
+        },
+        browser: function () {
+            var Sys = {};
+            var ua = navigator.userAgent.toLowerCase();
+            var s;
+            (s = ua.indexOf('edge') !== -1 ? Sys.edge = 'edge' : ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
+                (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+                    (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                        (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                            (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                                (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+            return Sys;
+        }
+    }
+
+    function json2xml(o, tab) {
+        var toXml = function (v, name, ind) {
+            var xml = "";
+            if (v instanceof Array) {
+                for (var i = 0, n = v.length; i < n; i++)
+                    xml += ind + toXml(v[i], name, ind + "\t") + "\n";
+            } else if (typeof (v) == "object") {
+                var hasChild = false;
+                xml += ind + "<" + name;
+                for (var m in v) {
+                    if (m.charAt(0) == "@")
+                        xml += " " + m.substr(1) + "=\"" + v[m].toString() + "\"";
+                    else
+                        hasChild = true;
+                }
+                xml += hasChild ? ">" : "/>";
+                if (hasChild) {
+                    for (var m in v) {
+                        if (m == "#text")
+                            xml += v[m];
+                        else if (m == "#cdata")
+                            xml += "<![CDATA[" + v[m] + "]]>";
+                        else if (m.charAt(0) != "@")
+                            xml += toXml(v[m], m, ind + "\t");
+                    }
+                    xml += (xml.charAt(xml.length - 1) == "\n" ? ind : "") + "</" + name + ">";
+                }
+            } else {
+                xml += ind + "<" + name + ">" + v.toString() + "</" + name + ">";
+            }
+            return xml;
+        }, xml = "";
+        for (var m in o)
+            xml += toXml(o[m], m, "");
+        return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
+    }
+
+</script>
+</body>
+</html>

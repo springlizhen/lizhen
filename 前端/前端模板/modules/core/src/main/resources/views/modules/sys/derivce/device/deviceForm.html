@@ -1,0 +1,512 @@
+<% layout('/layouts/default.html', {title: '设施设备管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> 设施设备管理
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${device}" action="${ctx}/sys/device/save" method="post" class="form-horizontal">
+		<#form:hidden name="id" value="${device!=null?device.id:''}"/>
+		<#form:hidden id="deviceCgqTypeName" value="${device!=null?device.cgqTypeName:''}"/>
+		<#form:hidden id="sfjx" value="0"/>
+
+		<#form:hidden id="zk" value="${device}"/>
+		<div class="box-body">
+			<div class="form-unit">${text('公共信息')}</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4">${text('所属分组')}：</label>
+						<div class="col-sm-8">
+							<#form:treeselect id="parent" title="${text('所属分组')}"
+							name="deviceClass" value="${device!=null?device.deviceClass:deviceClass}" defaultValue="0" labelValue="${device!=null?device.deviceClassName:deviceClassName}" labelName="deviceClassName"
+							url="${ctx}/sys/derviceOffice/treeData"
+							class="" allowClear="true" canSelectRoot="true" canSelectParent="true" callbackFuncName="treeselectchange"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('排序号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="sort" value="${device!=null?device.sort}" maxlength="8" class="form-control required digits"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('设施设备代码')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:hidden name="isNewRecord" value="${device!=null?device.isNewRecord}"/>
+							<#form:input name="deviceCode" maxlength="200" value="${device!=null?device.deviceCode:''}" readonly="${device!=null?!device.isNewRecord}" class="form-control required abc"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('设施设备名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="deviceName" value="${device!=null?device.deviceName}" maxlength="200" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('设施设备简称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="deviceShortName" value="${device!=null?device.deviceShortName}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('所属设施设备')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect id="deviceRelegation" title="${text('所属设备')}"
+							name="deviceRelegation" value="${device!=null?device.deviceRelegation:''}" defaultValue="0" labelValue="${device!=null?device.deviceRelegationName:''}" labelName="deviceRelegationName"
+							url="${ctx}/sys/device/treeData?ctrlPermi=2&excludeCode=${device!=null?device.id:''}" canSelectRoot="true" canSelectParent="true" checkFuncName="switchCorpSelectCallback" callbackFuncName="switchCorpSelectCallbackFun" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('所属机构')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect title="${text('所属机构')}"
+							name="orgId" value="${device!=null?device.orgId:orgId}" defaultValue="0" labelValue="${device!=null?device.orgIdName:orgIdName}" labelName="orgIdName"
+							url="${ctx}/sys/office/treeData?ctrlPermi=2" class="required" allowClear="false"
+							canSelectRoot="true" canSelectParent="true"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required">*</span> ${text('所在地区划代码')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect title="${text('区划代码列表')}"
+							name="areaCode" value="${device!=null?device.areaCode}" defaultValue="0" labelValue="${device!=null?device.areaName}" labelName="areaName"
+							url="${ctx}/area/treeData"
+							allowClear="true"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('参控状态')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="ctlStatus" value="${device!=null?device.ctlStatus}" items="${sys_device_ctl}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('启用状态')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="useStatus" value="${device!=null?device.useStatus}" items="${sys_device_use}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<!--<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('设施设备类型')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="typeDicId" value="${device!=null?device.typeDicId}" items="${device_type}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>-->
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('是否传感器')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select id="cgqStatus" name="cgqStatus" value="${device!=null?device.cgqStatus}" items="${device_cgq}" itemLabel="dictValue" itemValue="dictCode" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 cgqms">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							传感器类型：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect title="${text('传感器类型')}" id="cgqType" name="cgqType"
+							value="${device!=null?device.cgqType:''}" defaultValue="0" labelName="cgqTypeName"
+							labelValue="${device!=null?device.cgqTypeName:''}" url="${ctx}/sys/sensorType/treeData"
+							allowClear="true" canSelectRoot="true" canSelectParent="true" />
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 cgqms">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span id="cgqValueText">传感器初始值（X轴）</span>：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="cgqValue" value="${device!=null?device.cgqValue}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 cgqmsyz">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							传感器初始值（Y轴）：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="cgqValueYz" value="${device!=null?device.cgqValueYz}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 cgqms">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('传感器观测点编号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="cgqGcdCode" value="${device!=null?device.cgqGcdCode}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 cgqms">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('传感器基准点编号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="cgqCode" value="${device!=null?device.cgqCode}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('坐标')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="devicePosition" value="${device!=null?device.devicePosition:''}" rows="4" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('调度单元')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="schUnit" value="${device!=null?device.schUnit}" items="${office_unit}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<div class="row cgqms" name="cgqms">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('初始值')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="cgqValue" value="${device!=null?device.cgqValue}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('基准点编号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="cgqCode" value="${device!=null?device.cgqCode}" maxlength="200" class="form-control "/>
+						</div>
+					</div>
+				</div>
+			</div>-->
+
+			<input type="hidden" id="dicParams" name="dicParams">
+			<% for(c in field){ %>
+			<div class="form-unit">${text(c.dictLabel)}</div>
+			<div class="row" id='field_${c.dictValue}' addform="field"></div>
+			<%}%>
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-sm btn-primary" id="btnSubmit" onclick="{
+						$('#sfjx').val(0);$('#inputForm').submit();
+					}"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<%if(device!=null?device.isNewRecord:true){%>
+					<button type="button" class="btn btn-sm btn-primary" id="btnzdy" onclick="{
+						$('#sfjx').val(1);$('#inputForm').submit();
+					}"><i class="fa fa-check"></i> ${text('保存继续添加')}</button>&nbsp;
+					<%}%>
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+</div>
+<% } %>
+<script>
+
+	/**
+	 * 选择回调方法
+	 * @param id  标签的id
+	 * @param act 动作事件：ok、clear、cancel
+	 * @param index layer的索引号
+	 * @param layero layer内容的jQuery对象
+	 * @param nodes 当前选择的树节点数组
+	 */
+	function treeselectCallback(id, act, index, layero, nodes){
+		if (id == 'cgqType' && (act == 'ok' || act == 'clear')){
+			if (act == 'ok') {
+				var cgqTypeName = nodes[0].name;
+				if (cgqTypeName == '水平') {
+					$('.cgqmsyz').show();
+					$('#cgqValueText').html('传感器初始值（X轴）');
+				} else {
+					$('.cgqmsyz').hide();
+					$('#cgqValueText').html('传感器初始值');
+				}
+				$('#deviceCgqTypeName').val(cgqTypeName);
+			} else if (act == 'clear') {
+				$('.cgqmsyz').hide();
+				$('#deviceCgqTypeName').val('');
+				$('#cgqValueText').html('传感器初始值');
+			}
+		}
+	}
+
+	$("#cgqStatus").on("change",function(e){
+		var sv = $("#cgqStatus").val();
+		if(sv=="是"){
+			$('.cgqms').show();
+			if ($('#deviceCgqTypeName').val() == '水平') {
+				$('.cgqmsyz').show();
+				$('#cgqValueText').html('传感器初始值（X轴）');
+			} else {
+				$('.cgqmsyz').hide();
+				$('#cgqValueText').html('传感器初始值');
+			}
+		}else{
+			$('.cgqms').hide();
+			$('.cgqmsyz').hide();
+			$('#cgqValueText').html('传感器初始值');
+		}
+	})
+	$(function () {
+
+		<%if(deviceClass!=null){%>
+			ajaxadd('${deviceClass}');
+		<%}%>
+		var sv = $("#cgqStatus").val();
+		if(sv=="是"){
+			$('.cgqms').show();
+			if ($('#deviceCgqTypeName').val() == '水平') {
+				$('.cgqmsyz').show();
+				$('#cgqValueText').html('传感器初始值（X轴）');
+			} else {
+				$('.cgqmsyz').hide();
+				$('#cgqValueText').html('传感器初始值');
+			}
+		}else{
+			$('.cgqms').hide();
+			$('.cgqmsyz').hide();
+		}
+
+		var div = $('div[addform="field"]');
+		if(div.html()==''){
+			$(div).prev().hide();
+			$(div).hide();
+		}
+
+
+		if("${device!=null?device.deviceClass:''}"){
+			ajaxadd("${device!=null?device.deviceClass:''}");
+			$.ajax({
+				type: 'GET',
+				url: "${ctx}/sys/device/paramValus?id=${device!=null?device.id}",
+				async: false,
+				error: function (data) {
+					js.showErrorMessage(data.responseText);
+				},
+				success: function (data) {
+					if(data)
+					JSON.parse(data).forEach(v=>{
+						console.log(v);
+						$('#'+v.codeId).val(v.value1).trigger("change");;
+					});
+				}});
+
+		}
+	})
+    $("#inputForm").validate({
+        submitHandler: function(form){
+			var map = {};
+			$('*[dataParam="paramValue"]').each(function () {
+				var key = $(this).attr("id");
+				var val = $(this).val();
+				map[key]=val;
+			})
+			$('#dicParams').val(JSON.stringify(map));
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+					// var frameId = window.frameElement && window.frameElement.id || '';
+					// frameId = frameId.substr(0,frameId.length-6);
+					// var id =$(window.parent.$('#'+frameId).prev()).attr('id')+"-frame";
+					console.log($('#deviceRelegationCode').val());
+					if($('#sfjx').val()==0){
+						js.closeCurrentTabPage(function(contentWindow){
+							contentWindow.messagess('${device!=null?device.id:""}',$('#deviceRelegationCode').val());
+						});
+					}else{
+						$('#id').val('');
+					}
+                }
+            }, "json");
+        }
+    });
+	function treeselectchange(id, act, index, layero, nodes){
+		if (id == 'parent' && (act == 'ok')){
+			log(nodes[0].id);  // 选择的节点数据
+			ajaxadd(nodes[0].id);
+		}
+	}
+	function switchCorpSelectCallbackFun(id, act, index, layero, nodes){
+		if(act=="ok")
+		$.ajax({
+			type: 'GET',
+			url: "${ctx}/sys/device/deviceMessage?id=" + nodes[0].id,
+			async: false,
+			error: function (data) {
+				js.showErrorMessage(data.responseText);
+			},
+			success: function (data) {
+				if(data&&data!=""){
+					var datas = JSON.parse(data);
+					if($('#parentName').val()==""){
+						$('#parentName').val(datas.deviceClassName);
+					}
+					if($('#parentCode').val()=="") {
+						$('#parentCode').val(datas.deviceClass);
+						if(datas.deviceClass&&datas.deviceClass!=""){
+							ajaxadd(datas.deviceClass);
+						}
+					}
+					if($('#sort').val()=="") {
+						$('#sort').val(datas.sort);
+					}
+					if($('#orgIdName').val()=="") {
+						$('#orgIdName').val(datas.orgIdName);
+					}
+					if($('#orgIdCode').val()=="") {
+						$('#orgIdCode').val(datas.orgId);
+					}
+					if($('#devicePosition').val()=="") {
+						$('#devicePosition').val(datas.devicePosition);
+					}
+					if($('#ctlStatus').val()=="") {
+						$("#ctlStatus").val(datas.ctlStatus).trigger("change");
+					}
+					if($('#useStatus').val()=="") {
+						$("#useStatus").val(datas.useStatus).trigger("change");
+					}
+					if($('#schUnit').val()=="") {
+						$("#schUnit").val(datas.schUnit).trigger("change");
+					}
+				}
+			}
+		});
+	}
+	function switchCorpSelectCallback(id, nodes){
+		console.log(nodes[0].titleStatus);
+		// if (nodes[0].titleStatus == '0'){
+		// 	return true;
+		// }
+		return false;
+	}
+	function ajaxadd(id) {
+		var div = $('div[addform="field"]');
+		console.info(2342342)
+		console.info(div)
+
+		if(div.html()==''){
+			$(div).prev().hide();
+			$(div).hide();
+		}
+		$.ajax({
+			type: 'GET',
+			url: "${ctx}/sys/field/findAll?fieldGroup=" + id,
+			async: false,
+			error: function (data) {
+				js.showErrorMessage(data.responseText);
+			},
+			success: function (data) {
+				$('div[addform="field"]').children().remove();
+				var i = 0;
+				JSON.parse(data).forEach(v=>{
+					var string = '';
+					string += '<div class="col-xs-6" '+(v.status=='1'?'hidden':'')+'>';
+					string += '<div class="form-group">';
+					string += '<label class="control-label col-sm-4" title="">';
+					string += (v.status!='1'&&v.fieldRequired=='1'?'<span class="required">*</span> ':'')+v.fieldName+(v.fieldUnit?'('+v.fieldUnit+')':'')+'：<i class="fa icon-question hide"></i></label>';
+					string += '<div class="col-sm-8">';
+					switch (v.fieldType) {
+						case 'int':
+							string += '<input id="'+v.id+'" dataParam="paramValue" name="paramValue'+i+'" dataFormat="number" value=""  maxlength="20" class="form-control digits '+(v.status!='1'&&v.fieldRequired=='1'?'required':'')+'"/>';
+							break;
+						case 'double':
+							string += '<input id="'+v.id+'" dataParam="paramValue" name="paramValue'+i+'" dataFormat="number" value="" maxlength="20" class="form-control number '+(v.status!='1'&&v.fieldRequired=='1'?'required':'')+'"/>';
+							break;
+						case  'dic':
+							console.log(v);
+							$.ajax({
+								type: 'GET',
+								url: "${ctx}/sys/device/dic?dickey=" + v.fieldDicBind,
+								async: false,
+								error: function (data) {
+									js.showErrorMessage(data.responseText);
+								},
+								success: function (data) {
+									string += '<select class="js-example-basic-single '+(v.status!='1'&&v.fieldRequired=='1'?'required':'')+'" dataParam="paramValue" id="'+v.id+'" name="paramValue'+i+'">';
+									JSON.parse(data).forEach(d=>{
+										string += '<option value="'+d.dictValue+'">'+d.dictLabel+'</option>';
+									});
+									string += '</select>';
+								}});
+							break;
+						default:
+							string += '<input id="'+v.id+'" name="paramValue'+i+'" dataParam="paramValue"  value="" maxlength="255" class="form-control '+(v.status!='1'&&v.fieldRequired=='1'?'required':'')+'"/>';
+							break;
+					}
+					string += '<div class="col-sm-8">';
+					string += '</div></div></div>';
+					$('#field_'+v.fieldClass).append(string);
+					$('#field_'+v.fieldClass).prev().show();
+					$('#field_'+v.fieldClass).show();
+					$(".js-example-basic-single").select2();
+					i++;
+				});
+			}
+		})
+	}
+</script>

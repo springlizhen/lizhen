@@ -1,0 +1,84 @@
+<% layout('/layouts/default.html', {title: '用户管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="row">
+                <div class="col-xs-12 pull-left">
+                    <div class="form-group col-xs-10">
+                        <label class="control-label col-sm-4" title="">
+                            ${text('选择数据表')} ： <i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-6">
+                            <select onchange="showDataList()" name="tbId" id="tbName" class="form-control required">
+                                <option value="">请选择</option>
+                                <% if(tbs != null) {
+                                    for(tb in tbs) {
+                                %>
+                                <option value="${tb.tbName}" >${tb.comments}</option>
+                                <% }} %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <a id="addData" href="" class="btn btn-default btnTool"
+                           title="${text('新增数据')}"><i class="fa fa-plus"></i> ${text('新增数据')}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/db/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}"
+            data-order-by="${parameter.orderBy}">
+
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+<% } %>
+<script>
+    function showDataList() {
+        var dbId = '${dbId}';
+        var tbName = $('#tbName  option:selected').val();
+        document.getElementById('addData').href = "${ctx}/basic/form?dbId=" + dbId + "&tbName=" + tbName;
+        document.getElementById('searchForm').action = "${ctx}/basic/listData?dbId=" + dbId + "&tbName=" + tbName;
+        $.ajax({
+            url: '${ctx}/basic/cols?dbId=' + dbId + '&tbName=' + tbName,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+
+                $('#dataGrid').jqGrid('GridUnload');
+                var dataList = [];
+                for (var i = 0; i < data.length; i++) {
+                    dataList.push({header: data[i].comments, name: data[i].name.toLowerCase(), index: data[i].name, width: 200, align: "center",sortable:false});
+                }
+                dataList.push({
+                    header: '${text("操作")}',
+                    name: 'action',
+                    width: 120,
+                    sortable: false,
+                    title: false,
+                    align: "center",
+                    formatter: function (val, obj, row, act) {
+                        var actions = [];
+                        actions.push('<a href="${ctx}/basic/form?dbId='+dbId+'&tbName='+tbName+'&id=' + row.id + '" class="btnList" title="${text("编辑")}">编辑</a>&nbsp;&nbsp;');
+                        actions.push('<a href="${ctx}/basic/del?dbId='+dbId+'&tbName='+tbName+'&id=' + row.id + '" class="btnList" title="${text("删除")}" data-confirm="${text("确认要删除该数据吗？")}">删除</a>&nbsp;&nbsp;');
+                        return actions.join('');
+                    }
+                });
+                $('#dataGrid').dataGrid({
+                    searchForm: $("#searchForm"),
+                    columnModel: dataList,
+                    shrinkToFit:false,
+                    autoGridWidth: true,
+                    // 加载成功后执行事件
+                    ajaxSuccess: function (data) {
+
+                    }
+                });
+            }
+        });
+    }
+</script>

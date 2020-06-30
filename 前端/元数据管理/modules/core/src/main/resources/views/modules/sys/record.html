@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人中心</title>
+<link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+<script src="${ctxStatic}/js/jquery.min.js"></script>
+</head>
+<style>
+	.text-length{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>
+<body class="sjmlBg">
+		<div class="topBoxBgColor">
+			<div class="logoBox">
+				<img src="${ctxStatic}/img/logo2.png">
+			</div>
+			<div class="searchBox">
+				<!--<input type="text">
+					<a href="">
+						<img src="${ctxStatic}/img/ss_icon.png">
+					</a>-->
+			</div>
+		</div>
+		<div class="navBox">
+			<div class="navConter">
+				<a href="${ctx}/index"><div class="navList">首页</div></a>
+				<a href="${ctx}/sjml/index"><div class="navList">数据目录</div></a>
+				<a href="${ctx}/sjfw/index"><div class="navList">数据服务</div></a>
+				<a href="${ctx}/daml/index"><div class="navList">档案目录</div></a>
+				<a href="${ctx}/service/record">
+					<div class="navList active">个人中心</div>
+				</a>
+			</div>
+		</div>
+	<div class="contentBox">
+		<div class="conBox" style="padding-bottom:0px;height: 680px;">
+			<div class="sjjTit">当前用户： ${user.userName}</div>
+			<div>
+				<table id="dataList" style="margin-left: 200px">
+					<tr>
+						<th style="width: 100px;text-align: center">序号</th>
+						<th style="width: 200px">服务名称</th>
+						<th style="width: 200px">服务类型</th>
+						<th style="width: 200px">申请时间</th>
+						<th style="width: 200px">审核状态</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="bottomBox">
+		©胶东调水数据资源共享平台
+	</div>
+</body>
+<script>
+	$.ajax({
+		type: 'GET',
+		url: '${ctx}/service/recordList',
+		dataType: 'json',
+		async: false,
+		error: function(data){
+			js.showErrorMessage(data.responseText);
+		},
+		success: function(data, status, xhr) {
+			if (data != null) {
+				var box = $('#dataList');
+				for (var i=0;i<data.length;i++){
+					var type = data[i].type;
+					var typeName = '';
+					if (type == 'this') {
+						typeName = '本地数据服务';
+					} else if  (type == 'other') {
+						typeName = '第三方服务';
+					} else if (type == 'file') {
+						typeName = '档案服务';
+					}
+					box.append('<tr>\n' +
+							'\t\t\t\t\t\t<td style="text-align: center">'+(i+1)+'</td>\n' +
+							'\t\t\t\t\t\t<td style="text-align: center">'+data[i].name+'</td>\n' +
+							'\t\t\t\t\t\t<td style="text-align: center">'+typeName+'</td>\n' +
+							'\t\t\t\t\t\t<td style="text-align: center">'+data[i].createDate+'</td>\n' +
+							'\t\t\t\t\t\t<td style="text-align: center">'+data[i].status+'</td>\n' +
+							'\t\t\t\t\t</tr>');
+				}
+			}
+		}
+	});
+</script>
+</html>

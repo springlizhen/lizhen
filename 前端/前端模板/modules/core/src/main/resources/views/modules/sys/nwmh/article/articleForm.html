@@ -1,0 +1,120 @@
+<% layout('/layouts/default.html', {title: '文章管理', libs: ['validate','fileupload','ueditor','dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-people"></i> ${text(article == null ? '新增文章' : '编辑文章')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" action="${ctx}/sys/nwmh/article/save" method="post" class="form-horizontal">
+		<#form:hidden name="op" value="${op}"/>
+		<#form:hidden name="articleCode" value="${article!=null ? article.articleCode : uuid}"/>
+		<#form:hidden name="isNewRecord" value="${article!=null ? article.isNewRecord}"/>
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4"><span class="required">*</span>文章标题：</label>
+						<div class="col-sm-8">
+							<#form:input path="articleTitle" value="${article!=null?article.articleTitle:''}" maxlength="50" class="form-control required" />
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4"><span class="required">*</span>文章分类：</label>
+						<div class="col-sm-8">
+							<#form:treeselect id="parent" title="文章分类"
+							path="articleCategory.categoryCode" value="${article!=null?article.articleCategory.categoryCode:''}" name="articleCategoryCode" defaultValue="" labelValue="${article!=null?article.articleCategory.categoryName:''}" labelName="treeNames"
+							url="${ctx}/sys/nwmh/articleCategory/treeData?id=${article!=null?article.articleCategory.categoryCode:''}"
+							class="form-control required" allowClear="true" canSelectRoot="false" canSelectParent="false"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4"><span class="required">*</span>发布时间：</label>
+						<div class="col-sm-8">
+							<#form:input name="articleDate" readonly="true" maxlength="20" class="form-control Wdate required"
+							value="${article!=null?article.articleDate:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4"><span class="required">*</span>可见：</label>
+						<div class="col-sm-8">
+							<#form:radio path="isShow" value="${article!=null?article.isShow:''}" items="${isShow}" itemLabel="name" itemValue="code" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4"><span class="required">*</span>是否首页轮播：</label>
+						<div class="col-sm-8">
+							<#form:radio path="isIndexCarousel" value="${article!=null?article.isIndexCarousel:''}" items="${isIndexCarousel}" itemLabel="name" itemValue="code" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2">展示图片：</label>
+						<div class="col-sm-10">
+							<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+									src="${ctx}/nwmh/upload/list?pid=${article!=null?article.id:uuid}&readOnly=0"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-unit">${text('详细信息')}</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required">*</span>文章内容：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:ueditor path="articleContent" value="${article!=null?article.articleContent:''}"
+							maxlength="10000" height="200" class="form-control required" simpleToolbars="true" readonly="false" outline="false"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" onclick="save()" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+</div>
+<% } %>
+<script>
+
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+
+</script>

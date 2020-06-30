@@ -1,0 +1,167 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<%
+				if(db==null) {
+				%>
+				<i class="fa icon-speech"></i>  ${text('数据库新增')}
+				<%
+				} else {
+				%>
+				<i class="fa icon-speech"></i>  ${text('数据库编辑')}
+				<%
+				}
+				%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${db}" action="${ctx}/db/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="col-xs-offset-0">
+							<#form:hidden name="id" maxlength="100" class="form-control" value="${db!=null?db.id:''}"/>
+							<#form:hidden name="createBy" maxlength="100" class="form-control" value="${db!=null?db.createBy:''}"/>
+							<#form:hidden name="updateBy" maxlength="100" class="form-control" value="${db!=null?db.updateBy:''}"/>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库名称')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" value="${db!=null?db.name:''}" maxlength="50" class="form-control required "/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input readonly="true" name="type" maxlength="100" class="form-control required" value="${db!=null?db.type:'oracle'}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('连接协议')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="connPro" value="${db!=null?db.connPro:'JDBC'}" maxlength="50" class="form-control" readonly="true"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="address" value="${db!=null?db.address:''}" maxlength="50" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库描述')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="describe" value="${db!=null?db.describe:''}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('服务名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="serviceName" value="${db!=null?db.serviceName:'orcl'}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('访问用户名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dbUser" value="${db!=null?db.dbUser:''}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('访问密码')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="dbPwd" value="${db!=null?db.dbPwd:''}" maxlength="100" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('备注信息')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" value="${db!=null?db.remarks:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('数据库类别')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="category" value="${db!=null?db.category:''}" maxlength="50" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>-->
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<% if(db==null) {%>
+						<button type="button" onclick="checkDbConnent()" class="btn btn-sm btn-primary" id="btnTest">${text('测试连接')}</button>&nbsp;
+						<% }%>
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+function checkDbConnent() {
+	var host=document.getElementById("address").value;
+	var user=''+ document.getElementById("dbUser").value;
+	var pwd=document.getElementById("dbPwd").value;
+	var serviceName=document.getElementById("serviceName").value;
+	$.ajax({
+		url: '${ctx}/db/check',
+		type: 'GET',
+		data:{address:host, user:user, pwd:pwd, serviceName:serviceName},
+		dataType: 'json',
+		success: function (data) {
+			alert(data.message);
+		}
+	});
+}
+</script>

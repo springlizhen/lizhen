@@ -1,0 +1,45 @@
+<% layout('/layouts/default.html', {title: '', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('变更信息')}
+			</div>
+
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${comm}" action="${ctx}/contract/listUpdate" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<input type="hidden" name="id" value="${comm}"/>
+
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("合同编码")}', name:'contractCode', index:'id', width:100, align:"left", frozen:true, formatter: function(val, obj, row, act){
+				return '<a href="http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId='+row.workId+'&trackId='+row.trackId+'&subjection='+row.subjection+'" target="_blank"  data-title="${text("编辑消息")}">'
+						+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');
+		}},
+		{header:'${text("合同类型")}', name:'contractType', index:'a.contractType', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同标题")}', name:'title', index:'title', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同金额")}', name:'money', index:'a.money', width:150, fixed:true, align:"center"},
+		{header:'${text("合同对象")}', name:'contractObject', index:'contractObject', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同跟进人")}', name:'follow', index:'a.follow', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同客户")}', name:'customer', index:'customer', width:150, fixed:true, align:"center"},
+
+	],
+
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

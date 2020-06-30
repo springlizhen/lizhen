@@ -1,0 +1,36 @@
+<% layout('/layouts/default.html', {title: '合同作废待办', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i> ${text('合同作废待办')}
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" model="${oa}" action="${ctx}/oa/listDataDelete" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("标题")}', name:'title', index:'a.title', width:150, align:"left", sortableColumn:false, frozen:true, formatter: function(val, obj, row, act){
+                    return '<a href="http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId='+row.workId+'&trackId='+row.trackId+'&subjection='+row.subjectionId+'" target="_blank">'+(val||row.id)+'</a>';
+                }},
+            {header:'${text("流程名称")}', name:'flowName', index:'flowName', width:150, sortableColumn:false, align:"left"},
+            {header:'${text("发送人")}', name:'sendUserName', index:'sendUserName', width:150, sortableColumn:false, align:"left"},
+            {header:'${text("发送时间")}', name:'sendTime', index:'sendTime', width:150, sortableColumn:false, align:"left"}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+            // console.log(data);
+        }
+    });
+</script>

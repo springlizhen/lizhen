@@ -1,0 +1,483 @@
+<% layout('/layouts/default.html', {title: '计划管理', libs: ['validate','ueditor','dataGrid']}){ %>
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/file/css/webuploader.css">
+<style>
+	.file{
+		position: relative;
+		padding: 15px;
+		border: 1px solid #dde1e8;
+		border-radius: 4px;
+		height: 100px;
+	}
+	.colfile{
+		background-color: #fdfdfd;
+		box-shadow: inset 0 3px 30px rgba(0,0,0,.03);
+		text-align: center;
+		line-height: 5;
+		color: #DDE1E8;
+	}
+	.btn:hover{
+		color: white;
+		opacity: 0.6;
+	}
+	.btnheig{
+		height: 34px;
+		padding: 6px;
+	}
+</style>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> 计划管理
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${plan}" action="${ctx}/sys/plan/save" method="post" class="form-horizontal">
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('计划名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:hidden name="isNewRecord" id="isNewRecord" value="${plan!=null?plan.isNewRecord}"/>
+							<#form:hidden id="id" name="id" value="${plan!=null?plan.id}"/>
+							<#form:hidden id="planPepName" name="planPepName" value="${plan!=null?plan.planPepName}"/>
+							<#form:hidden id="planOffice" name="planOffice" value="${plan!=null?plan.planOffice}"/>
+							<#form:hidden id="planOfficeName" name="planOfficeName" value="${plan!=null?plan.planOfficeName}"/>
+							<#form:hidden id="planStatus" name="planStatus" value="${plan!=null?plan.planStatus}"/>
+							<#form:hidden id="stationId" name="stationId" value="${plan!=null?plan.stationId:stationId}"/>
+							<#form:hidden id="stationName" name="stationName" value="${plan!=null?plan.stationName:stationName}"/>
+							<#form:hidden id="planParentId" name="planParentId" value="${plan!=null?plan.planParentId:planParentId}"/>
+							<#form:hidden id="planParentName" name="planParentName" value="${plan!=null?plan.planParentName:planParentName}"/>
+							<#form:input name="planName" maxlength="50" value="${plan!=null?plan.planName}" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('计划编码')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="planCode" maxlength="20" value="${plan!=null?plan.planCode:''}" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('计划类型')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="planType" maxlength="50" value="${plan!=null?plan.planType}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('年度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="planYear" maxlength="50" value="${plan!=null?plan.planYear}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('计划说明')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:ueditor name="planMessage" value="${plan!=null?plan.planMessage}" maxlength="10000" height="200"
+							simpleToolbars="false" readonly="false" outline="false"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-unit">${text('项目预算')}</div>
+			<div class="row">
+				<div class="col-xs-12" id="gridAdd">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<div type="button" class="btn webuploader-pick btnheig" onclick="addGrid()">添加工程</div></label>
+							<div class="col-sm-10" id="gridAddNull">
+								<div id="uploadFileUploader" class="file colfile">
+									暂无工程，请添加工程
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+
+			<!--<#form:extend collapsed="true" />-->
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+	<#form:form id="searchForm2" action="${ctx}/sys/plan/listData" method="post" class="form-inline hide"
+	data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+	</#form:form>
+</div>
+</div>
+<% } %>
+<script>
+	var ids = [];
+	//工程数量
+	var gcmuinit = 0;
+	//工程dataGrid循环数量
+	var gcmu = 0;
+	$(function () {
+		var idv = $('#id').val();
+		if(idv){
+			$.ajax({
+				url: '${ctx}/sys/enginnering/findAll?planid='+idv,
+				type: 'get',
+				success: function (data) {
+					data = eval(data);
+					gcmuinit = data.length;
+					for (var i=0;i<data.length;i++){
+						ids.push(data[i].id);
+						gridmouth=data[i].id;
+						addGridTable(data[i].enginneringName);
+					}
+				}});
+		}
+	})
+	//是否保存按钮提交
+	var submitstatus = true;
+	var gridmouth = 1;
+	//新增工程弹出窗口
+	function addGrid() {
+        //多窗口模式，层叠置顶
+		var idv = $('#id').val();
+		if(idv){
+			layer.open({
+				type: 2 //此处以iframe举例
+				,title: '添加工程'
+				,area: ['390px', '282px']
+				,shade: 0
+				,maxmin: true
+				,content: '${ctx}/sys/enginnering/addPlanPro'
+				,btn: ['确定', '关闭'] //只是为了演示
+				,yes: function(index,layero){
+					debugger
+					//获取iframe的body元素
+					var body = layer.getChildFrame('body',index);
+					//得到iframe页的窗口对象
+					var iframeWin = window[layero.find('iframe')[0]['name']];
+					//执行iframe页的showMsg方法
+					var ny = iframeWin.showMsg();
+					if(!ny.split(",")[0]){
+						iframeWin.$('#proName-error').show();
+					}
+					if(!ny.split(",")[1]){
+						iframeWin.$('#planType-error').show();
+					}
+					if(ny.split(",")[0]&&ny.split(",")[1]){
+						layer.close(); //此处只是为了演示，实际使用可以剔除
+						$.ajax({
+							url: '${ctx}/sys/enginnering/save',
+							data : {
+								enginneringName: ny.split(",")[0],
+								enginneringType: ny.split(",")[1],
+								enginneringPlan: idv
+							},
+							dataType : "json",
+							type: 'post',
+							success: function (data) {
+								gridmouth = data.message;
+								addGridTable(ny.split(",")[0]);
+							}});
+					}else{
+						return false;
+					}
+				}
+				,btn2: function(){
+					layer.close();
+				}
+				,zIndex: layer.zIndex //重点1
+				,success: function(layero){
+					layer.setTop(layero); //重点2
+				}
+			});
+        }else{
+			js.confirm('添加项目将会保存计划，是否继续？', function(data){
+				submitstatus = false;
+				$("#inputForm").submit();
+			});
+		}
+    }
+    //新增工程
+    function addGridTable(name) {
+        var gridpl = $('#gridAdd');
+        $('#gridAddNull').remove();
+        $(gridpl).append('<div class="form-group">\n' +
+            '\t\t\t\t\t\t<label class="control-label col-sm-2" title="">\n' +
+            '\t\t\t\t\t\t\t</label>\n' +
+            '\t\t\t\t\t\t<div class="col-sm-10">\n' +
+            '\t\t\t\t\t\t\t<div class="file" style="height: 100%;">\n' +
+            '\t\t\t\t\t\t\t\t<div style="font-weight: 900;margin-bottom: 10px;">\n' +
+            '\t\t\t\t\t\t\t\t\t工程名称：'+name+'\n' +
+            '\t\t\t\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t\t\t\t<div type="button" id="AddRowBtn'+gridmouth+'" onclick="addGridData(\''+gridmouth+'\')" class="btn webuploader-pick btnheig" style="margin-bottom: 10px;">添加项目</div>\n' +
+            '\t\t\t\t\t\t\t\t\t<table id="dataGrid'+gridmouth+'"></table>\n' +
+            '\t\t\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t</div>');
+        gridInit(gridmouth);
+    }
+    //新增项目
+    function addGridData(mouth) {
+        //多窗口模式，层叠置顶
+		layer.open({
+			type: 2,
+			maxmin: true,
+			shadeClose: false
+            ,title: '添加项目'
+            ,area: ['590px', '482px']
+            ,shade: 0
+            ,content: '${ctx}/sys/project/addPlanItem'
+            ,btn: ['确定', '关闭'] //只是为了演示
+            ,yes: function(index,layero){
+				debugger
+                //获取iframe的body元素
+                var body = layer.getChildFrame('body',index);
+                //得到iframe页的窗口对象
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                //获取iframe页的data方法
+                var ny = iframeWin.getdataSelectTree();
+                //项目类型名称和值
+                var ntype = iframeWin.getType();
+                console.log(ntype);
+				if(!ntype){
+					iframeWin.getTypeShow();
+					return false;
+				}
+				ntype = ntype.split(",");
+				console.log(ntype[2]);
+				debugger
+				if(ntype[2]==''){
+					iframeWin.getOrgShow();
+					return false;
+				}else{
+					var dataRow = [];
+					if(ny.length>0) {
+						layer.close(); //此处只是为了演示，实际使用可以剔除
+						for (var i = 0; i < ny.length; i++) {
+							var name = ny[i].name;
+							$.ajax({
+								url: '${ctx}/sys/project/save',
+								data: {
+									enginneringId: mouth,
+									projectName: name,
+									projectType: ntype[1],
+									projectTypeName: ntype[0],
+									orgId: ntype[2]
+								},
+								async: false,
+								dataType: "json",
+								type: 'post',
+								success: function (data) {
+									dataRow.push({
+										id: data.message,
+										projectTypeName: ntype[0],
+										projectType: ntype[1],
+										projectName: name,
+										enginneringId: mouth
+									});
+								}
+							});
+						}
+						addGridDataInit(dataRow, mouth);
+					}else{
+						js.showErrorMessage("请选择养护对象！");
+						return false;
+					}
+				}
+            }
+            ,btn2: function(){
+				layer.close();
+            }
+            ,zIndex: layer.zIndex //重点1
+            ,success: function(layero){
+				layer.setTop(layero); //重点2
+            }
+        });
+    }
+    //新增项目初始化
+    function addGridDataInit(dataRow,mouth) {
+        $("#dataGrid"+mouth).jqGrid("addRowData", "id", dataRow, "last");
+    }
+    //新工程初始化
+    function gridInit(mouth) {
+        // 初始化DataGrid对象
+        $('#dataGrid'+gridmouth).dataGrid({
+            url: "${ctx}/sys/project/listData?enginneringId="+gridmouth,
+            // searchForm: $("#searchForm2"),
+            autoGridHeight: false,
+            columnModel: [
+                {header:'${text("工程类型")}', name:'projectType', width:150, align:"center", formatter: function (val, obj, row, act) {
+                        return "<input type='hidden' name='projectType' value='"+row.projectType+"'/><input type='hidden' name='projectTypeName' value='"+row.projectTypeName+"'/>"+row.projectTypeName;
+                    }},
+                {header:'${text("名称")}', name:'projectName',  width:150, align:"center", formatter: function (val, obj, row, act) {
+                        return "<input type='hidden' name='enginneringId' value='"+row.enginneringId+"'/><input type=\"text\" name=\"projectName\" value=\""+val+"\" maxlength=\"50\" class=\"form-control\" aria-required=\"true\" aria-invalid=\"false\">";
+                    }},
+                {header:'${text("单位")}', name:'projectUnit',  width:150, align:"center"/*,editable:true*/, formatter: function (val, obj, row, act) {
+                        return "<input type=\"text\" name=\"projectUnit\" value=\""+(val?val:"")+"\" maxlength=\"50\" class=\"form-control\" aria-required=\"true\" aria-invalid=\"false\">";
+                    }},
+                {header:'${text("单价")}', name:'projectPrice',  width: 80, align:"center", formatter: function (val, obj, row, act) {
+                        return "<input type=\"text\" price='"+row.id+"' onchange='priceAll(\""+row.id+"\")' name=\"projectPrice\" value=\""+(val?val:"")+"\" maxlength=\"50\" class=\"form-control\" min=\"0\" aria-required=\"true\" aria-invalid=\"false\">";
+                    }},
+                {header:'${text("数量")}', name:'projectQuantity',  width:80, align:"center", formatter: function (val, obj, row, act) {
+                        return "<input type=\"text\" price='"+row.id+"' onchange='priceAll(\""+row.id+"\")' name=\"projectQuantity\" value=\""+(val?val:"")+"\" maxlength=\"50\" class=\"form-control digits\" aria-required=\"true\" aria-invalid=\"false\">";
+                    }},
+                {header:'${text("合价")}', name:'projectPriceall',  width:80, align:"center", formatter: function (val, obj, row, act) {
+                        return "<input type=\"text\" price='"+row.id+"' name=\"projectPriceall\" value=\""+(val?val:"")+"\" maxlength=\"50\" class=\"form-control\" min=\"0\" aria-required=\"true\" aria-invalid=\"false\">";
+                    }},
+                {header:'${text("备注")}', name:'remarks',  width:120, align:"center", formatter: function (val, obj, row, act) {
+                        return "<input type=\"text\" name=\"remarks\" value=\""+(val?val:"")+"\" maxlength=\"50\" class=\"form-control\" aria-required=\"true\" aria-invalid=\"false\">";
+                    }},
+                {header:'${text("操作")}', name:'actions', width:100, sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+                        actions.push('<a href="javascript:;" onclick="saveProject(\''+row.id+'\',\''+mouth+'\')" title="${text("保存项目")}"><i class="fa fa-save"></i></a>&nbsp;');
+                        actions.push('<a href="${ctx}/sys/project/delete?id='+row.id+'" class="btnList" title="${text("删除项目")}" data-confirm="${text("确认要删除该项目吗？")}" data-deltreenode="'+row.id+'"><i class="fa fa-trash-o"></i></a>&nbsp;');
+                        return actions.join('');
+                    }}
+            ],
+			sortableColumn: false,
+            // editGrid: true,					// 是否是编辑表格
+            /*editGridInitRowNum: 1,				// 编辑表格的初始化新增行数
+            editGridInitAllRowEdit: true,		// 是否初始化就编辑所有行
+            editGridAddRowBtn: $("#AddRowBtn"+gridmouth),	// 子表增行按钮
+            editGridAddRowInitData: {},			// 新增行的时候初始化的数据（支持函数或对象）*/
+            showFooter: true,
+			complete: function(data){
+				// mopneyAllMouth(mouth);
+				mopneyAll(mouth);
+            }
+        });
+    }
+    //价格统计
+	function priceAll(id) {
+		var inputs = $('input[price='+id+']');
+		var price;
+		var quantity;
+		var priceall;
+		for(var i=0;i<inputs.length;i++){
+			var attr = $(inputs[i]).attr('name');
+			switch (attr) {
+				case 'projectPrice':
+					price = inputs[i];
+					break;
+				case 'projectQuantity':
+					quantity = inputs[i];
+					break;
+				case 'projectPriceall':
+					priceall = inputs[i];
+					break;
+			}
+		}
+		if($(price).val()&&$(quantity).val()){
+			$(priceall).val($(price).val()*$(quantity).val());
+		}
+	}
+    //小计添加
+    function mopneyAll(mouth) {
+		$('#dataGrid'+mouth).dataGrid("footerData", "set", {
+			//
+			'projectType': '<em>小计：&nbsp;</em>'
+		}, false);
+		//计数器累计
+		gcmu++;
+		console.log(gcmu,gcmuinit)
+		if(gcmu>=gcmuinit){
+			for (var i=0;i<ids.length;i++){
+				mopneyAllMouth(ids[i]);
+			}
+		}
+	}
+	//小计计算
+	function mopneyAllMouth(id) {
+		var datamoney = $('#dataGrid'+id).dataGrid('getRowData');
+		var money = 0;
+		for (var j=0;j<datamoney.length;j++){
+			//捕捉无projectPriceall参数异常问题，进行排除
+			try{
+				var mo = $(datamoney[j].projectPriceall).val();
+				if(mo)
+					money += parseFloat(mo);
+			}catch (e) {
+			}
+		}
+		var em = $('.footrow-ltr').find('td[aria-describedby="dataGrid'+id+'_projectPriceall"]');
+		$(em).html('￥ '+money+' &nbsp;');
+	}
+	//项目保存 f5b2f7d46e635e57016e63a9aafd000f
+    function saveProject(rowId,grid){
+		var input = $('#'+rowId).find('input');
+		var data = {};
+		data['id']=rowId;
+		for (var i=0;i<input.length;i++){
+			var name = $(input[i]).attr("name");
+			var val = $(input[i]).val();
+			if(val!="undefined")
+				data[name]=val;
+		}
+		$.ajax({
+			url: '${ctx}/sys/project/save',
+			data :data,
+			dataType : "json",
+			type: 'post',
+			success: function (data) {
+				js.showMessage('保存成功');
+				mopneyAll(grid);
+				$('#dataGrid'+grid).dataGrid('reloadGrid');
+			}});
+	}
+
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+            	if(submitstatus){
+					var datas = eval('(' + data.message+ ')');
+					js.showMessage(datas.messages);
+					if(data.result == Global.TRUE){
+						js.closeCurrentTabPage(function(contentWindow){
+							contentWindow.page();
+						});
+					}
+				}else{
+            		submitstatus = true;
+            		var datas = eval('(' + data.message+ ')');
+					js.showMessage(datas.messages);
+            		$('#id').val(datas.id);
+					$('#planPepName').val(datas.planPepName);
+					console.log(datas);
+					$('#planOffice').val(datas.planOffice);
+					$('#planOfficeName').val(datas.planOfficeName);
+					$('#planStatus').val(datas.planStatus);
+					$('#stationId').val(datas.stationId);
+					$('#stationName').val(datas.stationName);
+					$('#planParentId').val(datas.planParentId);
+					$('#planParentName').val(datas.planParentName);
+					$('#planName').val(datas.planName);
+					$('#isNewRecord').val(false);
+					addGrid();
+				}
+            }, "json");
+        }
+    });
+
+</script>

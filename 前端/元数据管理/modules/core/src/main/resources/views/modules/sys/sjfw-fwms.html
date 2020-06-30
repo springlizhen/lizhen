@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>数据服务-服务描述</title>
+<link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+	<link href="${ctxStatic}/css/layer.css" type="text/css" rel="stylesheet">
+
+	<script src="${ctxStatic}/js/jquery.min.js"></script>
+	<script src="${ctxStatic}/js/yyui.js"></script>
+	<script src="${ctxStatic}/js/layer.js"></script>
+</head>
+
+<body class="fwmsBg">
+	<div class="topBoxBgColor">
+		<div class="logoBox">
+			<img src="${ctxStatic}/img/logo2.png">
+		</div>
+		<div class="searchBox">
+			<!--				<input type="text">
+                            <a href="">
+                                <img src="${ctxStatic}/img/ss_icon.png">
+                            </a>-->
+		</div>
+	</div>
+	<div class="navBox">
+		<div class="navConter">
+			<a href="${ctx}/index"><div class="navList">首页</div></a>
+			<a href="${ctx}/sjml/index"><div class="navList">数据目录</div></a>
+			<a href="${ctx}/sjfw/index"><div class="navList active">数据服务</div></a>
+			<a href="${ctx}/daml/index"><div class="navList ">档案目录</div></a>
+			<a href="${ctx}/service/record"><div class="navList">个人中心</div></a>
+		</div>
+	</div>
+	<div class="sjfw_fwmsBox">
+		<div class="contentBox2">
+		<div class="xxTitBox">
+			<div class="fwInfoText">${object.name}</div>
+			<div class="sqfwBtn" onclick="applyService()" style="cursor: pointer">申请服务</div>
+			<div class="infoxBox">接口状态：${object.status}</div>
+			<div class="infoxBox">提供部门：${object.provider}</div>
+			<div class="infoxBox">服务简介：${object.sumup}</div>
+			<div class="infoxBox">调用次数：${object.callNum}&nbsp;&nbsp;&nbsp;&nbsp;应用连接数：${object.connNum}&nbsp;&nbsp;&nbsp;&nbsp;最近更新时间：${object.updateDate}</div>
+		</div>
+	</div>
+	<div class="xNav">
+		<div class="marginLeft active">服务描述</div>
+	</div>
+
+	<div class="gnsm">
+		<span></span><span class="textStyle">功能说明</span><br>
+		<div class="fwsm">${object.name}</div>
+	</div>
+	<div class="gnsm">
+		<span></span><span class="textStyle">调用说明 </span><br>
+		<div class="fwsm">${object.remarks}</div>
+        <div class="fwsm">${object.url}</div>
+	</div>
+	<div class="gnsm">
+		<span></span><span class="textStyle">请求参数</span><br>
+		<div class="fwsm">所有参数都需要进行URL编码，编码时请遵守RFC 1738</div>
+		<div class="fwsm">通用参数</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+		  <tbody id="typaram">
+			<tr>
+			  <th scope="col">参数名称</th>
+			  <th scope="col">是否必须</th>
+			  <th scope="col">类型</th>
+			  <th scope="col">描述</th>
+			</tr>
+
+		  </tbody>
+		</table>
+	</div>
+	<div class="gnsm">
+		<div class="fwsm">私有参数</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+		  <tbody id="syparam">
+			<tr>
+			  <th scope="col">参数名称</th>
+			  <th scope="col">是否必须</th>
+			  <th scope="col">类型</th>
+			  <th scope="col">描述</th>
+			</tr>
+
+		  </tbody>
+		</table>
+	</div>
+	<div class="gnsm">
+		<div class="fwsm">返回参数</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+		  <tbody>
+			<tr>
+			  <th scope="col">返回属性名称</th>
+			  <th scope="col">描述</th>
+			</tr>
+			<tr>
+			  <td colspan="2" style="text-align: center">无返回参数</td>
+			</tr>
+		  </tbody>
+		</table>
+	</div>
+	<div class="gnsm">
+		<div class="fwsm">测试用例</div>
+		<div class="zwStyle">暂无</div>
+<!--
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="csTab">
+		  <tbody>
+			<tr>
+			  <th scope="col">返回属性名称</th>
+			  <th scope="col">描述</th>
+			</tr>
+			<tr>
+			  <td>accexx</td>
+			  <td>XX</td>
+
+			</tr>
+			  <tr>
+			  <td>accexx</td>
+			  <td>XX</td>
+
+			</tr>
+		  </tbody>
+		</table>
+-->
+	</div>
+
+
+	
+	</div>
+	
+	
+	<div class="bottomBox">
+		©胶东调水数据资源共享平台
+	</div>
+</body>
+<script>
+
+	const resourceId = '${id}';
+	const name = '${object.name}';
+
+	function applyService() {
+		$.ajax({
+			type: 'POST',
+			url: "${ctx}/service/applyService",
+			dataType: 'json',
+			data: {
+				resourceId: resourceId,
+				name: name,
+				type: 'this'
+			},
+			async: false,
+			error: function(data){
+				console.log(data.responseText);
+			},
+			success: function(data) {
+				if (data.status) {
+					layer.open({title:"申请结果",content:data.message});
+				} else {
+					layer.open({title:"申请结果",content:data.message});
+				}
+			}
+		});
+	}
+
+    $.ajax({
+        type: 'GET',
+        url: "${ctx}/sjfw/paramAll?id=${id}",
+        dataType: 'json',
+        async: false,
+        error: function(data){
+            js.showErrorMessage(data.responseText);
+        },
+        success: function(data, status, xhr) {
+            console.log(data);
+            var typaram = $('#typaram');
+            var syparam = $('#syparam');
+            for (var i=0;i<data.length;i++){
+                if(data[i].type=='ty'){
+                    typaram.append('<tr>\n' +
+                        '\t\t\t  <td>'+data[i].name+'</td>\n' +
+                        '\t\t\t  <td>'+data[i].isNull+'</td>\n' +
+                        '\t\t\t  <td>'+data[i].type+'</td>\n' +
+                        '\t\t\t  <td>'+data[i].remarks+'</td>\n' +
+                        '\t\t\t</tr>');
+				}else if (data[i].type=='sy') {
+                    syparam.append('<tr>\n' +
+                        '\t\t\t  <td>'+data[i].name+'</td>\n' +
+                        '\t\t\t  <td>'+data[i].isNull+'</td>\n' +
+                        '\t\t\t  <td>'+data[i].type+'</td>\n' +
+                        '\t\t\t  <td>'+data[i].remarks+'</td>\n' +
+                        '\t\t\t</tr>');
+				}
+            }
+        }
+    });
+</script>
+</html>

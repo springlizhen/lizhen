@@ -1,0 +1,10 @@
+server:
+  port: 9902
+
+spring:
+  application:
+    name: chinags-admin
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.0.2.1:9900/eureka/,http://10.0.2.2:9900/eureka/

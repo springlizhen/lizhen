@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>档案目录-详情</title>
+<link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+    <link href="${ctxStatic}/css/layer.css" type="text/css" rel="stylesheet">
+
+    <script src="${ctxStatic}/js/jquery.min.js"></script>
+<script src="${ctxStatic}/js/layer.js"></script>
+</head>
+
+<body class="damuXq">
+		<div class="topBoxBgColor">
+			<div class="logoBox">
+				<img src="${ctxStatic}/img/logo2.png">
+			</div>
+			<div class="searchBox">
+                <!--				<input type="text">
+                                <a href="">
+                                    <img src="${ctxStatic}/img/ss_icon.png">
+                                </a>-->
+			</div>
+		</div>
+		<div class="navBox">
+			<div class="navConter">
+                <a href="${ctx}/index"><div class="navList">首页</div></a>
+                <a href="${ctx}/sjml/index"><div class="navList">数据目录</div></a>
+                <a href="${ctx}/sjfw/index"><div class="navList">数据服务</div></a>
+                <a href="${ctx}/daml/index"><div class="navList active">档案目录</div></a>
+                <a href="${ctx}/service/record"><div class="navList">个人中心</div></a>
+			</div>
+			
+		</div>
+
+<div class="TabBox">
+  <div class="jbxxStyle">${object.name}</div>
+	<table width="100%" border="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <th scope="row" class="TabTh">档案类型</th>
+      <td class="TabTd">${object.type}</td>
+      <td class="TabTh">案卷号</td>
+      <td class="TabTd">${object.fileNo}</td>
+    </tr>
+	   <tr>
+      <th scope="row" class="TabTh">年度</th>
+      <td class="TabTd">${object.year}</td>
+      <td class="TabTh">编制单位</td>
+      <td class="TabTd">${object.company}</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">责任人</th>
+      <td class="TabTd">${object.leader}</td>
+      <td class="TabTh">页号</td>
+      <td class="TabTd">${object.pageNum}</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">页数</th>
+      <td class="TabTd">${object.pageNumber}</td>
+      <td class="TabTh">案卷题名</td>
+      <td class="TabTd">${object.fileName}</td>
+    </tr>
+    <tr>
+      <th scope="row" class="TabTh">备注</th>
+      <td class="TabTd" colspan="3">${object.remarks}</td>
+      </tr>
+  </tbody>
+</table>
+	
+	<a onclick="applyService()" class="sqxzBtn" style="cursor: pointer">申请服务</a>
+  </div>
+	
+	<div class="bottomBox">
+		©胶东调水数据资源共享平台
+	</div>
+</body>
+
+<script>
+
+    const resourceId = '${id}';
+    const name = '${object.name}';
+
+    function applyService() {
+        $.ajax({
+            type: 'POST',
+            url: "${ctx}/service/applyService",
+            dataType: 'json',
+            data: {
+                resourceId: resourceId,
+                name: name,
+                type: 'this'
+            },
+            async: false,
+            error: function(data){
+                console.log(data.responseText);
+            },
+            success: function(data) {
+                if (data.status) {
+                    layer.open({title:"申请结果",content:data.message});
+                } else {
+                    layer.open({title:"申请结果",content:data.message});
+                }
+            }
+        });
+    }
+
+</script>
+
+</html>

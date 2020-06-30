@@ -1,0 +1,255 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<%
+				if(cl==null) {
+				%>
+				<i class="fa icon-speech"></i> ${text('数据字段新增')}
+				<%
+				} else {
+				%>
+				<i class="fa icon-speech"></i> ${text('数据字段编辑')}
+				<%
+				}
+				%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${cl}" action="${ctx}/cl/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="col-xs-offset-0">
+							<#form:hidden name="id" maxlength="100" class="form-control" value="${cl!=null?cl.id:''}"/>
+							<#form:hidden name="createBy" maxlength="100" class="form-control" value="${cl!=null?cl.createBy:''}"/>
+							<#form:hidden name="updateBy" maxlength="100" class="form-control" value="${cl!=null?cl.updateBy:''}"/>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据库')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+									if(cl==null) {
+								%>
+									<select onchange="findTableNameByDBId()" name="dbId" id="dbName" class="form-control required" >
+										<option value="">请选择</option>
+								<%
+										for(db in dbs) {
+								%>
+										<option value="${db.id}" >${db.name}</option>
+								<%
+										}
+								%>
+									</select>
+								<%
+									} else {
+										for(db in dbs) {
+											if(db.id == cl.dbId) {
+								%>
+									<#form:hidden readonly="true" name="dbId" maxlength="100" class="form-control required" value="${cl!=null?cl.dbId:''}"/>
+									<#form:input readonly="true" name="" maxlength="100" class="form-control required" value="${db.name}"/>
+								<%
+									}}}
+								%>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('数据表')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+								if(cl==null) {
+								%>
+									<select onchange="findColumByTableName()" name="tbId" id="tbName" class="form-control required" >
+										<option value="">请选择</option>
+									</select>
+								<%
+								} else {
+									for(tb in tbs) {
+										if(tb.id == cl.tbId) {
+								%>
+									<#form:hidden readonly="true" name="tbId" value="${cl!=null?cl.tbId:''}" maxlength="100" class="form-control required"/>
+									<#form:input readonly="true" name="" maxlength="100" class="form-control required" value="${tb.name}"/>
+								<%
+								}}}
+								%>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('字段')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<%
+								if(cl==null) {
+								%>
+								<select name="name" id="clName" class="form-control required" >
+									<option value="">请选择</option>
+								</select>
+								<%
+								} else {
+								%>
+								<#form:input readonly="true" name="name" value="${cl!=null?cl.name:''}" maxlength="100" class="form-control"/>
+								<%
+								}
+								%>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('字段中文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameCn" value="${cl!=null?cl.nameCn:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('字段注释')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="describe" value="${cl!=null?cl.describe:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('字段备注')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" value="${cl!=null?cl.remarks:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('是否主键')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="isKey" id="isKey" class="form-control required" >
+									<% if(cl != null && cl.isKey == 1) { %>
+									<option value="1" >是</option>
+									<option value="0">否</option>
+									<% } else { %>
+									<option value="0">否</option>
+									<option value="1" >是</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('是否可为空')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="isNull" id="isNull" class="form-control required" >
+									<% if(cl != null && cl.isNull == 1) { %>
+									<option value="1" >是</option>
+									<option value="0">否</option>
+									<% } else { %>
+									<option value="0">否</option>
+									<option value="1" >是</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('字段类型')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="type" id="type" class="form-control required" >
+									<% if(cl != null && cl.type == 'Int') { %>
+									<option value="Int">数字</option>
+									<option value="Date">日期</option>
+									<option value="String" >文本</option>
+									<% } else if(cl != null && cl.type == 'Date') { %>
+									<option value="Date">日期</option>
+									<option value="Int">数字</option>
+									<option value="String" >文本</option>
+									<% } else { %>
+									<option value="String" >文本</option>
+									<option value="Int">数字</option>
+									<option value="Date">日期</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('字段长度')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="length" value="${cl!=null?cl.length:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+	function findTableNameByDBId() {
+		var databaseId = $('#dbName  option:selected').val();
+		$('#tbName').find("option").remove();
+		$('#tbName').append("<option value=''>请选择</option>");
+		$.ajax({
+			url:'${ctx}/cl/selectByDbId?dbId='+databaseId,
+			type:'GET',
+			dataType:'json',
+			success:function(data){
+				for (var i=0;i<data.length;i++) {
+					$('#tbName').append("<option value='"+data[i].id+"'>"+data[i].name+"</option>");
+				}
+			}
+		});
+	}
+	function findColumByTableName() {
+		var databaseId = $('#dbName  option:selected').val();
+		var tableName = $('#tbName  option:selected').text();
+		$('#clName').find("option").remove();
+		$('#clName').append("<option value=''>请选择</option>");
+		$.ajax({
+			url:'${ctx}/cl/findColumByTableName?dbId='+databaseId+'&tableName='+tableName,
+			type:'GET',
+			dataType:'json',
+			success:function(data){
+				for (var i=0;i<data.length;i++) {
+					$('#clName').append("<option value='"+data[i]+"'>"+data[i]+"</option>");
+				}
+			}
+		});
+	}
+</script>

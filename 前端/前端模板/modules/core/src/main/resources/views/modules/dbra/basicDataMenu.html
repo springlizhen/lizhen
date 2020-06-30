@@ -1,0 +1,59 @@
+<% layout('/layouts/default.html', {title: '用户管理', libs: ['layout','zTree','dataGrid']}){ %>
+<style type="text/css">
+    H4:hover {
+        color: grey;
+        cursor: pointer;
+    }
+
+    H4:active {
+        color: dimgrey;
+        cursor: pointer;
+    }
+
+    H4:link {
+        color: #E6E0E3;
+        cursor: pointer;
+    }
+
+    H4:visited{
+        color: #BEEBEE;
+        cursor: pointer;
+    }
+
+</style>
+<div class="ui-layout-west">
+    <div class="main-content">
+        <div class="box box-main">
+            <div class="box-header">
+                <div class="box-title">
+                    <i class="fa icon-grid"></i> ${text('数据库')}
+                </div>
+            </div>
+            <div id="leftMenu" data-widget="tree">
+                <% for(db in dbs) { %>
+                    <h4 style="font-size:16px;height: 26px;top:50%" class="treeview" onclick="showTableList(this)" id="${db.id}">&nbsp;&nbsp;${db.describe}</h4>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui-layout-center">
+    <iframe id="mainFrame" name="mainFrame" class="ui-layout-content p0"
+            src="${ctx}/basic/list"></iframe>
+</div>
+<% } %>
+<script>
+    // 初始化布局
+    $('body').layout({
+        west__initClosed: false, // 是否默认关闭
+        west__size: 200
+    });
+
+    function showTableList(element) {
+        $('.treeview').attr("style", "background-color: #ffffff");
+        dbId = element.id;
+        element.style.backgroundColor="#E6E0E3";
+        element.style.height="26px";
+        $('#mainFrame').attr("src", "${ctx}/basic/list?dbId=" + dbId)
+    }
+</script>

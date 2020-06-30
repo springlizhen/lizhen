@@ -1,0 +1,176 @@
+<% layout('/layouts/default.html', {title: '计划管理', libs: ['validate','ueditor','dataGrid']}){ %>
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/file/css/webuploader.css">
+<style>
+    .file{
+        position: relative;
+        padding: 15px;
+        border: 1px solid #dde1e8;
+        border-radius: 4px;
+        height: 100px;
+    }
+    .colfile{
+        background-color: #fdfdfd;
+        box-shadow: inset 0 3px 30px rgba(0,0,0,.03);
+        text-align: center;
+        line-height: 5;
+        color: #DDE1E8;
+    }
+    .btn:hover{
+        color: white;
+        opacity: 0.6;
+    }
+    .btnheig{
+        height: 34px;
+        padding: 6px;
+    }
+</style>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-grid"></i> 计划管理
+            </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <#form:form id="inputForm" model="${plan}" action="${ctx}/sys/subCentersPlan/save" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-unit">${text('基本信息')}</div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required ">*</span> ${text('计划名称')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:hidden name="isNewRecord" id="isNewRecord" value="${plan!=null?plan.isNewRecord}"/>
+                            <#form:hidden id="id" name="id" value="${plan!=null?plan.id}"/>
+                            <#form:hidden name="planPepName" value="${plan!=null?plan.planPepName}"/>
+                            <#form:hidden name="planOffice" value="${plan!=null?plan.planOffice}"/>
+                            <#form:hidden name="planOfficeName" value="${plan!=null?plan.planOfficeName}"/>
+                            <#form:hidden name="planReport" value="${plan!=null?plan.planReport}"/>
+                            <#form:hidden id="planIds" name="planIds" value="${plan!=null?plan.planIds}"/>
+                            ${plan!=null?plan.planName:''}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required ">*</span> ${text('计划编码')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            ${plan!=null?plan.planCode:''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required ">*</span> ${text('计划类型')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            ${plan!=null?plan.planType}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            ${text('年度')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            ${plan!=null?plan.planYear}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            ${text('备注')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-10">
+                            ${plan!=null?plan.planYear}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required hide">*</span> ${text('分站计划')}：<i class="fa icon-question hide"></i></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required hide">*</span> ${text('')}<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-10">
+                            <table id="dataGrid"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<#form:extend collapsed="true" />-->
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                </div>
+            </div>
+        </div>
+    </#form:form>
+</div>
+</div>
+<% } %>
+<script>
+    // $.ajax({
+    //     type: 'GET',
+    //     url: "${ctx}/sys/subCentersPlan/savePlanReport?id=${plan!=null?plan.id}&status=1",
+    //     async: false,
+    //     success: function (data) {
+    //
+    //     }});
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        url: "${ctx}/sys/subCentersPlan/listDataCL?planId=${plan!=null?plan.id}&orgId=${orgId!=null?orgId}",
+        columnModel: [
+            {header:'${text("序号")}', name:'sort', width:20, align:"center", frozen:true},
+            {header:'${text("工程内容")}', name:'name',  width:100, align:"center"},
+            {header:'${text("单位")}', name:'projectUnit', width:20, align:"center", frozen:true, cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    if (rawObject.merge) { return ' colspan=3' }
+                }, formatter: function(val, obj, row, act){
+                    return row.mergeName!=undefined?row.mergeName:'';
+                }
+            },
+            {header:'${text("数量")}', name:'projectQuantity', width:50, align:"center", frozen:true,cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    if (rawObject.merge) { return 'style="display:none;' }
+                }},
+            {header:'${text("单价（元）")}', name:'projectPrice', width:50, align:"center", frozen:true,cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    if (rawObject.merge) { return 'style="display:none;' }
+                }},
+            {header:'${text("合价（元）")}', name:'money',  width:50, align:"center"},
+            {header:'${text("备注")}', name:'remarks',  width:220, align:"center"}
+        ],
+        altRows: false,
+        sortableColumn: false,
+        showRownum: false,	    // 是否显示行号
+        // showCheckbox: true,    // 是否显示复选框
+        sortableColumn: false,
+        // defaultExpandLevel: 0,	// 默认展开的层次
+        // expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+        ajaxSuccess: function(data){
+            // var val = $('#planIds').val();
+            // val = val.split(",");
+            // for(var i=0;i<val.length;i++){
+            // 	$('#dataGrid').dataGrid('setSelectRow', val[i], false);
+            // }
+        }
+    });
+
+</script>

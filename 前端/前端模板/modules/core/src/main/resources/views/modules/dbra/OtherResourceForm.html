@@ -1,0 +1,205 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['dataGrid','validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<% if(othres!=null) {%>
+					<i class="fa icon-speech"></i> ${text('服务变更')}
+				<%} else { %>
+					<i class="fa icon-speech"></i> ${text('新增服务')}
+				<% } %>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" onsubmit="return tosumbit()" model="${othres}" action="${ctx}/or/save" method="post" class="form-horizontal">
+		<#form:hidden name="createBy" maxlength="100" class="form-control" value="${othres!=null?othres.createBy:''}"/>
+		<#form:hidden name="createDate" maxlength="100" class="form-control" value="${othres!=null?othres.createDate:''}"/>
+		<#form:hidden name="callNum" maxlength="100" class="form-control" value="${othres!=null?othres.callNum:''}"/>
+		<#form:hidden name="ConnNum" maxlength="100" class="form-control" value="${othres!=null?othres.ConnNum:''}"/>
+		<#form:hidden name="url" maxlength="100" class="form-control" value="${othres!=null?othres.url:''}"/>
+		<#form:hidden name="check" maxlength="100" class="form-control" value="true"/>
+		<#form:hidden name="status" maxlength="100" class="form-control" value="${othres!=null?othres.status:'停用'}"/>
+			<div class="box-body">
+				<h4 style="color: #1ab7ea">基本信息</h4>
+				<hr />
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('服务ID')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<% if(othres != null) { %>
+								<#form:input name="id" readonly="true" value="${othres!=null?othres.id:''}" maxlength="100" class="form-control required"/>
+								<% } else { %>
+								<#form:input name="id" value="${othres!=null?othres.id:''}" maxlength="100" class="form-control required"/>
+								<% } %>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${text('服务名称')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" value="${othres!=null?othres.name:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${text('服务分类')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="serviceClass" value="${othres!=null?othres.serviceClass:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${text('接入类型')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="accessType" id="accessType" class="form-control required" >
+									<% if(othres != null && othres.accessType == 'HTTP服务') { %>
+									<option value="HTTP服务" >HTTP</option>
+									<option value="Web服务">Web</option>
+									<% } else { %>
+									<option value="Web服务">Web</option>
+									<option value="HTTP服务" >HTTP</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('服务简介')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="sumup" value="${othres!=null?othres.sumup:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${text('提供单位')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="provider" value="${othres!=null?othres.provider:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<!--<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${text('状态')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="status" id="status" class="form-control required" >
+									<% if(othres != null && othres.status == '停用') { %>
+									<option value="停用">停用</option>
+									<option value="启用" >启用</option>
+									<% } else { %>
+									<option value="启用" >启用</option>
+									<option value="停用">停用</option>
+									<% } %>
+								</select>
+							</div>
+						</div>-->
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span>${text('服务访问地址')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="host" value="${othres!=null?othres.host:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('服务信息说明')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:textarea name="remarks" value="${othres!=null?othres.remarks:''}" rows="13" maxlength="1000" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4 style="color: #1ab7ea">参数配置</h4>
+				<hr />
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-12">
+							<label class="control-label col-sm-2" title=""></label>
+							<div class="col-sm-9">
+								<a href="${ctx}/api/param/form?apiId=${othres!=null?othres.id:'0000'}" style="background-color: #00b7ee; color: white" class="btn btn-default btnTool" title="${text('新增参数')}">${text('新增参数')}</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<label class="control-label col-sm-2" title=""></label>
+						<div class="col-sm-9">
+							<table id="dataGrid"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+		<#form:form id="searchForm" action="${ctx}/api/param/listParam?apiId=${othres!=null?othres.id:'0000'}" onsubmit="return tosumbit()" method="post" class="form-inline hide">
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script type="text/javascript">
+	var status=$('#status').val();
+	// 初始化DataGrid对象
+	$('#dataGrid').dataGrid({
+		searchForm: $("#searchForm"),
+		autoGridHeight: false,
+		columnModel: [
+			{header:'${text("参数名")}', name:'name',  width:100, align:"center"},
+			{header:'${text("是否必填()")}', name:'isNull',  width:80, align:"center"},
+			{header:'${text("参数类别(ty:通用参数 sy:私有参数)")}', name:'colType',  width: 100, align:"center"},
+			{header:'${text("类型")}', name:'type',  width:80, align:"center"},
+			{header:'${text("描述")}', name:'remarks',  width: 120, align:"center"},
+			{header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+					var actions = [];
+					actions.push('<a href="${ctx}/api/param/form?id='+row.id+'&scheduleId='+row.scheduleId+'" class="btnList" title="${text("编辑参数")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+					actions.push('<a href="${ctx}/api/param/del?id='+row.id+'" class="btnList" title="${text("删除参数")}" data-confirm="${text("确认要删除该参数吗？")}" data-deltreenode="'+row.id+'"><i class="fa fa-trash-o"></i></a>&nbsp;');
+					return actions.join('');
+				}}
+		],
+		ajaxSuccess: function(data){
+
+		}
+	});
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+
+	function tosumbit() {
+		if (status == '启用') {
+			var gnl = confirm("确定要停用更新该服务?");
+			if (gnl == true) {
+				document.getElementById("check").value="true";
+				return true;
+			} else {
+				document.getElementById("check").value="false";
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+</script>

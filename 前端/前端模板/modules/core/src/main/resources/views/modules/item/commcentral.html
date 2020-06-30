@@ -1,0 +1,148 @@
+<% layout('/layouts/default.html', {title: '项目信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('项目信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/item/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<input type="hidden" name="approverRole" value="1"/>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group col-xs-3">
+						<label class="control-label col-sm-4">${text('编码')}：</label>
+						<div class="control-inline " >
+							<#form:input path="id" class="form-control width-150"/>
+						</div>
+					</div>
+					<div class="form-group col-xs-3">
+						<label class="control-label col-sm-4">${text('名称')}：</label>
+						<div class="control-inline ">
+							<#form:input path="itemName" class="form-control width-150"/>
+						</div>
+					</div>
+
+					<div class="form-group col-xs-3">
+						<label class="control-label col-sm-4">${text('开始时间(起始)')}：</label>
+						<div class="control-inline " >
+							<#form:input path="selectMinStartDate" readonly="true" maxlength="20" class="form-control Wdate required"
+					dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+			</div>
+				</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+			<div class="form-group col-xs-3">
+				<label class="control-label col-sm-4">${text('开始时间(截止)')}：</label>
+				<div class="control-inline ">
+					<#form:input path="selectMaxStartDate" readonly="true" maxlength="20" class="form-control Wdate required"
+					dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+				</div>
+			</div>
+							<div class="form-group col-xs-3">
+								<label class="control-label col-sm-4">${text('结束时间(起始)')}：</label>
+								<div class="control-inline " >
+									<#form:input path="selectMinEndDate" readonly="true" maxlength="20" class="form-control Wdate required"
+									dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+							</div>
+						</div>
+							<div class="form-group col-xs-3">
+								<label class="control-label col-sm-4">${text('结束时间(截止)')}：</label>
+								<div class="control-inline ">
+									<#form:input path="selectMaxEndDate" readonly="true" maxlength="20" class="form-control Wdate required"
+									dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+								</div>
+							</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="form-group col-xs-3">
+								<label class="control-label col-sm-4">${text('负责人')}：</label>
+								<div class="control-inline ">
+
+									<#form:input path="itemLeader" class="form-control width-150"/>
+								</div>
+							</div>
+							<div class="form-group col-xs-3">
+								<label class="control-label col-sm-4">${text('审批结果')}：</label>
+								<div class="control-inline " class="form-control required">
+									<select name="approvalResult" >
+										<option value="">请选择</option>
+										<% for(e in approveType){ %>
+										<option value="${e.id}" >${e.name}</option>
+										<% }%>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+	</div>
+
+
+
+
+				<div class="form-group ">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("项目编码")}', name:'id', index:'id', width:100, align:"left"},
+		{header:'${text("项目名称")}', name:'itemName', index:'a.itemName', width:150, align:"center",formatter: function(val, obj, row, act){
+				return '<a href="${ctx}/item/view?id='+row.id+'" class="btnList" data-title="${text("编辑消息")}">'
+						+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');
+			}},
+		{header:'${text("项目金额")}', name:'money', index:'money', width:150, align:"center"},
+		//{header:'${text("项目负责人")}', name:'contractObject', index:'contractObject', width:150, align:"center"},
+		{header:'${text("开始时间")}', name:'startDate', index:'a.startTime', width:150, align:"center"},
+		{header:'${text("结束时间")}', name:'endDate', index:'endTime', width:150, align:"center"},
+		{header:'${text("项目负责人")}', name:'itemLeader', index:'a.itemLeader', width:150, align:"center"},
+		{header:'${text("审批状态")}', name:'approvalResult', index:'a.approvalResult', width:150, align:"center", formatter: function(val, obj, row, act){
+		if(val=='1'){
+			return '通过';
+		}else if(val=='2'){
+			return '驳回';
+		}else{
+			return '待审批';
+		}
+
+			}},
+
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			//actions.push('<a href="${ctx}/item/form?id='+row.id+'" class="btnList" title="${text("编辑消息")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+			//actions.push('<a href="${ctx}/item/delete?id='+row.id+'" class="btnList" title="${text("删除消息")}" data-confirm="${text("确认要删除该消息吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+
+					actions.push('<a href="${ctx}/item/centralApprove?id=' + row.id + '" class="btnList" title="${text("审批")}"><i class="fa fa-key"></i></a>&nbsp;');
+
+                //actions.push('<a href="${ctx}/item/view?id='+row.id+'" class="btnList" title="${text("查看")}"><i class="fa fa-book"></i></a>&nbsp;');
+
+
+                return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

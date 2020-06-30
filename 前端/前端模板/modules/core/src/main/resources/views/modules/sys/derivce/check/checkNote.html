@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title data-i18n="resources.title_splinesData"></title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			overflow: hidden;
+			background: #fff;
+			width: 100%;
+			height: 100%
+		}
+
+		#map {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border: 1px solid #3473b7;
+		}
+
+		#toolbar {
+			position: absolute;
+			top: 50px;
+			right: 10px;
+			text-align: center;
+			z-index: 100;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+
+<div id="map"></div>
+<script src="${ctxStatic}/libs/SuperMap.Include.js"></script>
+<script src="${ctxStatic}/examples/js/jquery.js"></script>
+
+
+<script>
+	var featuresOrigin = [];
+	var map, local, layer, pointLayer, drawPoint, lineLayer, markerLayer, vector, select;
+	var pointArray = [];
+	var styleDraw = {
+		strokeColor: "#304DBE",
+		strokeWidth: 2,
+		pointerEvents: "visiblePainted",
+		fillColor: "#304DBE",
+		fillOpacity: 0.8,
+		pointRadius: 6
+	};
+	style = {
+		strokeColor: "#304DBE",
+		strokeWidth: 2,
+		pointerEvents: "visiblePainted",
+		fillColor: "#304DBE",
+		fillOpacity: 0.8
+	};
+
+	var style_green = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#545BF4'
+	};
+
+	var style_green1 = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#50E7F8'
+	};
+
+	var style_green2 = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#0C9CFE'
+	};
+	var style1 = {
+		fillColor: '#F00',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+
+	var style2 = {
+		fillColor: '#0F0',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+
+	var style3 = {
+		fillColor: '#00F',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+	var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+			url = "http://10.0.2.4:8090/iserver/services/map-china400/rest/maps/China"
+	var tiandituLayer = new SuperMap.Layer.WMTS({
+		name: "vec",
+		url: "http://10.0.6.6:81/TileService/SDMap2000",
+		layer: "vec",
+		style: "default",
+		matrixSet: "c",
+		format: "tiles",
+		opacity: 1,
+		requestEncoding: "KVP"
+	});
+
+
+	//新建点矢量图层
+	pointLayer = new SuperMap.Layer.Vector("pointLayer");
+	//对点图层应用样式styleDraw（前面有定义）
+	pointLayer.style = styleDraw;
+
+	//新建线矢量图层
+	lineLayer = new SuperMap.Layer.Vector("lineLayer");
+	//对线图层应用样式styleDraw（前面有定义）
+	lineLayer.style = styleDraw;
+	markers = new SuperMap.Layer.Markers("Markers");
+
+	vector = new SuperMap.Layer.Vector("vector");
+	var checkPerson = parent.document.getElementById("checkPerson").value;
+	var createDate=parent.document.getElementById("createDate").value.trim();
+	console.log(createDate);
+	$.ajax({
+		url: 'http://10.0.2.7:9920/checkNote/select',
+		cache: false,
+		type: 'get',
+		success: function (data) {
+			console.log(data.data.list);
+			for(var i=0;i<data.data.list.length;i++){
+				var point = new SuperMap.Geometry.Point(data.data.list[i].longitude, data.data.list[i].latitude);
+				var pointVector = new SuperMap.Feature.Vector(point);
+				pointVector.style =styleDraw;
+				vector.addFeatures([pointVector]);
+
+
+
+			}
+		}});
+	if(checkPerson!=''||createDate!='') {
+
+
+		$.ajax({
+			url: 'http://10.0.2.7:9920/checkNote/selectCheckNote?checkPerson=' + checkPerson + '&createDate='+createDate,
+			cache: false,
+			type: 'get',
+			success: function (data) {
+				var a = []
+				console.log(data.data);
+				for (var i = 0; i < data.data.length; i++) {
+					a.push(new SuperMap.Geometry.Point(data.data[i][0], data.data[i][1]));
+					size = new SuperMap.Size(50, 50);
+					offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+					icon = new SuperMap.Icon('${ctxStatic}/examples/img/markerbig_select.png', size, offset);
+					marker = new SuperMap.Marker(new SuperMap.LonLat(data.data[i][0], data.data[i][1]), icon);
+					marker.sm_capital = data.data[i][2];
+
+					//添加覆盖物到标记图层
+					markers.addMarker(marker);
+					marker.events.on({
+						"click": mouseClickHandler,
+						"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+					});
+					var infowin = null;
+
+					function closeInfoWin() {
+						if (infowin) {
+							try {
+								infowin.hide();
+								infowin.destroy();
+							}
+							catch (e) {
+							}
+						}
+					}
+					function mouseClickHandler(event) {
+						closeInfoWin();
+						//初始化popup类
+						var marker = this;
+						popup = new SuperMap.Popup(
+								"chicken",
+								marker.getLonLat(),
+								new SuperMap.Size(220, 140),
+								"<div>"+marker.sm_capital+"</div></div>",
+								true,
+								null
+						);
+
+						infowin = popup;
+						//添加弹窗到map图层
+						map.addPopup(popup);
+					}
+				}
+				console.log(a);
+				linearRings = new SuperMap.Geometry.LineString(a);
+				var lineVector1 = new SuperMap.Feature.Vector(linearRings);
+				lineVector1.style = {
+					strokeColor: "#C0FF3E",
+					fill: true,
+					strokeWidth: 3
+				};
+				vector.addFeatures([lineVector1]);
+			}
+		});
+	}
+
+
+
+
+
+	//定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+	layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
+		transparent: true,
+		cacheEnabled: true
+	}, {maxResolution: "auto", useCanvas: false,projection:"EPSG:4326"});
+	//为图层初始化完毕添加addLayer()事件
+	//layer.events.on({"layerInitialized": addLayer});
+	map = new SuperMap.Map("map", {
+		controls: [
+			new SuperMap.Control.OverviewMap(),
+			new SuperMap.Control.ScaleLine(),
+			new SuperMap.Control.Zoom(),
+			new SuperMap.Control.Navigation({
+				dragPanOptions: {
+					enableKinetic: true
+				}
+			})
+		]
+	});
+	map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+		map.addLayers([vector,markers,tiandituLayer]);
+		map.setCenter(new SuperMap.LonLat(120, 36), 8);
+
+
+
+
+
+
+	//移除整个图层要素
+	function clearAllFeatures() {
+		widgets.alert.clearAlert();
+		pointArray = [];
+		pointLayer.removeAllFeatures();
+		lineLayer.removeAllFeatures();
+	}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<% if(resource == null) { %>
+				<i class="fa icon-speech"></i> ${text('资源服务注册')}
+				<% } else {%>
+				<i class="fa icon-speech"></i> ${text('资源服务编辑')}
+				<% } %>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${resource}" action="${ctx}/res/save" method="post" class="form-horizontal">
+			<#form:hidden name="dbId" maxlength="100" class="form-control" value="${dbId}"/>
+			<#form:hidden name="tbId" maxlength="100" class="form-control" value="${tbId}"/>
+			<#form:hidden name="id" maxlength="100" class="form-control" value="${resource!=null?resource.id:''}"/>
+			<#form:hidden name="createBy" maxlength="100" class="form-control" value="${resource!=null?resource.createBy:''}"/>
+			<#form:hidden name="createDate" maxlength="100" class="form-control" value="${resource!=null?resource.createDate:''}"/>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('资源服务中文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameCn" value="${resource!=null?resource.nameCn:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('资源服务英文名')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="nameUs" value="${resource!=null?resource.nameUs:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('简介')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="sumup" value="${resource!=null?resource.sumup:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('提供单位')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="provider" value="${resource!=null?resource.provider:''}" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('所属行业')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="subBusiness" value="${resource!=null?resource.subBusiness:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('备注')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" value="${resource!=null?resource.remarks:''}" maxlength="100" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('所属主题')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="theme" id="theme" class="form-control required">
+									<% if(themes!=null) { for(theme in themes) { if(resource!=null && resource.theme==theme.id) { %>
+										<option value="${theme.id}" selected="true">${theme.name}</option>
+									<% } else { %>
+										<option value="${theme.id}">${theme.name}</option>
+									<% } } } %>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('开放状态')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="status" id="status" class="form-control required" >
+									<% if(resource != null && resource.status == '禁用') { %>
+										<option value="禁用">禁用</option>
+										<option value="开放" >开放</option>
+									<% } else { %>
+										<option value="开放" >开放</option>
+										<option value="禁用">禁用</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+</script>

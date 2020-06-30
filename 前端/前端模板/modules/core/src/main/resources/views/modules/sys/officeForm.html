@@ -1,0 +1,305 @@
+<% layout('/layouts/default.html', {title: '机构管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> 机构管理
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${office}" action="${ctx}/sys/office/save" method="post" class="form-horizontal">
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4">${text('上级机构')}：</label>
+						<div class="col-sm-8">
+							<#form:treeselect id="parent" title="${text('上级机构')}"
+							name="parentCode" value="${office!=null?office.parentCode:''}" name="parentCode" defaultValue="0" labelValue="${office!=null?office.parentName:''}" labelName="treeNames"
+							url="${ctx}/sys/office/treeData?excludeCode=${office!=null?office.id:''}&ctrlPermi=2"
+							class="" allowClear="true" canSelectRoot="true" canSelectParent="true" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('机构简称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="officeName" value="${office!=null?office.officeName:''}" maxlength="100" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('机构编码')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:hidden name="isNewRecord" value="${office!=null?office.isNewRecord}"/>
+							<#form:hidden name="officeCode" value="${office!=null?office.officeCode}"/>
+							<#form:input name="viewCode" maxlength="64" value="${office!=null?office.viewCode:''}" readonly="${office!=null?!office.isNewRecord}" class="form-control required abc"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('机构名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="fullName" value="${office!=null?office.fullName}" maxlength="200" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('排序号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="treeSort" value="${office!=null?office.treeSort}" maxlength="10" class="form-control required digits"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('机构类型')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="officeType" value="${office!=null?office.officeType}" dictType="sys_office_type" class="form-control required " />
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('机构等级')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select id="officeLevelId" name="officeLevel" items="${office_level}" itemLabel="dictValue" itemValue="dictCode" value="${office!=null?office.officeLevel}" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('所在地行政区划')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect id="areaId" title="${text('区域列表')}"
+							name="areaId" value="${office!=null&&office.areaId!=null?office.areaId.areaCode:''}" name="areaId" defaultValue="0" labelValue="${office!=null&&office.areaId!=null?office.areaId.areaName:''}" labelName="areaId.treeNames"
+							url="${ctx}/area/treeData"
+							class="required" allowClear="true"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('机构行政级别')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="administrativeLevel" value="${office!=null?office.administrativeLevel}" items="${office_istrative}" itemLabel="dictValue" itemValue="dictCode" class="form-control" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('现地所分类')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select id="areaTypeId" name="areaType" value="${office!=null?office.areaType}" items="${local_classification}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('所属调度单元')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select id="officeUnitId" name="officeUnit" value="${office!=null?office.officeUnit}" items="${office_unit}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('机构分类')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="jigouHf" value="${office!=null?office.jigouHf}" items="${sys_office_jghf}" itemLabel="dictValue" itemValue="dictCode" class="form-control " blankOption="true"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-unit">${text('详细信息')}</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('负责人')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="leader" maxlength="100" value="${office!=null?office.leader}"  class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('办公电话')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="phone" maxlength="100" value="${office!=null?office.phone}" class="form-control phone"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('联系地址')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="address" value="${office!=null?office.address}" maxlength="255" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('邮政编码')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="zipCode" value="${office!=null?office.zipCode}" maxlength="100" class="form-control zipCode"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('电子邮箱')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="email" value="${office!=null?office.email}" maxlength="300" class="form-control email"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('经度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="longitude" value="${office!=null?office.longitude}" maxlength="300" class="form-control"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('纬度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="latitude" value="${office!=null?office.latitude}" maxlength="300" class="form-control"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('机构职能')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="function" value="${office!=null?office.function}" rows="4" maxlength="500" class="form-control "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('备注信息')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="remarks" value="${office!=null?office.remarks:''}" rows="4" maxlength="500" class="form-control "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<#form:extend collapsed="true" />-->
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" onclick="save();" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+</div>
+<% } %>
+<script>
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                    js.closeCurrentTabPage(function(contentWindow){
+                        contentWindow.$('#dataGrid').dataGrid('refreshTreeChildren',
+                            $('#parentCode').val(), "${office!=null?office.id:''}");
+                    });
+                }
+            }, "json");
+        }
+    });
+    $('#officeName').change(function(){
+        if ($('#fullName').val()==''){
+            $('#fullName').val($(this).val());
+        }
+    });
+    // 选择父级菜单回调方法
+    function treeselectCallback(id, act, index, layero){
+        if (id == 'parent' && (act == 'ok' || act == 'clear')){
+            // 创建并初始化下一个节点信息，如：排序号、默认值
+            $.get('${ctx}/sys/office/createNextNode?parentCode='
+                +$('#parentCode').val(), function(data){
+                $('#treeSort').val(data.treeSort);
+            });
+        }
+    }
+
+    /*机构类型是单位且的机构等级是管理所的，所属调度单元和现地所分类必填*/
+    function save() {
+        /*机构类型*/
+        var officeType = $("#officeTypeId option:selected").text();
+        /*机构等级*/
+        var officeLevel = $("#officeLevelId option:selected").text();
+        if(officeType == "单位" && officeLevel == "管理所"){
+            /*获取所属调度单元的值*/
+            var officeUnit = $("#officeUnitId option:selected").text();
+            if(!officeUnit){
+                js.showMessage("请输入所属调度单元内容");
+                return false;
+            }
+            /*获取现地所分类*/
+            var areaType = $("#areaTypeId option:selected").text();
+            if(!areaType.trim()){
+                js.showMessage("请输入现地所内容");
+                return false;
+            }
+        }
+        $("#inputForm").submit();
+    }
+
+</script>

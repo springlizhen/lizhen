@@ -1,0 +1,42 @@
+<% layout('/layouts/default.html', {title: '养护记录管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i>养护记录管理
+            </div>
+            <div class="box-tools pull-right">
+                <div class="box-tools pull-right">
+<!--                    <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>-->
+                    <a href="${ctx}/sys/device/maintain/preserveForm?id=${id}"
+                       class="btn btn-default btnTool" title="${text('新增养护记录')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/sys/device/maintain/preserve?maintainId=${id}" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+
+            {header:'${text("维护人")}', name:'createBy',  width:120, align:"center"},
+            {header:'${text("维护内容")}', name:'content',  width:150, align:"center"},
+            {header:'${text("备注")}', name:'remark', width:200, align:"center"},
+
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

@@ -1,0 +1,355 @@
+<%/* Copyright (c) 2013-Now http://jeesite.com All rights reserved. */ %>
+<% layout('/layouts/default.html', {title: '个人中心', libs: ['validate','fileupload','ueditor','dataGrid']}){ %>
+<link rel="stylesheet" href="${ctxStatic}/jquery-plugins/jquery.strength.css?${_version}">
+<link rel="stylesheet" href="${ctxStatic}/modules/sys/userInfo.css?${_version}">
+<!--<div class="box-header with-border">
+<div class="box-title">
+	<i class="fa icon-speech"></i> ${text('文件信息')}
+</div>
+</div>-->
+
+
+<div class="main-content">
+		<#form:form id="inputForm" model="${comm}" action="${ctx}/contract/save" method="post" class="form-horizontal">
+	<!--	<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">`
+					<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>-->
+		<div class="nav-tabs-custom nav-main">
+		<ul class="nav nav-tabs ">
+			<li class="pull-left header">
+				<i class="fa icon-user" style="vertical-align:-1px;"></i>${text('编辑合同')}
+			</li>
+			<li ><div style="width: 100px ;height: 50px"></div></li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			&nbsp;&nbsp;&nbsp;<button type="submit" class=" btn btn-sm btn-primary " style="vertical-align:5px;" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+			<li>
+
+			<button type="button" class=" btn btn-sm btn-default" style="vertical-align:5px;" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button><span style="width: 2px"></span></li>
+
+		</ul>
+		<ul class="nav nav-tabs pull-left">
+			<li class="active"><a href="#tab-1" data-toggle="tab">${text('合同信息')}</a></li>
+			<li ><a href="#tab-3" data-toggle="tab">${text('合同正文')}</a></li>
+			<li ><a href="#tab-4" data-toggle="tab">${text('结算信息')}</a></li>
+			<li ><a href="#tab-2" data-toggle="tab">${text('文件上传')}</a></li>
+		</ul>
+		<div class="tab-content p0">
+			<div  class="active tab-pane " id="tab-1">
+			<div class="box-body"><br/></br/><br/></br/>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同编码')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="contractCode" maxlength="100" class="form-control required" value="${comm!=null?comm.contractCode:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同类型')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="contractType" maxlength="100" class="form-control required" value="${comm!=null?comm.contractType:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同标题')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="title" maxlength="100" class="form-control required" value="${comm!=null?comm.title:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同金额')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="money" maxlength="100" class="form-control required" value="${comm!=null?comm.money:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同对象')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="contractObject" maxlength="100" class="form-control required" value="${comm!=null?comm.contractObject:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同跟进人')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="follow" maxlength="100" class="form-control required" value="${comm!=null?comm.follow:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('合同客户')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="customer" maxlength="100" class="form-control required" value="${comm!=null?comm.customer:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('甲方')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="owner" maxlength="100" class="form-control required" value="${comm!=null?comm.owner:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('甲方地址')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="ownerAddress" maxlength="100" class="form-control required" value="${comm!=null?comm.ownerAddress:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('甲方电话')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="ownerPhone" maxlength="100" class="form-control required" value="${comm!=null?comm.ownerPhone:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('甲方签字')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="ownerSign" maxlength="100" class="form-control required" value="${comm!=null?comm.ownerSign:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										${text('甲方签字时间')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="ownerSigntime" readonly="true" maxlength="20" class="form-control Wdate required"
+										value="${comm!=null?comm.ownerSigntime:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('乙方')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="otherOwner" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwner:''}"/>
+									</div>
+								</div>
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('乙方地址')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="otherOwnerAddress" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwnerAddress:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('乙方电话')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="otherOwnerPhone" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwnerPhone:''}"/>
+									</div>
+								</div>
+
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('乙方签字')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="otherOwnerSign" maxlength="100" class="form-control required" value="${comm!=null?comm.otherOwnerSign:''}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('乙方签字时间')}：<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:input name="otherOwnerSigntime" readonly="true" maxlength="20" class="form-control Wdate required"
+										value="${comm!=null?comm.otherOwnerSigntime:''}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+									</div>
+								</div>
+								<!--<div class="form-group col-xs-6">
+									<label class="control-label col-sm-4" title="">
+										<span class="required ">*</span> ${text('子合同')}:<i class="fa icon-question hide"></i></label>
+									<div class="col-sm-6">
+										<#form:treeselect id="parent" name="subContract" title="子合同"
+										path="subContract" labelPath="contract.title"
+										url="${ctx}/contract/selectContract"
+										allowClear="true" canSelectRoot="true" canSelectParent="true" value="${comm.subContract}" checkbox="true"/>
+									</div>
+								</div>-->
+							</div>
+						</div>
+			</div>
+			</div>
+
+				<div class="tab-pane " id="tab-2">
+			<div class="box-body"><br/><br/><br/></br/>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="form-group">
+								<label class="control-label col-sm-1" title="">
+									<span class="required ">*</span><i class="fa icon-question hide"></i></label>
+								<div class="col-sm-10">
+									<#form:fileupload id="uploadFile" bizKey="${comm.itemUpload}" bizType="itemUpload" uploadType="all" class="" readonly="false"/>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+	</div>
+
+	<div class="tab-pane " id="tab-3">
+			<div class="box-body"><br/></br/><br/></br/>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group ">
+						<label class="control-label col-sm-1" title="">
+							<span class="required ">*</span><i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+
+						<#form:ueditor name="text" value="${comm.text}" maxlength="10000" height="200" width="200"
+					simpleToolbars="false" readonly="false" outline="false" />
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>
+			<div class="tab-pane " id="tab-4" name="tab-4">
+			<!--	<div class="box box-main">
+					<div class="box-header">
+						<div class="box-title">
+							<i class="fa fa-list-alt"></i> 数据管理
+						</div>
+						<div class="box-tools pull-right">-->
+				<div class="box-body"><br/><br/><br/>
+						<div class="pull-right">
+					<a href="#" id="dataGridAddRowBtn" class="btn btn-default"><i class="fa fa-plus"></i> 增加</a>
+							<br/>
+					</div >
+				<div>
+					<br/>
+				</div>
+						<#form:form id="searchForm" action="${ctx}/fund/listData"  class="form-inline hide" 						>
+
+						<input type="hidden" name="id" value="${contractId}"/>
+					</#form:form>
+
+
+					<table id="dataGrid"></table>
+					<div id="dataGridPage"></div>
+
+
+
+	</#form:form>
+		</div>
+		</div>
+</div>
+</div>
+<% } %>
+
+<script>
+	// 初始化DataGrid对象
+	$('a[data-toggle="tab" ]').on('shown.bs.tab', function (e) {
+	$('#dataGrid').dataGrid({
+		searchForm: $("#searchForm"),
+		url:'${ctx}/fund/listData?id=${comm.id}',
+		columnModel: [
+			{header:'${text("合同编码")}', name:'id',  width:100, fixed:true,align:"left", frozen:true,hidden:true, formatter: function(val, obj, row, act){
+					return '<a href="${ctx}/contract/listData?id='+row.id+'" class="btnList" data-title="${text("编辑合同")}">'
+							+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');
+				}},
+			{header:'${text("款项编码")}', name:'uuid', index:'a.uuid', editable:true,editoptions:{'maxlength':'200', 'class':'form-control'},edittype:'text',   hidden:true,fixed:true,  align:"center"},
+			{header:'${text("款项性质")}', name:'fund', index:'fund', editable:true,editoptions:{'maxlength':'200', 'class':'form-control'},edittype:'text',   width:150, fixed:true, align:"center"},
+			{header:'${text("款项类别")}', name:'fundType', index:'a.fundType',editable:true,editoptions:{'maxlength':'200', 'class':'form-control'},edittype:'text',    width:150,fixed:true,  align:"center"},
+			{header:'${text("款项金额")}', name:'fundMoney', index:'fundMoney', editable:true,editoptions:{'maxlength':'200', 'class':'form-control'},width:150,edittype:'text',   fixed:true,  align:"center"},
+			{header:'${text("打款方式")}', name:'remitType', index:'a.remitType',editable:true,editoptions:{'maxlength':'200', 'class':'form-control'}, width:150, edittype:'text',   fixed:true, align:"center"},
+			{header:'${text("打款账号")}', name:'remitAccount', index:'remitAccount',editable:true, editoptions:{'maxlength':'200', 'class':'form-control'},width:150, edittype:'text',   fixed:true, align:"center"},
+			{header:'${text("打款时间")}', name:'remitTime', index:'a.remitTime',editable:true, editoptions:{'maxlength':'200', 'class':'form-control'},width:150,edittype:'text',    hrinkToFit: true,fixed:true,  align:"center",formatter:'date', formatoptions:{srcformat:'Y-m-d H:i:s',newformat:'Y-m-d H:i:s'},
+				editable:true, edittype:'text', editoptions:{'class':'form-control Wdate ', 'readonly':'true',
+					dataInit: function(element){ $(element).on('focus', function(){
+						WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});
+					});
+					}}},
+			{header:'${text("操作")}', name:'actions', width:120,fixed:true, sortable:false, title:false, formatter: function(val, obj, row, act){
+					var actions = [];
+				//	actions.push('<a href="${ctx}/contract/form?id='+row.id+'" class="btnList" title="${text("编辑消息")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+					actions.push('<a href="${ctx}/fund/delete?uuid='+row.uuid+'" class="btnList" title="${text("删除合同")}" data-confirm="${text("确认要删除该合同吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+					return actions.join('');
+				}}
+		],
+		editGrid: true,				// 是否是编辑表格
+		editGridInitRowNum: 1,		// 编辑表格的初始化新增行数
+		editGridAddRowBtn: $('#dataGridAddRowBtn'),	// 子表增行按钮
+		editGridAddRowInitData: {id: '${comm.id}', status: Global.STATUS_NORMAL},	// 新增行的时候初始化的数据
+		editGridInputForm: $('#inputForm'),
+		// 编辑表格的提交数据参数
+		//editGridInputFormListName: 't_coa_fund', // 提交的数据列表名
+		editGridInputFormListAttrs: 'id,contractType,title,fund,fundType,fundMoney,remitType,remitAccount,remitTime,', // 提交数据列表的属性字段
+		//frozenCols: true, 	// 启用冻结列，并在colModel中设置frozen:true
+		//showRownum: false,	// 是否显示行号，默认true
+		// 加载成功后执行事件
+		ajaxSuccess: function(data){
+
+		}
+	});
+	});
+	</script>
+<script>
+
+	$(function(){
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			if(typeof window.webuploaderRefresh == 'function'){
+				window.webuploaderRefresh();
+			}
+		});
+	});
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+
+</script>
+
+

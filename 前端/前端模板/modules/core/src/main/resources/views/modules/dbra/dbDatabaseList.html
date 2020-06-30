@@ -1,0 +1,71 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('数据库管理')}
+            </div>
+            <br/>
+            <hr/>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group col-xs-10">
+                        <label class="control-label col-sm-3" title="">
+                           ${text('数据库')} ： <i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-4">
+                            <select onchange="findById()" name="id" id="dbName" class="form-control required" >
+                                <option value="">请选择</option>
+                                <% for(db in dbs){ %>
+                                <option value="${db.id}" >${db.name}</option>
+                                <% }%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <a href="${ctx}/db/form" class="btn btn-default btnTool" title="${text('新增')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/db/listData" method="post" class="form-inline hide"
+                data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <#form:hidden name="id" id="tid" maxlength="100" class="form-control" value=""/>
+            </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("数据库")}', name:'name', index:'name', width:80, align:"center",sortable:false},
+            {header:'${text("描述")}', name:'describe', index:'describe', width:280, align:"center",sortable:false},
+            {header:'${text("数据库类型")}', name:'type', index:'type', width:150, align:"center",sortable:false},
+            {header:'${text("数据库地址")}', name:'address', index:'address', width:150, align:"center",sortable:false},
+            //{header:'${text("数据库类别")}', name:'category', index:'category', width:150, align:"center",sortable:false},
+            {header:'${text("备注")}', name:'remarks', index:'remarks', width:150, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:120, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/db/form?id='+row.id+'" class="btnList"  title="${text("编辑")}">编辑</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/db/delete?id='+row.id+'" class="btnList" title="${text("删除")}" data-confirm="${text("确认要删除该数据库配置吗？")}">删除\</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/db/info?id='+row.id+'" class="btnList" title="${text("详情")}">详情</a>&nbsp;&nbsp;');
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+    function findById() {
+        $("#tid").val($('select  option:selected').val());
+        $('#dataGrid').dataGrid('refresh');
+    }
+
+</script>

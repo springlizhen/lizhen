@@ -1,0 +1,122 @@
+<% layout('/layouts/default.html', {title: '计划管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> ${text('计划管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<a href="${ctx}/sys/plan/form?stationId=${subType!=null?subType.id}&stationName=${subType!=null?subType.officeName}&planParentName=${engType!=null?engType.officeName}&planParentId=${engType!=null?engType.id}" class="btn btn-default btnTool" title="${text('新增计划')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/sys/plan/listData" method="post" class="form-inline hide"
+			data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<#form:hidden name="ctrlPermi" value="2"/>
+			<div>
+				<div class="form-group">
+					<label class="control-label">&nbsp;&nbsp;&nbsp;${text('分中心')}：</label>
+					<div class="control-inline">
+						<#form:input name="stationName" value="${subType!=null?subType.officeName}" maxlength="50" class="form-control width-120" readonly="true"/>
+						<#form:hidden name="stationId" value="${subType!=null?subType.id}" maxlength="50" class="form-control width-120 readonly"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('管理站')}：</label>
+					<div class="control-inline">
+						<#form:input name="planParentName" value="${engType!=null?engType.officeName}" maxlength="20" class="form-control width-120" readonly="true"/>
+						<#form:hidden name="planParentId" value="${engType!=null?engType.id}" maxlength="50" class="form-control width-120 readonly"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('计划名称')}：</label>
+				<div class="control-inline">
+					<#form:input path="planName" maxlength="50" class="form-control width-120"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('计划编码')}：</label>
+				<div class="control-inline">
+					<#form:input path="planCode" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('计划类型')}：</label>
+				<div class="control-inline">
+					<#form:input path="planType" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('年度')}：</label>
+				<div class="control-inline">
+					<#form:input path="planYear" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<label class="control-label">${text('填报单位')}：</label>
+				<div class="control-inline">
+					<#form:input path="planOfficeName" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('填报人')}：</label>
+				<div class="control-inline">
+					<#form:input path="planPepName" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="control-label">${text('状态')}：</label>
+				<div class="control-inline">
+					<#form:input path="planCode" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>-->
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+				<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+			</div>
+		</#form:form>
+		<table id="dataGrid"></table>
+		<div id="dataGridPage"></div>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("计划名称")}', name:'planName', width:120, align:"center", frozen:true},
+            {header:'${text("计划编号")}', name:'planCode',  width:120, align:"center"},
+			{header:'${text("计划类型")}', name:'planType',  width:60, align:"center"},
+            {header:'${text("年度")}', name:'planYear',  width: 50, align:"center"},
+            {header:'${text("填报单位")}', name:'planOfficeName',  width:120, align:"center"},
+			{header:'${text("填报日期")}', name:'createDate',  width:120, align:"center"},
+			{header:'${text("填报人")}', name:'planPepName',  width:120, align:"center"},
+			{header:'${text("状态")}', name:'planStatus',  width:120, align:"center",formatter: function (val, obj, row, act) {
+					return val=='0'?'已上报':val=='1'?'审核通过':val=='2'?'审核未通过':val=='3'?'分中心已提交':'未上报';
+				}},
+            {header:'${text("操作")}', name:'actions', width:100, sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+					if(!row.planStatus){
+						actions.push('<a href="${ctx}/sys/plan/form?id='+row.id+'" class="btnList" title="${text("编辑计划")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+						actions.push('<a href="${ctx}/sys/plan/delete?id='+row.id+'" class="btnList" title="${text("删除计划")}" data-confirm="${text("确认要删除该计划吗？")}" data-deltreenode="'+row.id+'"><i class="fa fa-trash-o"></i></a>&nbsp;');
+						actions.push('<a href="http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?flowId=fenjvyanghuplan&id='+row.id+'" target="_blank" title="${text("上报计划")}"><i class="fa icon-action-redo"></i></a>&nbsp;');
+					}else{
+						actions.push('<a href="${ctx}/sys/plan/see?id='+row.id+'" class="btnList" title="${text("查看计划")}"><i class="fa fa-eye"></i></a>&nbsp;');
+					}
+					return actions.join('');
+                }}
+        ],
+        defaultExpandLevel: 0,	// 默认展开的层次
+        expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

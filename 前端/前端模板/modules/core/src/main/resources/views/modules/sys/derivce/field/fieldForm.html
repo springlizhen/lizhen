@@ -1,0 +1,175 @@
+<% layout('/layouts/default.html', {title: '设备代码管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> 设备代码管理
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${field}" action="${ctx}/sys/field/save" method="post" class="form-horizontal">
+		<#form:hidden id="id" name="id" value="${field!=null?field.id}"/>
+		<#form:hidden id="sfjx" value="0"/>
+		<#form:hidden name="fieldPb" value="0"/>
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('分组')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect id="parent" title="${text('分组')}"
+							name="fieldGroup" value="${field!=null?field.fieldGroup:fieldGroup}" defaultValue="0" labelValue="${field!=null?field.fieldGroupName:fieldGroupName}" labelName="fieldGroupName"
+							url="${ctx}/sys/derviceOffice/treeData"
+							class="required" allowClear="true" canSelectRoot="true" canSelectParent="true" readonly="${field!=null?!field.isNewRecord}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('字段')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:hidden name="isNewRecord" value="${field!=null?field.isNewRecord}"/>
+							<#form:input name="fieldName" maxlength="10" value="${field!=null?field.fieldName:''}" class="form-control required"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('字段代码')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="fieldCode" value="${field!=null?field.fieldCode}" maxlength="20" class="form-control required "/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('字段类型')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<%if(field!=null?field.isNewRecord:true){%>
+							<#form:select name="fieldType" value="${field!=null?field.fieldType:''}" items="${sys_field_type}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control required" />
+							<%}else{%>
+							<#form:hidden name="fieldType" value="${field!=null?field.fieldType:''}"/>
+							<#form:select name="fieldType" value="${field!=null?field.fieldType:''}" disabled="true" items="${sys_field_type}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control required" />
+							<%}%>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							${text('字典绑定')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-4">
+							<#form:treeselect name="subContract" title="字典绑定"
+							name="fieldDicBind" value="${field!=null?field.fieldDicBind}" labelName="fieldDicBindName" labelValue="${field!=null?field.fieldDicBindName}"
+							url="${ctx}/sys/dicType/selectDicType"
+							allowClear="true" canSelectRoot="true" canSelectParent="true"/>
+						</div>
+						<div class="col-sm-1" style="line-height: 30px;padding: 0px;">
+							<a hrefs="${ctx}/sys/dicData/listbj" id="hre" class="btnTool" style="font-size: 11px;" onclick="bjzd()">字典编辑</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							${text('单位')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="fieldUnit" value="${field!=null?field.fieldUnit}" maxlength="6" class="form-control"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('字段归类')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="fieldClass" value="${field!=null?field.fieldClass:''}" items="${sys_field_fieldClass}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control required" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('是否必填')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="fieldRequired" value="${field!=null?field.fieldRequired:''}" items="${sys_field_fieldRequired}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control required" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<#form:extend collapsed="true" />-->
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-sm btn-primary" id="btnSubmit" onclick="{
+						$('#sfjx').val(0);$('#inputForm').submit();
+					}"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<%if(field!=null?field.isNewRecord:true){%>
+					<button type="button" class="btn btn-sm btn-primary" id="btnzdy" onclick="{
+						$('#sfjx').val(1);$('#inputForm').submit();
+					}"><i class="fa fa-check"></i> ${text('保存继续添加')}</button>&nbsp;
+					<%}%>
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+</div>
+<script>
+	function bjzd() {
+		var id = $('#fieldDicBindCode').val();
+		if(id){
+			var href = $('#hre').attr("hrefs");
+			$('#hre').attr("hrefs",href+"?id="+id);
+			js.addTabPage($('#hre'), "字典编辑", $('#hre').attr("hrefs"), true, false);
+		}else{
+			js.showMessage('请选择字典');
+		}
+
+	}
+	function btnzdy(){
+		console.log(1111);
+	}
+</script>
+<% } %>
+<script>
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                	if($('#sfjx').val()==0){
+						js.closeCurrentTabPage(function(contentWindow){
+							contentWindow.page();
+						});
+					}else{
+                		$('#id').val('');
+					}
+                }
+            }, "json");
+        }
+    });
+</script>

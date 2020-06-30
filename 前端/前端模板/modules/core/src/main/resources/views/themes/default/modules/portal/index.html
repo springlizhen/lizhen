@@ -1,0 +1,4203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>山东省调水工程运行维护中心内网门户</title>
+    <link rel="shortcut icon" href="${ctxStatic}/favicon.ico"/>
+    <link rel="bookmark" href="${ctxStatic}/favicon.ico"/>
+    <link href="${ctxStatic}/nwmh/css/style.css?${_version}" rel="stylesheet"/>
+    <link rel="stylesheet" href="${ctxStatic}/fonts/font-icons.min.css?${_version}">
+    <script src="${ctxStatic}/nwmh/js/jquery.min.js?${_version}"></script>
+    <script src="${ctxStatic}/nwmh/js/jquery.flexslider-min.js?${_version}"></script>
+    <script src="${ctxStatic}/echarts/4.2/echarts.min.js?${_version}"></script>
+    <script src="${ctxStatic}/layer/3.1/layer.js?1.0 V-06231011"></script>
+    <script type="text/javascript" name="OA" src="${OA}&${_version}"></script>
+    <script src="/jdds/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/jdds/static/select2/4.0/select2.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/select2/4.0/i18n/zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/layer/3.1/layer.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/my97/WdatePicker.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/jquery.validate.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/localization/messages_zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-validation/1.16/jquery.validate.extend.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/jeesite.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/i18n/jeesite_zh_CN.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/common.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/common/des.js?1.0 V-06231011"></script>
+    <script src="/jdds/static/jquery-plugins/jquery.strength.js?1.0 V-06231011"></script>
+</head>
+<body>
+<div class="content">
+    <!--顶部-->
+    <div class="main-top">
+        <!--logo-->
+        <div class="logoBox">
+            <img class="logoImg" src="${ctxStatic}/nwmh/img/logo.png">
+            <p class="logoText">山东省调水工程运行维护中心</p>
+            </img>
+        </div>
+        <!--搜索-->
+        <div class="searchBox">
+            <div class="searchImg"></div>
+            <form action="${ctx}/portal/newsSearchList" method="get">
+                <input type="search" class="searchInput" name="articleTitle" placeholder="全局搜索">
+                <button class="searchBtn" style="cursor:pointer;" type="submit">搜索</button>
+                </input>
+            </form>
+        </div>
+        <!--右边头像等内容-->
+        <div class="top-right">
+            <!--<div class="tips">
+                <div class="tips-y"></div>
+                <img src="${ctxStatic}/nwmh/img/tips.png">
+            </div>-->
+            <div class="top-name" id="username">${user.userName}</div>
+            <div class="top-xtx"><img width="30px" height="30px" src="${@user.getAvatarUrl().replaceFirst('/ctxPath', ctxPath)}"></div>
+            <div style="position: absolute; right: 50px">
+                <a href="#" onclick="personalCenter(this)" data-layer="true" data-layer-width="1000" data-layer-height="560">
+                    <span style="color: #ffffff; font-size: 14px">[个人中心]</span>
+                </a>
+            </div>
+            <div style="position: absolute; right: 0">
+                <a href="${ctx}/logout">
+                    <span style="color: #ffffff; font-size: 14px">[退出]</span>
+                </a>
+            </div>
+            <!--<div class="font-jt" style="cursor:pointer;">简体</div>
+            <div class="font-sx"></div>
+            <div class="font-ft" style="cursor:pointer;">繁体</div>-->
+        </div>
+    </div>
+    <!--导航-->
+    <div class="navBtn">
+        <!--选中状态添加class"active"  img加A -->
+        <div class="btn navBar active">
+            <div class="icon"><img name="img2" src="${ctxStatic}/nwmh/img/icon_syA.png"></div>
+            <div class="text syStyle">首页</div>
+        </div>
+        <div class="st"></div>
+        <a href="${ctx}/portal/newsList">
+            <div class="btn navBar">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_news.png"></div>
+                <div class="text">新闻中心</div>
+            </div>
+        </a>
+        <div class="st "></div>
+        <a href="${ctx}/portal/newsTzggList">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_fawen.png"></div>
+                <div class="text">通知公告</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${oaUrl}/jdds/chinags/logins?token=${token}#/jdds/a/message/oaMessage" target="_blank">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_liuyan.png"></div>
+                <div class="text">留言条</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="${ctx}/portal/downloadList">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_dangan.png"></div>
+                <div class="text">下载中心</div>
+            </div>
+        </a>
+        <!--<div class="st "></div>
+        <a href="http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?flowId=xingzhengfawenliucheng"
+           target="_blank">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_fawen.png"></div>
+                <div class="text">中心发文</div>
+            </div>
+        </a>
+        <div class="st"></div>
+        <a href="http://10.0.2.5:9012/jdds/chinags/logins?token=${token}#/jdds/a//myDocumentFile" target="_blank">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_dangan.png"></div>
+                <div class="text">我的档案</div>
+            </div>
+        </a>
+        <div class="st "></div>
+        <a href="http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?flowId=huiyishishiyongshenqing"
+           target="_blank">
+            <div class="btn">
+                <div class="icon"><img name="img1" src="${ctxStatic}/nwmh/img/icon_sy.png"></div>
+                <div class="text">会议室申请</div>
+            </div>
+        </a>-->
+    </div>
+    <!--左侧部分-->
+    <div class="main-left">
+        <!--用户登录-->
+        <div class="userLoginBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>用户登录</p>
+            </div>
+            <div class="userInfo">
+                <img width="30px" height="30px" class="dtx" src="${@user.getAvatarUrl().replaceFirst('/ctxPath', ctxPath)}">
+                <div class="text">姓名：${user.userName}</div>
+                <% if (sysUser.employee != null) { %>
+                <div class="text">单位：${sysUser.employee.officeName}</div>
+                <% } %>
+                <div class="userImg"></div>
+            </div>
+            <div class="sysBox">
+                <div class="sysBtn" onclick="toSystem('${deviceUrl}/jdds/a/index?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="icon-grid"></i>
+                    </div>
+                    <div><span class="sysName">工程安全与维护</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${authUrl}/jdds/a/index?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="fa icon-user"></i>
+                    </div>
+                    <div><span class="sysName">用户与权限认证</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${oaUrl}/jdds/chinags/logins?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="icon-layers"></i>
+                    </div>
+                    <div><span class="sysName">通用办公管理</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${yunweiUrl}')" style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png"> -->
+                        <i class="icon-briefcase"></i>
+                    </div>
+                    <div><span class="sysName">综合运维管理</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${dbraUrl}/jdds/a/index?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="icon-ghost"></i>
+                    </div>
+                    <div><span class="sysName">数据资源服务</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${gisUrl}/jdds/a/index?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="icon-globe"></i>
+                    </div>
+                    <div><span class="sysName">空间一张图</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${contractUrl}/jdds/a/index?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="icon-docs"></i>
+                    </div>
+                    <div><span class="sysName">合同管理</span></div>
+                </div>
+                <div class="sysBtn" onclick="toSystem('${daUrl}/jdds/chinags/logins?token=${token}')"
+                     style="cursor:pointer;">
+                    <div class="icon">
+                        <!--                        <img src="${ctxStatic}/nwmh/img/sysImg.png">-->
+                        <i class="icon-drawer"></i>
+                    </div>
+                    <div><span class="sysName">档案管理</span></div>
+                </div>
+            </div>
+        </div>
+        <!--待办事项-->
+        <div class="To-DoListBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>待办事项</p>
+            </div>
+            <div class="list-tableBox">
+                <!--待办事项切换选中状态btnBox-active，img需换成active_taba.png（这块是右侧斜图）-->
+                <div class="btnBox floatStyle btnBox-active" data-data="/oa/message/listData" style="cursor:pointer;margin-left: 0px;">
+                    <div class="btn-left">待办流程（<span id="daiban">0</span>）</div>
+                    <img name="img1" src="${ctxStatic}/nwmh/img/taba.png" style="display: none">
+                    <img name="img2" src="${ctxStatic}/nwmh/img/active_taba.png" style="display: block">
+                    <!--选中后要显示下三角-->
+                    <img name="img3" class="sj" src="${ctxStatic}/nwmh/img/triangle.png" style="display: block">
+                </div>
+                <div class="btnBox floatStyle" data-data="/oa/message/listDataEnd" style="cursor:pointer;">
+                    <div class="btn-left">已办流程（<span id="yiban">0</span>）</div>
+                    <img name="img1" src="${ctxStatic}/nwmh/img/taba.png" style="display: block">
+                    <img name="img2" src="${ctxStatic}/nwmh/img/active_taba.png" style="display: none">
+                    <!--选中后要显示下三角-->
+                    <img name="img3" class="sj" src="${ctxStatic}/nwmh/img/triangle.png" style="display: none">
+                </div>
+                <div class="btnBox floatStyle" data-data="/oa/message/myListData" style="cursor:pointer;">
+                    <div class="btn-left">我发起的（<span id="qingqiu">0</span>）</div>
+                    <img name="img1" src="${ctxStatic}/nwmh/img/taba.png" style="display: block">
+                    <img name="img2" src="${ctxStatic}/nwmh/img/active_taba.png" style="display: none">
+                    <!--选中后要显示下三角-->
+                    <img name="img3" class="sj" src="${ctxStatic}/nwmh/img/triangle.png" style="display: none">
+                </div>
+                <div class="btnBox floatStyle" data-data="/oa/message/listDataDY" style="cursor:pointer;">
+                    <div class="btn-left">待阅事宜（<span id="daiyue">0</span>）</div>
+                    <img name="img1" src="${ctxStatic}/nwmh/img/taba.png" style="display: block">
+                    <img name="img2" src="${ctxStatic}/nwmh/img/active_taba.png" style="display: none">
+                    <!--选中后要显示下三角-->
+                    <img name="img3" class="sj" src="${ctxStatic}/nwmh/img/triangle.png" style="display: none">
+                </div>
+                <div class="btnBox floatStyle" data-data="/oa/message/listDataRead" style="cursor:pointer;">
+                    <div class="btn-left">已阅事宜（<span id="yiyue">0</span>）</div>
+                    <img name="img1" src="${ctxStatic}/nwmh/img/taba.png" style="display: block">
+                    <img name="img2" src="${ctxStatic}/nwmh/img/active_taba.png" style="display: none">
+                    <!--选中后要显示下三角-->
+                    <img name="img3" class="sj" src="${ctxStatic}/nwmh/img/triangle.png" style="display: none">
+                </div>
+                <table class="list-table" cellspacing="0">
+                    <thead class="list-thead">
+                    <tr class="list-tr">
+                        <th class="list-th" width="10%">序号</th>
+                        <th class="list-th" width="20%">标题</th>
+                        <th class="list-th" width="25%">流程名称</th>
+                        <th class="list-th" width="20%">发送人</th>
+                        <th class="list-th" width="25%">发送时间</th>
+                    </tr>
+                    </thead>
+                    <tbody class="list-tbody" cellspacing="0" id="dataList">
+                    <!--<tr class="list-tr">
+                        <td class="list-td" width="10%">1</td>
+                        <td class="list-td" width="20%">标题一</td>
+                        <td class="list-td" width="25%">流程名称1</td>
+                        <td class="list-td" width="20%">张三</td>
+                        <td class="list-td" width="25%">2020-3-9 13:22:12</td>
+                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--雨情信息统计-->
+        <div class="rainBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>雨情信息统计</p>
+            </div>
+            <div class="rain-left">
+                <!--                <img src="${ctxStatic}/nwmh/img/rainImg.png">-->
+                <div id="yuqingxinxi" style="width: 100%; height:100%"></div>
+            </div>
+            <div class="rain-right">
+                <div class="rain-time" id="yqtime"></div>
+                <div class="rain-legend">
+                    <div class="legend-left">
+                        <div class="" id="xiaoyu"></div>
+                        <div class="" id="zhongyu"></div>
+                        <div class="" id="dayu"></div>
+                    </div>
+                    <div class="legend-right">
+                        <div class="" id="baoyu"></div>
+                        <div class="" id="tedabaoyu"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--水质监测统计-->
+        <div class="waterBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>水质监测统计</p>
+            </div>
+            <!--            <img style="margin-top: 50px;" src="${ctxStatic}/nwmh/img/czImg.png">-->
+            <div id="shuizhijiance" style="width: 100%; height: 95%; margin-top: 5%"></div>
+        </div>
+        <!--调水量统计-->
+        <div class="rainBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>计划完成情况</p>
+            </div>
+<!--            <div class="select-nf">-->
+<!--                <span>选择年份：</span>-->
+<!--                <select>-->
+<!--                    <option>2019年</option>-->
+<!--                    <option>2018年</option>-->
+<!--                    <option>2017年</option>-->
+<!--                </select>-->
+<!--            </div>-->
+            <div class="data-img">
+                <!--                <img src="${ctxStatic}/nwmh/img/dslImg.png">-->
+                <div id="tiaoshuiliang" style="width: 100%; height: 95%; margin-top: 5%"></div>
+            </div>
+        </div>
+        <!--水位曲线图-->
+        <div class="waterBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>水位曲线图</p>
+            </div>
+            <div class="select-nf">
+<!--                <span>：</span>-->
+                <select id = "xuanzenianfen" onchange="yin()">
+                    <option value="引黄济青">引黄济青</option>
+                    <option value="胶东调水">胶东调水</option>
+
+                </select>
+            </div>
+            <div class="data-img">
+                <!--                <img src="${ctxStatic}/nwmh/img/swImg.png">-->
+                <div id="shuiweiquxian" style="width: 100%; height: 100%"></div>
+            </div>
+            <div class="bzBox" id="shui">
+                <div class="progressBox progressBox2" id="hui">
+<!--                    小龙泵站：<br>-->
+<!--                    水位21<br>-->
+<!--                    <progress id="hui1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="song">
+<!--                    流清河泵站：<br>-->
+<!--                    水位23<br>-->
+<!--                    <progress id="song1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="gao">
+<!--                    灰埠泵站：<br>-->
+<!--                    水位24<br>-->
+<!--                    <progress id="gao1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="huang">
+<!--                    黄水河泵站：<br>-->
+<!--                    水位22<br>-->
+<!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="xin">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="wen">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="xing">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+            </div>
+            <div class="bzBox" id="yinhuang">
+                <div class="progressBox progressBox2" id="qu">
+                    <!--                    小龙泵站：<br>-->
+                    <!--                    水位21<br>-->
+                    <!--                    <progress id="hui1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="zhuang">
+                    <!--                    流清河泵站：<br>-->
+                    <!--                    水位23<br>-->
+                    <!--                    <progress id="song1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="wang">
+                    <!--                    灰埠泵站：<br>-->
+                    <!--                    水位24<br>-->
+                    <!--                    <progress id="gao1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="ting">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="ji">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--右侧部分-->
+    <div class="main-right">
+        <!--通知公告-->
+        <div class="noticeBox">
+            <div class="title">
+                <div class="login-sx"></div>
+<!--                <p>通知公告</p>-->
+                <p>水利要闻</p>
+            </div>
+            <span class="gtStyle" style="cursor:pointer;" onclick="toArticleList()">&gt;&gt;</span>
+            <div class="newsTab">
+                <!--通知公告选中状态"tabActive"-->
+<!--                <div class="text tzgg tabActive" data-name="水利要闻" style="cursor:pointer;">水利要闻</div>-->
+<!--                <div class="newsxt"></div>-->
+<!--                <div class="text tzgg" data-name="通知公告" style="cursor:pointer;">通知公告</div>-->
+                <input type="hidden" id="tzggType" value="水利要闻">
+            </div>
+            <div class="newsImg slywInfo" id="carouselList">
+                <!--<div class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <div class="newsTitle">省调水中心召开2019职评议会议</div>
+                            <img src="${ctxStatic}/nwmh/img/img1.jpg">
+                        </li>
+                        <li>
+                            <div class="newsTitle">省调水中心召开2019年度工作述职评议会议</div>
+                            <img src="${ctxStatic}/nwmh/img/img2.jpg">
+                        </li>
+                        <li>
+                            <div class="newsTitle">省调水中心召开评议会议</div>
+                            <img src="${ctxStatic}/nwmh/img/img3.jpg"></li>
+                        <li>
+                            <div class="newsTitle">省调水中心召开2评议会议</div>
+                            <img src="${ctxStatic}/nwmh/img/img4.jpg">
+                        </li>
+                        <li>
+                            <div class="newsTitle">省调水19年度工作述职评议会议</div>
+                            <img src="${ctxStatic}/nwmh/img/img5.jpg">
+                        </li>
+                    </ul>
+                </div>-->
+            </div>
+            <!--新闻列表-->
+            <div class="main-news slywInfo" id="newsList">
+                <!--<li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>
+                <li>水利部淮河水利委员会关于2018~2019年度治淮建设文明工地名单</li>-->
+            </div>
+        </div>
+        <!--全省雨情信息-->
+        <div class="waterBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>设施设备养护类别统计</p>
+            </div>
+<!--            <div class="left-data">-->
+<!--                &lt;!&ndash;                <img src="${ctxStatic}/nwmh/img/qsyqImg.png">&ndash;&gt;-->
+<!--                <div id="quanshengyuqing" style="width: 100%; height: 100%"></div>-->
+<!--            </div>-->
+            <div class="right-text">
+                <div class="select-nfK">
+                    <span>选择时间：</span>
+                    <select id="top" onchange="xuanze()">
+                        <option id="qing">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div id="quanshengyuqing" style="width: 90%;height: 300px;">
+
+            </div>
+        </div>
+        <!--流量曲线图-->
+        <div class="waterBox">
+            <div class="title">
+                <div class="login-sx"></div>
+                <p>流量曲线图</p>
+            </div>
+            <div class="select-nf">
+                <select id="year" onchange="year()">
+                    <option value="引黄济青">引黄济青</option>
+                    <option value="胶东调水">胶东调水</option>
+                </select>
+            </div>
+            <div class="data-img">
+                <!--                <img src="${ctxStatic}/nwmh/img/llqxImg.png">-->
+                <div id="liuliangquxian" style="width: 100%; height: 100%"></div>
+            </div>
+            <div class="bzBox" id="shui1">
+                <div class="progressBox progressBox2" id="hui3">
+                    <!--                    小龙泵站：<br>-->
+                    <!--                    水位21<br>-->
+                    <!--                    <progress id="hui1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="song3">
+                    <!--                    流清河泵站：<br>-->
+                    <!--                    水位23<br>-->
+                    <!--                    <progress id="song1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="gao3">
+                    <!--                    灰埠泵站：<br>-->
+                    <!--                    水位24<br>-->
+                    <!--                    <progress id="gao1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="huang3">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="xin3">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="wen3">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="xing3">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+            </div>
+            <div class="bzBox" id="yinhuang1">
+                <div class="progressBox progressBox2" id="qu3">
+                    <!--                    小龙泵站：<br>-->
+                    <!--                    水位21<br>-->
+                    <!--                    <progress id="hui1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="zhuang3">
+                    <!--                    流清河泵站：<br>-->
+                    <!--                    水位23<br>-->
+                    <!--                    <progress id="song1" ></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="wang3">
+                    <!--                    灰埠泵站：<br>-->
+                    <!--                    水位24<br>-->
+                    <!--                    <progress id="gao1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="ting3">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+                <div class="progressBox progressBox2" id="ji3">
+                    <!--                    黄水河泵站：<br>-->
+                    <!--                    水位22<br>-->
+                    <!--                    <progress id="huang1"></progress>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--底部版权信息-->
+    <div class="bottomBox">
+        <img class="bqImg" src="${ctxStatic}/nwmh/img/bqImg.png">
+        <p>版权所有：山东省调水工程运行维护中心&nbsp;&nbsp;&nbsp;&nbsp;技术支持：伊工&nbsp;&nbsp;&nbsp;&nbsp;电话：15588640015</p>
+    </div>
+</div>
+<style media="screen">
+    .pr {
+        width: 106px;
+        height: 6px;
+        background: #ededed;
+    }
+    progress::-webkit-progress-bar {
+        background: #ededed;
+        border-radius: 8px;
+    }
+    progress::-webkit-progress-value {
+        background: #06c5d8;
+        border-radius: 8px;
+    }
+    .pr.alert::-webkit-progress-value {
+        background: red;
+    }
+
+</style>
+<script>
+
+    // 个人中心
+    function personalCenter(dom) {
+        var url = '${ctx}/portal/personalCenter';
+        js.addTabPage($(dom), '个人中心', url, true, true);
+    }
+
+    // 文章列表跳转
+    function toArticleList() {
+        if ($('#tzggType').val() === '水利要闻') {
+            window.location.href = '${ctx}/portal/newsList';
+        } else if ($('#tzggType').val() === '通知公告') {
+            window.location.href = '${ctx}/portal/newsTzggList';
+        }
+    }
+    function yin(){
+       var ku = $("#xuanzenianfen option:selected").val();
+       // $("#shuiweiquxian").empty()
+       if(ku == '胶东调水'){
+           $("#yinhuang").hide();
+           $("#shui").show();
+           $("#hui").empty();
+           $("#song").empty();
+           $("#gao").empty();
+           $("#huang").empty();
+           $("#xin").empty();
+           $("#wen").empty();
+           $("#xing").empty();
+           var swqx = echarts.init(document.getElementById('shuiweiquxian'));
+           $.ajax({
+               url: 'http://10.0.2.7:9930/gate/listDataKX',
+               dataType: "json",
+               type: "get",
+               success: function (data) {
+                   var res = [];
+                   var ty = [];
+                   var max =100;
+                   var tuo = data.rows;
+                   debugger
+                   for(var u=0;u<tuo.length;u++){
+                       if(tuo[u].slnm == "灰埠泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"灰埠泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"灰埠泵站","value":0})
+                           }
+
+                       }
+                       if(tuo[u].slnm == "东宋泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"东宋泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"东宋泵站","value":0})
+                           }
+                       }
+                       if(tuo[u].slnm == "高瞳泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"高瞳泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"高瞳泵站","value":0})
+                           }
+                       }
+                       if(tuo[u].slnm == "黄水河泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"黄水河泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"黄水河泵站","value":0})
+                           }
+                       }
+                       if(tuo[u].slnm == "辛庄泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"辛庄泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"辛庄泵站","value":0})
+                           }
+
+                       }
+                       if(tuo[u].slnm == "温石汤泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"温石汤泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"温石汤泵站","value":0})
+                           }
+
+                       }
+                       if(tuo[u].slnm == "星石泊泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"星石泊泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"星石泊泵站","value":0})
+                           }
+
+                       }
+
+                   }
+                   if(res.length>0){
+                       for(var hg=0;hg<res.length;hg++){
+                           var u = 0;
+                           for(var yu in res[hg]){
+                               if(yu == 'name'){
+                                   if(res[hg][yu] == "灰埠泵站"){
+                                       u =1;
+                                   }
+                                   if(res[hg][yu] == "东宋泵站"){
+                                       u =2;
+                                   }
+                                   if(res[hg][yu] == "高瞳泵站"){
+                                       u =3;
+                                   }
+                                   if(res[hg][yu] == "黄水河泵站"){
+                                       u =4;
+                                   }
+                                   if(res[hg][yu] == "辛庄泵站"){
+                                       u =5;
+                                   }
+                                   if(res[hg][yu] == "温石汤泵站"){
+                                       u =6;
+                                   }
+                                   if(res[hg][yu] == "星石泊泵站"){
+                                       u =7;
+                                   }
+                               }
+                               if(yu =='value'){
+                                   if(u==1){
+                                       ty[0] = res[hg][yu];
+                                   }
+                                   if(u==2){
+                                       ty[1] = res[hg][yu];
+                                   }
+                                   if(u==3){
+                                       ty[2] = res[hg][yu];
+                                   }
+                                   if(u==4){
+                                       ty[3] = res[hg][yu];
+                                   }
+                                   if(u==5){
+                                       ty[4] = res[hg][yu];
+                                   }
+                                   if(u==6){
+                                       ty[5] = res[hg][yu];
+                                   }
+                                   if(u==7){
+                                       ty[6] = res[hg][yu];
+                                   }
+                               }
+
+
+                           }
+                       }
+                   }
+                   // console.info(ty[0])
+                   if(ty[0] == undefined){
+                       ty[0]=0;
+                   }
+                   if(ty[1] == undefined){
+                       ty[1]=0;
+                   }
+                   if(ty[2] == undefined){
+                       ty[2]=0;
+                   }
+                   if(ty[3] == undefined){
+                       ty[3]=0;
+                   }
+                   if(ty[4] == undefined){
+                       ty[4]=0;
+                   }
+                   if(ty[5] == undefined){
+                       ty[5]=0;
+                   }
+                   if(ty[6] == undefined){
+                       ty[6]=0;
+                   }
+                   var koi = ty[0];
+                   for(var yui=0;yui<ty.length;yui++){
+                       if(koi<ty[yui]){
+                           koi = ty[yui]
+                       }
+                   }
+
+                   $("#hui").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "灰埠泵站：" +"<br>"+
+                       "水位："+ty[0].toString()+"<br>"
+
+                   )
+                   $("#hui").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       // <progress ></progress>
+                       "<progress id='hui1'>"+"</progress>"
+
+                   )
+                   $("#song").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "东宋泵站：" +"<br>"+
+                       "水位"+ty[1].toString()+"<br>"
+                   )
+                   $("#song").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "<progress id='song1'>"+"</progress>"
+                   )
+                   $("#gao").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "高瞳泵站：" +"<br>"+
+                       "水位"+ty[2].toString()+"<br>"
+                   )
+                   $("#gao").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "<progress id='gao1'>"+"</progress>"
+                   )
+                   $("#huang").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "黄水河泵站：" +"<br>"+
+                       "水位"+ty[3].toString()+"<br>"
+
+                   )
+                   $("#huang").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "<progress id='huang1'>"+"</progress>"
+
+                   )
+                   // $("#xin").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "辛庄泵站：" +"<br>"+
+                   //     "水位"+ty[4].toString()+"<br>"
+                   //
+                   // )
+                   // $("#xin").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "<progress id='xin1'>"+"</progress>"
+                   //
+                   // )
+                   // $("#wen").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "温石汤泵站：" +"<br>"+
+                   //     "水位"+ty[5].toString()+"<br>"
+                   //
+                   // )
+                   // $("#wen").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "<progress id='wen1'>"+"</progress>"
+                   //
+                   // )
+                   // $("#xing").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "星石泊泵站：" +"<br>"+
+                   //     "水位"+ty[6].toString()+"<br>"
+                   //
+                   // )
+                   // $("#xing").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "<progress id='xing1'>"+"</progress>"
+                   //
+                   // )
+                   $("#hui1").val(ty[0])
+                   $("#song1").val(ty[1])
+                   $("#gao1").val(ty[2])
+                   $("#huang1").val(ty[3])
+                   // $("#xin1").val(ty[4])
+                   // $("#wen1").val(ty[5])
+                   // $("#xing1").val(ty[6])
+                   $("#hui1").attr("max",50)
+                   $("#song1").attr("max",50)
+                   $("#gao1").attr("max",50)
+                   $("#huang1").attr("max",50)
+                   // $("#xin1").attr("max",koi)
+                   // $("#wen1").attr("max",koi)
+                   // $("#xing1").attr("max",koi)
+                   var optionOI = {
+                       tooltip: {
+                           show: true
+                       },
+                       xAxis: {
+                           type: 'category',
+                           boundaryGap: false,
+                           data: ['灰埠泵站', '东宋泵站', '高瞳泵站', '黄水河泵站','辛庄泵站','温石汤泵站','星石泊泵站'],
+                           axisLabel: {//把文字竖着放
+                               interval:0,
+                               rotate:40
+                           }
+                       },
+                       yAxis: {
+                           type: 'value'
+                       },
+                       series: [{
+                           name: '水位',
+                           data: ty,
+                           smooth: true,
+                           type: 'line',
+                           itemStyle: {
+                               normal: {
+                                   color: '#5889d2',
+                                   lineStyle: {
+                                       color: '#5889d2'
+                                   }
+                               }
+                           },
+                           areaStyle: {
+                               normal: {
+                                   color: '#9fd5f5'
+                               }
+                           }
+                       }]
+                   }
+                   swqx.setOption(optionOI, true);
+
+               }
+           })
+       }else{
+           $("#shui").hide();
+           $("#yinhuang").show();
+           $("#qu").empty();
+           $("#zhuang").empty();
+           $("#wang").empty();
+           $("#ting").empty();
+           $("#ji").empty();
+           var swqx = echarts.init(document.getElementById('shuiweiquxian'));
+           $.ajax({
+               url: 'http://10.0.2.7:9930/gate/listDataKX',
+               dataType: "json",
+               type: "get",
+               success: function (data) {
+                   var res = [];
+                   var ty = [];
+                   var max =100;
+                   var tuo = data.rows;
+                   debugger
+                   for(var u=0;u<tuo.length;u++){
+                       if(tuo[u].slnm == "渠首泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"渠首泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"渠首泵站","value":0})
+                           }
+
+                       }
+                       if(tuo[u].slnm == "宋庄泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"宋庄泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"宋庄泵站","value":0})
+                           }
+                       }
+                       if(tuo[u].slnm == "王耨泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"王耨泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"王耨泵站","value":0})
+                           }
+                       }
+                       if(tuo[u].slnm == "亭口泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"亭口泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"亭口泵站","value":0})
+                           }
+                       }
+                       if(tuo[u].slnm == "棘洪滩泵站"){
+                           if(tuo[u].dwz !=null){
+                               res.push({"name":"棘洪滩泵站","value":tuo[u].dwz})
+                           }else{
+                               res.push({"name":"棘洪滩泵站","value":0})
+                           }
+
+                       }
+
+
+
+                   }
+                   if(res.length>0){
+                       for(var hg=0;hg<res.length;hg++){
+                           var u = 0;
+                           for(var yu in res[hg]){
+                               if(yu == 'name'){
+                                   if(res[hg][yu] == "渠首泵站"){
+                                       u =1;
+                                   }
+                                   if(res[hg][yu] == "宋庄泵站"){
+                                       u =2;
+                                   }
+                                   if(res[hg][yu] == "王耨泵站"){
+                                       u =3;
+                                   }
+                                   if(res[hg][yu] == "亭口泵站"){
+                                       u =4;
+                                   }
+                                   if(res[hg][yu] == "棘洪滩泵站"){
+                                       u =5;
+                                   }
+
+                               }
+                               if(yu =='value'){
+                                   if(u==1){
+                                       ty[0] = res[hg][yu];
+                                   }
+                                   if(u==2){
+                                       ty[1] = res[hg][yu];
+                                   }
+                                   if(u==3){
+                                       ty[2] = res[hg][yu];
+                                   }
+                                   if(u==4){
+                                       ty[3] = res[hg][yu];
+                                   }
+                                   if(u==5){
+                                       ty[4] = res[hg][yu];
+                                   }
+
+                               }
+
+
+                           }
+
+
+                       }
+                   }
+                   // console.info(ty[0])
+                   if(ty[0] == undefined){
+                       ty[0]=0;
+                   }
+                   if(ty[1] == undefined){
+                       ty[1]=0;
+                   }
+                   if(ty[2] == undefined){
+                       ty[2]=0;
+                   }
+                   if(ty[3] == undefined){
+                       ty[3]=0;
+                   }
+                   if(ty[4] == undefined){
+                       ty[4]=0;
+                   }
+
+                   var koi = ty[0];
+                   for(var yui=0;yui<ty.length;yui++){
+                       if(koi<ty[yui]){
+                           koi = ty[yui]
+                       }
+                   }
+
+                   $("#qu").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "渠首泵站：" +"<br>"+
+                       "水位："+ty[0].toString()+"<br>"
+
+                   )
+                   $("#qu").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       // <progress ></progress>
+                       "<progress id='qu1'>"+"</progress>"
+
+                   )
+                   $("#zhuang").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "宋庄泵站：" +"<br>"+
+                       "水位"+ty[1].toString()+"<br>"
+                   )
+                   $("#zhuang").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "<progress id='zhuang1'>"+"</progress>"
+                   )
+                   $("#wang").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "王耨泵站：" +"<br>"+
+                       "水位"+ty[2].toString()+"<br>"
+                   )
+                   $("#wang").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "<progress id='wang1'>"+"</progress>"
+                   )
+                   $("#ting").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "亭口泵站：" +"<br>"+
+                       "水位"+ty[3].toString()+"<br>"
+
+                   )
+                   $("#ting").append(
+                       //     灰埠泵站：<br>
+                       // 流量<br>
+                       "<progress id='ting1'>"+"</progress>"
+
+                   )
+                   // $("#ji").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "棘洪滩泵站：" +"<br>"+
+                   //     "水位"+ty[4].toString()+"<br>"
+                   //
+                   // )
+                   // $("#ji").append(
+                   //     //     灰埠泵站：<br>
+                   //     // 流量<br>
+                   //     "<progress id='ji1'>"+"</progress>"
+                   //
+                   // )
+
+                   $("#qu1").val(ty[0])
+                   $("#zhuang1").val(ty[1])
+                   $("#wang1").val(ty[2])
+                   $("#ting1").val(ty[3])
+                   // $("#ji1").val(ty[4])
+                   $("#qu1").attr("max",50)
+                   $("#zhuang1").attr("max",50)
+                   $("#wang1").attr("max",50)
+                   $("#ting1").attr("max",50)
+                   // $("#ji1").attr("max",50)
+
+                   var optionOI = {
+                       tooltip: {
+                           show: true
+                       },
+                       xAxis: {
+                           type: 'category',
+                           boundaryGap: false,
+                           data: ['渠首泵站', '宋庄泵站', '王耨泵站', '亭口泵站','棘洪滩泵站'],
+                           axisLabel: {//把文字竖着放
+                               interval:0,
+                               rotate:40
+                           }
+                       },
+                       yAxis: {
+                           type: 'value'
+                       },
+                       series: [{
+                           name: '水位',
+                           data: ty,
+                           smooth: true,
+                           type: 'line',
+                           itemStyle: {
+                               normal: {
+                                   color: '#5889d2',
+                                   lineStyle: {
+                                       color: '#5889d2'
+                                   }
+                               }
+                           },
+                           areaStyle: {
+                               normal: {
+                                   color: '#9fd5f5'
+                               }
+                           }
+                       }]
+                   }
+                   swqx.setOption(optionOI, true);
+
+               }
+           })
+       }
+    }
+    function year(){
+        var ku = $("#year option:selected").val();
+        // $("#shuiweiquxian").empty()
+        if(ku == '胶东调水'){
+            $("#yinhuang1").hide();
+            $("#shui1").show();
+            $("#hui3").empty();
+            $("#song3").empty();
+            $("#gao3").empty();
+            $("#huang3").empty();
+            $("#xin3").empty();
+            $("#wen3").empty();
+            $("#xing3").empty();
+            var llqx = echarts.init(document.getElementById('liuliangquxian'));
+            $.ajax({
+                url: 'http://10.0.2.7:9930/gate/listDataKX',
+                dataType: "json",
+                type: "get",
+                success: function (data) {
+                    var res = [];
+                    var ty = [];
+                    var max =100;
+                    var tuo = data.rows;
+
+                    for(var u=0;u<tuo.length;u++){
+                        if(tuo[u].slnm == "灰埠泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"灰埠泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"灰埠泵站","value":0})
+                            }
+
+                        }
+                        if(tuo[u].slnm == "东宋泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"东宋泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"东宋泵站","value":0})
+                            }
+                        }
+                        if(tuo[u].slnm == "高瞳泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"高瞳泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"高瞳泵站","value":0})
+                            }
+                        }
+                        if(tuo[u].slnm == "黄水河泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"黄水河泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"黄水河泵站","value":0})
+                            }
+                        }
+                        if(tuo[u].slnm == "辛庄泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"辛庄泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"辛庄泵站","value":0})
+                            }
+
+                        }
+                        if(tuo[u].slnm == "温石汤泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"温石汤泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"温石汤泵站","value":0})
+                            }
+
+                        }
+                        if(tuo[u].slnm == "星石泊泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"星石泊泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"星石泊泵站","value":0})
+                            }
+
+                        }
+
+                    }
+                    if(res.length>0){
+                        for(var hg=0;hg<res.length;hg++){
+                            var u = 0;
+                            for(var yu in res[hg]){
+                                if(yu == 'name'){
+                                    if(res[hg][yu] == "灰埠泵站"){
+                                        u =1;
+                                    }
+                                    if(res[hg][yu] == "东宋泵站"){
+                                        u =2;
+                                    }
+                                    if(res[hg][yu] == "高瞳泵站"){
+                                        u =3;
+                                    }
+                                    if(res[hg][yu] == "黄水河泵站"){
+                                        u =4;
+                                    }
+                                    if(res[hg][yu] == "辛庄泵站"){
+                                        u =5;
+                                    }
+                                    if(res[hg][yu] == "温石汤泵站"){
+                                        u =6;
+                                    }
+                                    if(res[hg][yu] == "星石泊泵站"){
+                                        u =7;
+                                    }
+                                }
+                                if(yu =='value'){
+                                    if(u==1){
+                                        ty[0] = res[hg][yu];
+                                    }
+                                    if(u==2){
+                                        ty[1] = res[hg][yu];
+                                    }
+                                    if(u==3){
+                                        ty[2] = res[hg][yu];
+                                    }
+                                    if(u==4){
+                                        ty[3] = res[hg][yu];
+                                    }
+                                    if(u==5){
+                                        ty[4] = res[hg][yu];
+                                    }
+                                    if(u==6){
+                                        ty[5] = res[hg][yu];
+                                    }
+                                    if(u==7){
+                                        ty[6] = res[hg][yu];
+                                    }
+                                }
+
+
+                            }
+
+
+                        }
+                    }
+                    // console.info(ty[0])
+                    if(ty[0] == undefined){
+                        ty[0]=0;
+                    }
+                    if(ty[1] == undefined){
+                        ty[1]=0;
+                    }
+                    if(ty[2] == undefined){
+                        ty[2]=0;
+                    }
+                    if(ty[3] == undefined){
+                        ty[3]=0;
+                    }
+                    if(ty[4] == undefined){
+                        ty[4]=0;
+                    }
+                    if(ty[5] == undefined){
+                        ty[5]=0;
+                    }
+                    if(ty[6] == undefined){
+                        ty[6]=0;
+                    }
+                    var koi = ty[0];
+                    for(var yui=0;yui<ty.length;yui++){
+                        if(koi<ty[yui]){
+                            koi = ty[yui]
+                        }
+                    }
+
+                    $("#hui3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "灰埠泵站：" +"<br>"+
+                        "流量："+ty[0].toString()+"<br>"
+
+                    )
+                    $("#hui3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        // <progress ></progress>
+                        "<progress id='hui2'>"+"</progress>"
+
+                    )
+                    $("#song3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "东宋泵站：" +"<br>"+
+                        "流量"+ty[1].toString()+"<br>"
+                    )
+                    $("#song3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "<progress id='song2'>"+"</progress>"
+                    )
+                    $("#gao3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "高瞳泵站：" +"<br>"+
+                        "流量"+ty[2].toString()+"<br>"
+                    )
+                    $("#gao3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "<progress id='gao2'>"+"</progress>"
+                    )
+                    $("#huang3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "黄水河泵站：" +"<br>"+
+                        "流量"+ty[3].toString()+"<br>"
+
+                    )
+                    $("#huang3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "<progress id='huang2'>"+"</progress>"
+
+                    )
+                    // $("#xin3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "辛庄泵站：" +"<br>"+
+                    //     "水位"+ty[4].toString()+"<br>"
+                    //
+                    // )
+                    // $("#xin3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "<progress id='xin2'>"+"</progress>"
+                    //
+                    // )
+                    // $("#wen3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "温石汤泵站：" +"<br>"+
+                    //     "水位"+ty[5].toString()+"<br>"
+                    //
+                    // )
+                    // $("#wen3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "<progress id='wen2'>"+"</progress>"
+                    //
+                    // )
+                    // $("#xing3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "星石泊泵站：" +"<br>"+
+                    //     "水位"+ty[6].toString()+"<br>"
+                    //
+                    // )
+                    // $("#xing3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "<progress id='xing2'>"+"</progress>"
+                    //
+                    // )
+                    $("#hui2").val(ty[0])
+                    $("#song2").val(ty[1])
+                    $("#gao2").val(ty[2])
+                    $("#huang2").val(ty[3])
+                    // $("#xin2").val(ty[4])
+                    // $("#wen2").val(ty[5])
+                    // $("#xing2").val(ty[6])
+                    $("#hui2").attr("max",30)
+                    $("#song2").attr("max",30)
+                    $("#gao2").attr("max",30)
+                    // $("#huang2").attr("max",koi)
+                    // $("#xin2").attr("max",koi)
+                    // $("#wen2").attr("max",koi)
+                    // $("#xing2").attr("max",koi)
+                    var optionOI = {
+                        tooltip: {
+                            show: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['灰埠泵站', '东宋泵站', '高瞳泵站', '黄水河泵站','辛庄泵站','温石汤泵站','星石泊泵站'],
+                            axisLabel: {//把文字竖着放
+                                interval:0,
+                                rotate:40
+                            }
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            name: '水位',
+                            data: ty,
+                            smooth: true,
+                            type: 'line',
+                            itemStyle: {
+                                normal: {
+                                    color: '#fec964',
+                                    lineStyle: {
+                                        color: '#fec964'
+                                    }
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    color: '#fed674'
+                                }
+                            }
+                        }]
+                    }
+                    llqx.setOption(optionOI, true);
+
+                }
+            })
+        }else{
+            $("#shui1").hide();
+            $("#yinhuang1").show();
+            $("#qu3").empty();
+            $("#zhuang3").empty();
+            $("#wang3").empty();
+            $("#ting3").empty();
+            $("#ji3").empty();
+            var llqx = echarts.init(document.getElementById('liuliangquxian'));
+            //历史曲线图，以后该需求需要
+            // $.ajax({
+            //     url: 'http://10.0.2.7:9930/gate/listDataKXUY',
+            //     dataType: "json",
+            //     type: "get",
+            //     success: function (data) {
+            //         debugger
+            //        //灰埠泵站
+            //        var tu = [];
+            //        //宋庄泵站
+            //        var songzhuang = [];
+            //        //高瞳泵站
+            //         var gaotong = [];
+            //         //黄水河泵站
+            //         var huangshuihe =[];
+            //         var year1 =  new Date().getFullYear().toString();
+            //        if(data[0].rows.length>0){
+            //            tu[0] = data[0].rows[0].all_q;
+            //        }else{
+            //            tu[0] =0;
+            //        }
+            //         if(data[1].rows.length>0){
+            //             tu[1] = data[1].rows[0].all_q;
+            //         }else{
+            //             tu[1] =0;
+            //         }
+            //         if(data[2].rows.length>0){
+            //             tu[2] = data[2].rows[0].all_q;
+            //         }else{
+            //             tu[2] =0;
+            //         }
+            //         if(data[3].rows.length>0){
+            //             tu[3] = data[3].rows[0].all_q;
+            //         }else{
+            //             tu[3] =0;
+            //         }
+            //         if(data[4].rows.length>0){
+            //             tu[4] = data[4].rows[0].all_q;
+            //         }else{
+            //             tu[4] =0;
+            //         }
+            //         if(data[5].rows.length>0){
+            //             tu[5] = data[5].rows[0].all_q;
+            //         }else{
+            //             tu[5] =0;
+            //         }
+            //         if(data[6].rows.length>0){
+            //             tu[6] = data[6].rows[0].all_q;
+            //         }else{
+            //             tu[6] =0;
+            //         }
+            //         if(data[7].rows.length>0){
+            //             tu[7] = data[7].rows[0].all_q;
+            //         }else{
+            //             tu[7] =0;
+            //         }
+            //         if(data[8].rows.length>0){
+            //             tu[8] = data[8].rows[0].all_q;
+            //         }else{
+            //             tu[8] =0;
+            //         }
+            //         if(data[9].rows.length>0){
+            //             tu[9] = data[9].rows[0].all_q;
+            //         }else{
+            //             tu[9] =0;
+            //         }
+            //         if(data[10].rows.length>0){
+            //             tu[10] = data[10].rows[0].all_q;
+            //         }else{
+            //             tu[10] =0;
+            //         }
+            //         if(data[11].rows.length>0){
+            //             tu[11] = data[11].rows[0].all_q;
+            //         }else{
+            //             tu[11] =0;
+            //         }
+            //         if(data[12].rows.length>0){
+            //             songzhuang[0] = data[12].rows[0].all_q;
+            //         }else{
+            //             songzhuang[0]  =0;
+            //         }
+            //         if(data[13].rows.length>0){
+            //             songzhuang[1] = data[13].rows[0].all_q;
+            //         }else{
+            //             songzhuang[1]  =0;
+            //         }
+            //         if(data[14].rows.length>0){
+            //             songzhuang[2] = data[14].rows[0].all_q;
+            //         }else{
+            //             songzhuang[2]  =0;
+            //         }
+            //         if(data[15].rows.length>0){
+            //             songzhuang[3] = data[15].rows[0].all_q;
+            //         }else{
+            //             songzhuang[3]  =0;
+            //         }
+            //         if(data[16].rows.length>0){
+            //             songzhuang[4] = data[16].rows[0].all_q;
+            //         }else{
+            //             songzhuang[4]  =0;
+            //         }
+            //         if(data[17].rows.length>0){
+            //             songzhuang[5] = data[17].rows[0].all_q;
+            //         }else{
+            //             songzhuang[5]  =0;
+            //         }
+            //         if(data[18].rows.length>0){
+            //             songzhuang[6] = data[18].rows[0].all_q;
+            //         }else{
+            //             songzhuang[6]  =0;
+            //         }
+            //         if(data[19].rows.length>0){
+            //             songzhuang[7] = data[19].rows[0].all_q;
+            //         }else{
+            //             songzhuang[7]  =0;
+            //         }
+            //         if(data[20].rows.length>0){
+            //             songzhuang[8] = data[20].rows[0].all_q;
+            //         }else{
+            //             songzhuang[8]  =0;
+            //         }
+            //         if(data[21].rows.length>0){
+            //             songzhuang[9] = data[21].rows[0].all_q;
+            //         }else{
+            //             songzhuang[9]  =0;
+            //         }
+            //         if(data[22].rows.length>0){
+            //             songzhuang[10] = data[22].rows[0].all_q;
+            //         }else{
+            //             songzhuang[10]  =0;
+            //         }
+            //         if(data[23].rows.length>0){
+            //             songzhuang[11] = data[23].rows[0].all_q;
+            //         }else{
+            //             songzhuang[11]  =0;
+            //         }
+            //         if(data[24].rows.length>0){
+            //             gaotong[0] = data[24].rows[0].all_q;
+            //         }else{
+            //             gaotong[0]  =0;
+            //         }
+            //         if(data[25].rows.length>0){
+            //             gaotong[1] = data[25].rows[0].all_q;
+            //         }else{
+            //             gaotong[1]  =0;
+            //         }
+            //         if(data[26].rows.length>0){
+            //             gaotong[2] = data[26].rows[0].all_q;
+            //         }else{
+            //             gaotong[2]  =0;
+            //         }
+            //         if(data[27].rows.length>0){
+            //             gaotong[3] = data[27].rows[0].all_q;
+            //         }else{
+            //             gaotong[3]  =0;
+            //         }
+            //         if(data[28].rows.length>0){
+            //             gaotong[4] = data[28].rows[0].all_q;
+            //         }else{
+            //             gaotong[4]  =0;
+            //         }
+            //         if(data[29].rows.length>0){
+            //             gaotong[5] = data[29].rows[0].all_q;
+            //         }else{
+            //             gaotong[5]  =0;
+            //         } if(data[30].rows.length>0){
+            //             gaotong[6] = data[30].rows[0].all_q;
+            //         }else{
+            //             gaotong[6]  =0;
+            //         } if(data[31].rows.length>0){
+            //             gaotong[7] = data[31].rows[0].all_q;
+            //         }else{
+            //             gaotong[7]  =0;
+            //         }
+            //         if(data[32].rows.length>0){
+            //             gaotong[8] = data[32].rows[0].all_q;
+            //         }else{
+            //             gaotong[8]  =0;
+            //         } if(data[33].rows.length>0){
+            //             gaotong[9] = data[33].rows[0].all_q;
+            //         }else{
+            //             gaotong[9]  =0;
+            //         }
+            //         if(data[34].rows.length>0){
+            //             gaotong[10] = data[34].rows[0].all_q;
+            //         }else{
+            //             gaotong[10]  =0;
+            //         }
+            //         if(data[35].rows.length>0){
+            //             gaotong[11] = data[35].rows[0].all_q;
+            //         }else{
+            //             gaotong[11]  =0;
+            //         }
+            //         if(data[36].rows.length>0){
+            //             huangshuihe[0] = data[36].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[0]  =0;
+            //         }
+            //         if(data[37].rows.length>0){
+            //             huangshuihe[1] = data[37].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[1]  =0;
+            //         }
+            //         if(data[38].rows.length>0){
+            //             huangshuihe[2] = data[38].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[2]  =0;
+            //         }
+            //         if(data[39].rows.length>0){
+            //             huangshuihe[3] = data[39].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[3]  =0;
+            //         }
+            //         if(data[40].rows.length>0){
+            //             huangshuihe[4] = data[40].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[4]  =0;
+            //         }
+            //         if(data[41].rows.length>0){
+            //             huangshuihe[5] = data[41].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[5]  =0;
+            //         }
+            //         if(data[42].rows.length>0){
+            //             huangshuihe[6] = data[42].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[6]  =0;
+            //         }
+            //         if(data[43].rows.length>0){
+            //             huangshuihe[7] = data[43].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[7]  =0;
+            //         }
+            //         if(data[44].rows.length>0){
+            //             huangshuihe[8] = data[44].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[8]  =0;
+            //         }
+            //         if(data[45].rows.length>0){
+            //             huangshuihe[9] = data[45].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[9]  =0;
+            //         }
+            //         if(data[46].rows.length>0){
+            //             huangshuihe[10] = data[46].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[10]  =0;
+            //         }
+            //         if(data[47].rows.length>0){
+            //             huangshuihe[11] = data[47].rows[0].all_q;
+            //         }else{
+            //             huangshuihe[11]  =0;
+            //         }
+            //
+            //       var   optionJU = {
+            //             tooltip: {
+            //                 trigger: 'axis',
+            //                 axisPointer: {
+            //                     type: 'cross',
+            //                     label: {
+            //                         backgroundColor: '#6a7985'
+            //                     }
+            //                 }
+            //             },
+            //             grid: {
+            //                 left: '3%',
+            //                 right: '4%',
+            //                 bottom: '3%',
+            //                 containLabel: true
+            //             },
+            //             // toolbox: {
+            //             //     feature: {
+            //             //         saveAsImage: {}
+            //             //     }
+            //             // },
+            //             xAxis: {
+            //                 type: 'category',
+            //
+            //                 data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月'],
+            //                 boundaryGap: false,
+            //                 splitLine: {
+            //                     show: true,
+            //                     lineStyle:{
+            //                         color: ['#ddd'],
+            //                         width: 1,
+            //                         type: 'solid'
+            //                     }
+            //                 },
+            //                 axisLabel: {//把文字竖着放
+            //                     interval:0,
+            //                     rotate:40
+            //                 }
+            //
+            //
+            //             },
+            //             yAxis: {
+            //                 type: 'value',
+            //                 splitLine: {
+            //                     lineStyle: {
+            //                         color: '#ddd'
+            //                     }
+            //                 },
+            //                 minorSplitLine: {
+            //                     show: true,
+            //                     lineStyle: {
+            //                         color: '#ddd'
+            //                     }
+            //                 }
+            //             },
+            //             series: [
+            //                 {
+            //                     name: '灰埠泵站',
+            //                     smooth: true,
+            //                     areaStyle: {
+            //                         normal: {
+            //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            //                             //       { offset: 0.3, color: "red" },
+            //                             //   { offset: 0.4, color: "transparent" },
+            //                             //   { offset: 0.8, color: "transparent" },
+            //                             //   { offset: 1, color: "transparent" }
+            //                             // ])
+            //                         }
+            //                     }, //填充区域样式
+            //                     // itemStyle: {
+            //                     //   color: "rgb(255, 70, 131)",
+            //                     //   opacity: 0 //为0不会绘制图形拐点消失
+            //                     // }, //拐点的样式
+            //                     //  symbol:'star',//拐点样式
+            //                     symbolSize: 6,//拐点大小
+            //                     type: 'line',
+            //                     stack: '流量',
+            //                     // areaStyle: {},
+            //                     color:'red',
+            //                     data: tu,
+            //                 },
+            //                 {
+            //                     name: '宋庄泵站',
+            //                     smooth: true,
+            //                     areaStyle: {
+            //                         normal: {
+            //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            //                             //       { offset: 0.3, color: "red" },
+            //                             //   { offset: 0.4, color: "transparent" },
+            //                             //   { offset: 0.8, color: "transparent" },
+            //                             //   { offset: 1, color: "transparent" }
+            //                             // ])
+            //                         }
+            //                     }, //填充区域样式
+            //                     // itemStyle: {
+            //                     //   color: "rgb(255, 70, 131)",
+            //                     //   opacity: 0 //为0不会绘制图形拐点消失
+            //                     // }, //拐点的样式
+            //                     //  symbol:'star',//拐点样式
+            //                     symbolSize: 6,//拐点大小
+            //                     type: 'line',
+            //                     stack: '流量',
+            //                     // areaStyle: {},
+            //                     color:'red',
+            //                     data: songzhuang,
+            //                 },
+            //                 {
+            //                     name: '高瞳泵站',
+            //                     smooth: true,
+            //                     areaStyle: {
+            //                         normal: {
+            //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            //                             //       { offset: 0.3, color: "red" },
+            //                             //   { offset: 0.4, color: "transparent" },
+            //                             //   { offset: 0.8, color: "transparent" },
+            //                             //   { offset: 1, color: "transparent" }
+            //                             // ])
+            //                         }
+            //                     }, //填充区域样式
+            //                     // itemStyle: {
+            //                     //   color: "rgb(255, 70, 131)",
+            //                     //   opacity: 0 //为0不会绘制图形拐点消失
+            //                     // }, //拐点的样式
+            //                     //  symbol:'star',//拐点样式
+            //                     symbolSize: 6,//拐点大小
+            //                     type: 'line',
+            //                     stack: '流量',
+            //                     // areaStyle: {},
+            //                     color:'red',
+            //                     data: gaotong,
+            //                 },
+            //                 {
+            //                     name: '黄水河泵站',
+            //                     smooth: true,
+            //                     areaStyle: {
+            //                         normal: {
+            //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            //                             //       { offset: 0.3, color: "red" },
+            //                             //   { offset: 0.4, color: "transparent" },
+            //                             //   { offset: 0.8, color: "transparent" },
+            //                             //   { offset: 1, color: "transparent" }
+            //                             // ])
+            //                         }
+            //                     }, //填充区域样式
+            //                     // itemStyle: {
+            //                     //   color: "rgb(255, 70, 131)",
+            //                     //   opacity: 0 //为0不会绘制图形拐点消失
+            //                     // }, //拐点的样式
+            //                     //  symbol:'star',//拐点样式
+            //                     symbolSize: 6,//拐点大小
+            //                     type: 'line',
+            //                     stack: '流量',
+            //                     // areaStyle: {},
+            //                     color:'red',
+            //                     data: huangshuihe,
+            //                 },
+            //
+            //             ]
+            //         };
+            //         llqx.setOption(optionJU, true);
+            //     }
+            // })
+            $.ajax({
+                url: 'http://10.0.2.7:9930/gate/listDataKX',
+                dataType: "json",
+                type: "get",
+                success: function (data) {
+                    var res = [];
+                    var ty = [];
+                    var max =100;
+                    var tuo = data.rows;
+                    for(var u=0;u<tuo.length;u++){
+                        if(tuo[u].slnm == "渠首泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"渠首泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"渠首泵站","value":0})
+                            }
+
+                        }
+                        if(tuo[u].slnm == "宋庄泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"宋庄泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"宋庄泵站","value":0})
+                            }
+                        }
+                        if(tuo[u].slnm == "王耨泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"王耨泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"王耨泵站","value":0})
+                            }
+                        }
+                        if(tuo[u].slnm == "亭口泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"亭口泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"亭口泵站","value":0})
+                            }
+                        }
+                        if(tuo[u].slnm == "棘洪滩泵站"){
+                            if(tuo[u].gtq !=null){
+                                res.push({"name":"棘洪滩泵站","value":tuo[u].gtq})
+                            }else{
+                                res.push({"name":"棘洪滩泵站","value":0})
+                            }
+
+                        }
+
+
+
+                    }
+                    if(res.length>0){
+                        for(var hg=0;hg<res.length;hg++){
+                            var u = 0;
+                            for(var yu in res[hg]){
+                                if(yu == 'name'){
+                                    if(res[hg][yu] == "渠首泵站"){
+                                        u =1;
+                                    }
+                                    if(res[hg][yu] == "宋庄泵站"){
+                                        u =2;
+                                    }
+                                    if(res[hg][yu] == "王耨泵站"){
+                                        u =3;
+                                    }
+                                    if(res[hg][yu] == "亭口泵站"){
+                                        u =4;
+                                    }
+                                    if(res[hg][yu] == "棘洪滩泵站"){
+                                        u =5;
+                                    }
+
+                                }
+                                if(yu =='value'){
+                                    if(u==1){
+                                        ty[0] = res[hg][yu];
+                                    }
+                                    if(u==2){
+                                        ty[1] = res[hg][yu];
+                                    }
+                                    if(u==3){
+                                        ty[2] = res[hg][yu];
+                                    }
+                                    if(u==4){
+                                        ty[3] = res[hg][yu];
+                                    }
+                                    if(u==5){
+                                        ty[4] = res[hg][yu];
+                                    }
+
+                                }
+
+
+                            }
+
+
+                        }
+                    }
+                    // console.info(ty[0])
+                    if(ty[0] == undefined){
+                        ty[0]=0;
+                    }
+                    if(ty[1] == undefined){
+                        ty[1]=0;
+                    }
+                    if(ty[2] == undefined){
+                        ty[2]=0;
+                    }
+                    if(ty[3] == undefined){
+                        ty[3]=0;
+                    }
+                    if(ty[4] == undefined){
+                        ty[4]=0;
+                    }
+
+                    var koi = ty[0];
+                    for(var yui=0;yui<ty.length;yui++){
+                        if(koi<ty[yui]){
+                            koi = ty[yui]
+                        }
+                    }
+
+                    $("#qu3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "渠首泵站：" +"<br>"+
+                        "流量："+ty[0].toString()+"<br>"
+
+                    )
+                    $("#qu3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        // <progress ></progress>
+                        "<progress id='qu2'>"+"</progress>"
+
+                    )
+                    $("#zhuang3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "宋庄泵站：" +"<br>"+
+                        "流量"+ty[1].toString()+"<br>"
+                    )
+                    $("#zhuang3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "<progress id='zhuang2'>"+"</progress>"
+                    )
+                    $("#wang3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "王耨泵站：" +"<br>"+
+                        "流量"+ty[2].toString()+"<br>"
+                    )
+                    $("#wang3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "<progress id='wang2'>"+"</progress>"
+                    )
+                    $("#ting3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "亭口泵站：" +"<br>"+
+                        "流量"+ty[3].toString()+"<br>"
+
+                    )
+                    $("#ting3").append(
+                        //     灰埠泵站：<br>
+                        // 流量<br>
+                        "<progress id='ting2'>"+"</progress>"
+
+                    )
+                    // $("#ji3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "棘洪滩泵站：" +"<br>"+
+                    //     "水位"+ty[4].toString()+"<br>"
+                    //
+                    // )
+                    // $("#ji3").append(
+                    //     //     灰埠泵站：<br>
+                    //     // 流量<br>
+                    //     "<progress id='ji2'>"+"</progress>"
+                    //
+                    // )
+
+                    $("#qu2").val(ty[0])
+                    $("#zhuang2").val(ty[1])
+                    $("#wang2").val(ty[2])
+                    $("#ting2").val(ty[3])
+                    // $("#ji2").val(ty[4])
+                    $("#qu2").attr("max",50)
+                    $("#zhuang2").attr("max",50)
+                    $("#wang2").attr("max",50)
+                    $("#ting2").attr("max",50)
+                    // $("#ji2").attr("max",50)
+
+                    var optionOI = {
+                        tooltip: {
+                            show: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['渠首泵站', '宋庄泵站', '王耨泵站', '亭口泵站','棘洪滩泵站'],
+                            axisLabel: {//把文字竖着放
+                                interval:0,
+                                rotate:40
+                            }
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            name: '水位',
+                            data: ty,
+                            smooth: true,
+                            type: 'line',
+                            itemStyle: {
+                                normal: {
+                                    color: '#fec964',
+                                    lineStyle: {
+                                        color: '#fec964'
+                                    }
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    color: '#fed674'
+                                }
+                            }
+                        }]
+                    }
+                    llqx.setOption(optionOI, true);
+
+                }
+            })
+        }
+    }
+
+
+    $(function () {
+
+        // 待办列表
+        getWorkflowList('/oa/message/listData');
+
+        // 通知公告列表
+        getArticleList('水利要闻');
+
+        // 通知公告轮播列表
+        getArticleCarouselList('水利要闻');
+
+        //待办导航栏切换
+        $('.floatStyle').click(function () {
+            $('.floatStyle').removeClass('btnBox-active');
+            $('.floatStyle').find('img[name=img1]').css('display', 'block');
+            $('.floatStyle').find('img[name=img2]').css('display', 'none');
+            $('.floatStyle').find('img[name=img3]').css('display', 'none');
+            $(this).addClass('btnBox-active');
+            $(this).find('img[name=img1]').css('display', 'none');
+            $(this).find('img[name=img2]').css('display', 'block');
+            $(this).find('img[name=img3]').css('display', 'block');
+            var href = $(this).attr('data-data');
+            getWorkflowList(href);
+        });
+
+        // 通知公告导航栏切换
+        /*$('.tzgg').click(function () {
+            $('.tzgg').removeClass('tabActive');
+            $(this).addClass('tabActive');
+            var categoryName = $(this).attr('data-name');
+            $('#tzggType').val(categoryName);
+            getArticleList(categoryName);
+            getArticleCarouselList(categoryName);
+        });*/
+
+        // 查询待办事项数量
+        $.ajax({
+            type: 'get',
+            url: "${ctx}/oa/message/pageAmount",
+            dataType: 'json',
+            async: false,
+            success: function (data, status, xhr) {
+                $('#daiban').html(data.daiban);
+                $('#yiban').html(data.yiban);
+                $('#qingqiu').html(data.qingqiu);
+                $('#daiyue').html(data.daiyue);
+                $('#yiyue').html(data.yiyue);
+            }
+        });
+
+    });
+    // 历史曲线图，以后该需求需要
+    // function year(){
+    //     var year =  $("#year option:selected").val();
+    //     $("#liuliangquxian").empty();
+    //     var llqx = echarts.init(document.getElementById('liuliangquxian'));
+    //     $.ajax({
+    //         url: 'http://10.0.2.7:9930/gate/listDataKXUYU?str='+year,
+    //         dataType: "json",
+    //         type: "get",
+    //         success: function (data) {
+    //             debugger
+    //             //灰埠泵站
+    //             var tu = [];
+    //             //宋庄泵站
+    //             var songzhuang = [];
+    //             //高瞳泵站
+    //             var gaotong = [];
+    //             //黄水河泵站
+    //             var huangshuihe =[];
+    //             var year1 =  new Date().getFullYear().toString();
+    //             if(data[0].rows.length>0){
+    //                 tu[0] = data[0].rows[0].all_q;
+    //             }else{
+    //                 tu[0] =0;
+    //             }
+    //             if(data[1].rows.length>0){
+    //                 tu[1] = data[1].rows[0].all_q;
+    //             }else{
+    //                 tu[1] =0;
+    //             }
+    //             if(data[2].rows.length>0){
+    //                 tu[2] = data[2].rows[0].all_q;
+    //             }else{
+    //                 tu[2] =0;
+    //             }
+    //             if(data[3].rows.length>0){
+    //                 tu[3] = data[3].rows[0].all_q;
+    //             }else{
+    //                 tu[3] =0;
+    //             }
+    //             if(data[4].rows.length>0){
+    //                 tu[4] = data[4].rows[0].all_q;
+    //             }else{
+    //                 tu[4] =0;
+    //             }
+    //             if(data[5].rows.length>0){
+    //                 tu[5] = data[5].rows[0].all_q;
+    //             }else{
+    //                 tu[5] =0;
+    //             }
+    //             if(data[6].rows.length>0){
+    //                 tu[6] = data[6].rows[0].all_q;
+    //             }else{
+    //                 tu[6] =0;
+    //             }
+    //             if(data[7].rows.length>0){
+    //                 tu[7] = data[7].rows[0].all_q;
+    //             }else{
+    //                 tu[7] =0;
+    //             }
+    //             if(data[8].rows.length>0){
+    //                 tu[8] = data[8].rows[0].all_q;
+    //             }else{
+    //                 tu[8] =0;
+    //             }
+    //             if(data[9].rows.length>0){
+    //                 tu[9] = data[9].rows[0].all_q;
+    //             }else{
+    //                 tu[9] =0;
+    //             }
+    //             if(data[10].rows.length>0){
+    //                 tu[10] = data[10].rows[0].all_q;
+    //             }else{
+    //                 tu[10] =0;
+    //             }
+    //             if(data[11].rows.length>0){
+    //                 tu[11] = data[11].rows[0].all_q;
+    //             }else{
+    //                 tu[11] =0;
+    //             }
+    //             if(data[12].rows.length>0){
+    //                 songzhuang[0] = data[12].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[0]  =0;
+    //             }
+    //             if(data[13].rows.length>0){
+    //                 songzhuang[1] = data[13].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[1]  =0;
+    //             }
+    //             if(data[14].rows.length>0){
+    //                 songzhuang[2] = data[14].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[2]  =0;
+    //             }
+    //             if(data[15].rows.length>0){
+    //                 songzhuang[3] = data[15].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[3]  =0;
+    //             }
+    //             if(data[16].rows.length>0){
+    //                 songzhuang[4] = data[16].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[4]  =0;
+    //             }
+    //             if(data[17].rows.length>0){
+    //                 songzhuang[5] = data[17].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[5]  =0;
+    //             }
+    //             if(data[18].rows.length>0){
+    //                 songzhuang[6] = data[18].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[6]  =0;
+    //             }
+    //             if(data[19].rows.length>0){
+    //                 songzhuang[7] = data[19].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[7]  =0;
+    //             }
+    //             if(data[20].rows.length>0){
+    //                 songzhuang[8] = data[20].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[8]  =0;
+    //             }
+    //             if(data[21].rows.length>0){
+    //                 songzhuang[9] = data[21].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[9]  =0;
+    //             }
+    //             if(data[22].rows.length>0){
+    //                 songzhuang[10] = data[22].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[10]  =0;
+    //             }
+    //             if(data[23].rows.length>0){
+    //                 songzhuang[11] = data[23].rows[0].all_q;
+    //             }else{
+    //                 songzhuang[11]  =0;
+    //             }
+    //             if(data[24].rows.length>0){
+    //                 gaotong[0] = data[24].rows[0].all_q;
+    //             }else{
+    //                 gaotong[0]  =0;
+    //             }
+    //             if(data[25].rows.length>0){
+    //                 gaotong[1] = data[25].rows[0].all_q;
+    //             }else{
+    //                 gaotong[1]  =0;
+    //             }
+    //             if(data[26].rows.length>0){
+    //                 gaotong[2] = data[26].rows[0].all_q;
+    //             }else{
+    //                 gaotong[2]  =0;
+    //             }
+    //             if(data[27].rows.length>0){
+    //                 gaotong[3] = data[27].rows[0].all_q;
+    //             }else{
+    //                 gaotong[3]  =0;
+    //             }
+    //             if(data[28].rows.length>0){
+    //                 gaotong[4] = data[28].rows[0].all_q;
+    //             }else{
+    //                 gaotong[4]  =0;
+    //             }
+    //             if(data[29].rows.length>0){
+    //                 gaotong[5] = data[29].rows[0].all_q;
+    //             }else{
+    //                 gaotong[5]  =0;
+    //             } if(data[30].rows.length>0){
+    //                 gaotong[6] = data[30].rows[0].all_q;
+    //             }else{
+    //                 gaotong[6]  =0;
+    //             } if(data[31].rows.length>0){
+    //                 gaotong[7] = data[31].rows[0].all_q;
+    //             }else{
+    //                 gaotong[7]  =0;
+    //             }
+    //             if(data[32].rows.length>0){
+    //                 gaotong[8] = data[32].rows[0].all_q;
+    //             }else{
+    //                 gaotong[8]  =0;
+    //             } if(data[33].rows.length>0){
+    //                 gaotong[9] = data[33].rows[0].all_q;
+    //             }else{
+    //                 gaotong[9]  =0;
+    //             }
+    //             if(data[34].rows.length>0){
+    //                 gaotong[10] = data[34].rows[0].all_q;
+    //             }else{
+    //                 gaotong[10]  =0;
+    //             }
+    //             if(data[35].rows.length>0){
+    //                 gaotong[11] = data[35].rows[0].all_q;
+    //             }else{
+    //                 gaotong[11]  =0;
+    //             }
+    //             if(data[36].rows.length>0){
+    //                 huangshuihe[0] = data[36].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[0]  =0;
+    //             }
+    //             if(data[37].rows.length>0){
+    //                 huangshuihe[1] = data[37].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[1]  =0;
+    //             }
+    //             if(data[38].rows.length>0){
+    //                 huangshuihe[2] = data[38].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[2]  =0;
+    //             }
+    //             if(data[39].rows.length>0){
+    //                 huangshuihe[3] = data[39].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[3]  =0;
+    //             }
+    //             if(data[40].rows.length>0){
+    //                 huangshuihe[4] = data[40].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[4]  =0;
+    //             }
+    //             if(data[41].rows.length>0){
+    //                 huangshuihe[5] = data[41].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[5]  =0;
+    //             }
+    //             if(data[42].rows.length>0){
+    //                 huangshuihe[6] = data[42].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[6]  =0;
+    //             }
+    //             if(data[43].rows.length>0){
+    //                 huangshuihe[7] = data[43].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[7]  =0;
+    //             }
+    //             if(data[44].rows.length>0){
+    //                 huangshuihe[8] = data[44].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[8]  =0;
+    //             }
+    //             if(data[45].rows.length>0){
+    //                 huangshuihe[9] = data[45].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[9]  =0;
+    //             }
+    //             if(data[46].rows.length>0){
+    //                 huangshuihe[10] = data[46].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[10]  =0;
+    //             }
+    //             if(data[47].rows.length>0){
+    //                 huangshuihe[11] = data[47].rows[0].all_q;
+    //             }else{
+    //                 huangshuihe[11]  =0;
+    //             }
+    //
+    //             var   optionJU = {
+    //                 tooltip: {
+    //                     trigger: 'axis',
+    //                     axisPointer: {
+    //                         type: 'cross',
+    //                         label: {
+    //                             backgroundColor: '#6a7985'
+    //                         }
+    //                     }
+    //                 },
+    //                 grid: {
+    //                     left: '3%',
+    //                     right: '4%',
+    //                     bottom: '3%',
+    //                     containLabel: true
+    //                 },
+    //                 // toolbox: {
+    //                 //     feature: {
+    //                 //         saveAsImage: {}
+    //                 //     }
+    //                 // },
+    //                 xAxis: {
+    //                     type: 'category',
+    //
+    //                     data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月'],
+    //                     boundaryGap: false,
+    //                     splitLine: {
+    //                         show: true,
+    //                         lineStyle:{
+    //                             color: ['#ddd'],
+    //                             width: 1,
+    //                             type: 'solid'
+    //                         }
+    //                     },
+    //                     axisLabel: {//把文字竖着放
+    //                         interval:0,
+    //                         rotate:40
+    //                     }
+    //
+    //
+    //                 },
+    //                 yAxis: {
+    //                     type: 'value',
+    //                     splitLine: {
+    //                         lineStyle: {
+    //                             color: '#ddd'
+    //                         }
+    //                     },
+    //                     minorSplitLine: {
+    //                         show: true,
+    //                         lineStyle: {
+    //                             color: '#ddd'
+    //                         }
+    //                     }
+    //                 },
+    //                 series: [
+    //                     {
+    //                         name: '灰埠泵站',
+    //                         smooth: true,
+    //                         areaStyle: {
+    //                             normal: {
+    //                                 // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                                 //       { offset: 0.3, color: "red" },
+    //                                 //   { offset: 0.4, color: "transparent" },
+    //                                 //   { offset: 0.8, color: "transparent" },
+    //                                 //   { offset: 1, color: "transparent" }
+    //                                 // ])
+    //                             }
+    //                         }, //填充区域样式
+    //                         // itemStyle: {
+    //                         //   color: "rgb(255, 70, 131)",
+    //                         //   opacity: 0 //为0不会绘制图形拐点消失
+    //                         // }, //拐点的样式
+    //                         //  symbol:'star',//拐点样式
+    //                         symbolSize: 6,//拐点大小
+    //                         type: 'line',
+    //                         stack: '流量',
+    //                         // areaStyle: {},
+    //                         color:'red',
+    //                         data: tu,
+    //                     },
+    //                     {
+    //                         name: '宋庄泵站',
+    //                         smooth: true,
+    //                         areaStyle: {
+    //                             normal: {
+    //                                 // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                                 //       { offset: 0.3, color: "red" },
+    //                                 //   { offset: 0.4, color: "transparent" },
+    //                                 //   { offset: 0.8, color: "transparent" },
+    //                                 //   { offset: 1, color: "transparent" }
+    //                                 // ])
+    //                             }
+    //                         }, //填充区域样式
+    //                         // itemStyle: {
+    //                         //   color: "rgb(255, 70, 131)",
+    //                         //   opacity: 0 //为0不会绘制图形拐点消失
+    //                         // }, //拐点的样式
+    //                         //  symbol:'star',//拐点样式
+    //                         symbolSize: 6,//拐点大小
+    //                         type: 'line',
+    //                         stack: '流量',
+    //                         // areaStyle: {},
+    //                         color:'red',
+    //                         data: songzhuang,
+    //                     },
+    //                     {
+    //                         name: '高瞳泵站',
+    //                         smooth: true,
+    //                         areaStyle: {
+    //                             normal: {
+    //                                 // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                                 //       { offset: 0.3, color: "red" },
+    //                                 //   { offset: 0.4, color: "transparent" },
+    //                                 //   { offset: 0.8, color: "transparent" },
+    //                                 //   { offset: 1, color: "transparent" }
+    //                                 // ])
+    //                             }
+    //                         }, //填充区域样式
+    //                         // itemStyle: {
+    //                         //   color: "rgb(255, 70, 131)",
+    //                         //   opacity: 0 //为0不会绘制图形拐点消失
+    //                         // }, //拐点的样式
+    //                         //  symbol:'star',//拐点样式
+    //                         symbolSize: 6,//拐点大小
+    //                         type: 'line',
+    //                         stack: '流量',
+    //                         // areaStyle: {},
+    //                         color:'red',
+    //                         data: gaotong,
+    //                     },
+    //                     {
+    //                         name: '黄水河泵站',
+    //                         smooth: true,
+    //                         areaStyle: {
+    //                             normal: {
+    //                                 // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                                 //       { offset: 0.3, color: "red" },
+    //                                 //   { offset: 0.4, color: "transparent" },
+    //                                 //   { offset: 0.8, color: "transparent" },
+    //                                 //   { offset: 1, color: "transparent" }
+    //                                 // ])
+    //                             }
+    //                         }, //填充区域样式
+    //                         // itemStyle: {
+    //                         //   color: "rgb(255, 70, 131)",
+    //                         //   opacity: 0 //为0不会绘制图形拐点消失
+    //                         // }, //拐点的样式
+    //                         //  symbol:'star',//拐点样式
+    //                         symbolSize: 6,//拐点大小
+    //                         type: 'line',
+    //                         stack: '流量',
+    //                         // areaStyle: {},
+    //                         color:'red',
+    //                         data: huangshuihe,
+    //                     },
+    //
+    //                 ]
+    //             };
+    //             llqx.setOption(optionJU, true);
+    //         }
+    //     })
+    //
+    // }
+    // 设置轮播
+    function setCarousel() {
+        $('.flexslider').flexslider({
+            animation: 'slide',                 // 必备参数，自动滑动
+            slideshowSpeed: 5000,               // 每次自动滑动间隔时间，默认为 7000，单位为 ms
+            animationSpeed: 1000,               // 手动点击滑动时间，默认为 600，单位为 ms
+            slideshow: true,                    // 载入页面时，是否自动播放
+            directionNav: false,                // 是否显示左右控制按钮
+            pauseOnAction: false
+        });
+    }
+
+    // 通知公告列表
+    function getArticleList(categoryName) {
+        $.ajax({
+            type: 'GET',
+            url: "${ctx}/sys/nwmh/article/listData?pageNo=1&pageSize=8&isShow=1&auditProgress=1&orderBy=articleDate" + "&articleCategoryName=" + categoryName,
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+            },
+            success: function (data) {
+                $('#newsList').empty();
+                if (data != null) {
+                    $.each(data.list, function (i, n) {
+                        $('#newsList').append('<a href="${ctx}/portal/newsDetail?articleCode=' + n.articleCode + '">' +
+                            '                      <li><img style="float: left; display:block;margin-top:14px;" src="${ctxStatic}/nwmh/img/icon-new.png"><span style="float:left">&nbsp;&nbsp;</span><span style="float: left">' + n.articleTitle + '</span><span style="float: right">' + '[' + n.articleDate + ']' + '</span></li>' +
+                            '                  </a>');
+                    });
+                }
+            }
+        });
+    }
+
+    // 通知公告轮播列表
+    function getArticleCarouselList(categoryName) {
+        $.ajax({
+            type: 'GET',
+            url: "${ctx}/sys/nwmh/article/listData?pageNo=1&pageSize=5&isShow=1&isIndexCarousel=1&auditProgress=1&orderBy=articleDate" + "&articleCategoryName=" + categoryName,
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+            },
+            success: function (data) {
+                $('#carouselList').empty();
+                if (data != null) {
+                    var flexsliderHtml = '<div class="flexslider">\n' +
+                        '                    <ul class="slides">';
+                    var html = '';
+                    $.each(data.list, function (i, n) {
+                        html += '<li onclick="toNewsDetail(\'' + n.articleCode + '\')" style="cursor:pointer;">\n' +
+                            '                          <div class="newsTitle">' + n.articleTitle + ' [' + n.articleDate + ']' + '</div>\n' +
+                            '                          <img src="data:text/html;base64,' + n.img + '">\n' +
+                            '                      </li>';
+                    });
+                    flexsliderHtml = flexsliderHtml + html;
+                    flexsliderHtml += '</ul>\n' +
+                        '                </div>';
+                    $('#carouselList').append(flexsliderHtml);
+                    setCarousel();
+                }
+            }
+        });
+    }
+
+    // 跳转系统
+    function toSystem(url) {
+        window.open(url);
+    }
+
+    // 跳转新闻详情
+    function toNewsDetail(articleCode) {
+        window.location.href = '${ctx}/portal/newsDetail?articleCode=' + articleCode;
+    }
+
+    // 待办事项（慧正工作列表）
+    function getWorkflowList(href) {
+        $.ajax({
+            type: 'POST',
+            url: "${ctx}" + href,
+            dataType: 'json',
+            error: function (data) {
+                console.log(data.responseText);
+            },
+            success: function (data, status, xhr) {
+                $('#dataList').html('');
+                var html = '';
+                $.each(data.list, function (index, content) {
+                    html += '<tr class="list-tr" onclick="window.open(\'' + content.href + '\')">';
+                    html += '<td class="list-td" width="10%">' + (index + 1) + '</td>';
+                    html += '<td class="list-td" width="20%">' + stringLength(content.title, 10) + '</td>';
+                    html += '<td class="list-td" width="25%">' + content.flowName + '</td>';
+                    if (href == '/oa/message/myListData') {
+                        html += '<td class="list-td" width="20%">${user.userName}</td>';
+                        html += '<td class="list-td" width="25%">' + content.startTime + '</td>';
+                    } else {
+                        html += '<td class="list-td" width="20%">' + stringLength(content.sendUserName, 5) + '</td>';
+                        html += '<td class="list-td" width="25%">' + content.sendTime + '</td>';
+                    }
+                    html += '</tr>';
+                });
+                $('#dataList').append(html);
+            }
+        });
+    }
+
+    // 字符串截取
+    function stringLength(context, len) {
+        if (!len) lencontext.length;
+        if (context && context.length > len) context = context.substring(0, len) + "...";
+        return context;
+    }
+
+    $(function () {
+
+        $("#shui").hide();
+        // 雨情信息统计
+        var yqxx = echarts.init(document.getElementById('yuqingxinxi'));
+        $.ajax({
+            type: 'GET',
+            // url: '${ctx}/sys/nwmh/statistics/yqxx',
+            url: 'http://10.0.2.7:9930/gate/selectStcdTo',
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+                console.log(data.responseText);
+            },
+            success: function (data) {
+
+                    var date =new Date();
+                    var shijian = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+(date.getDate()-1)+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+                    var shijian1 = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+                    $('#yqtime').html('时间：' + shijian + '-' + shijian1 + '<br>单位：mm');
+                    $('#xiaoyu').html('<span class="c-e99b05"></span>小雨：' + 0+'-'+9.9);
+                    $('#zhongyu').html('<span class="c-03a4aa"></span>中雨：' +10+'-'+24.9);
+                    $('#dayu').html('<span class="c-2ed2ef"></span>大雨：' + 25+'-'+49.9);
+                    $('#baoyu').html('<span class="c-61b5fe"></span>暴雨：' + 50+'-'+250);
+                    $('#tedabaoyu').html('<span class="c-558cd8"></span>特大暴雨：' +250);
+                    yqxx.setOption({
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b}: {c} ({d}%)'
+                        },
+                        legend: {
+                            show: false,
+                            width: 40,
+                            orient: 'vertical',
+                            left: 10,
+                            data: ['小雨', '中雨', '大雨', '暴雨', '特大暴雨']
+                        },
+                        graphic: [{　　　　　　　　　　　　　　　　//环形图中间添加文字
+                            type: 'text',　　　　　　　　　　　　//通过不同top值可以设置上下显示
+                            left: 'center',
+                            top: '40%',
+                            style: {
+                                text: "全部",
+                                textAlign: 'center',
+                                fill: '#cfc722',　　　　　　　　//文字的颜色
+                                width: 30,
+                                height: 50,
+                                fontSize: 30,
+                                // color: "#4d4f5c",
+                                // fontFamily: "Microsoft YaHei"
+                            }
+                        }, {
+                            type: 'text',
+                            left: 'center',
+                            top: '55%',
+                            style: {
+                                text: '1234',
+                                textAlign: 'center',
+                                fill: '#3f70c9',
+                                width: 5,
+                                height: 10,
+                                fontSize: 20,
+                            }
+                        },
+
+                        ],
+                        series: [
+                            {
+                                name: '水量占比',
+                                type: 'pie',
+                                radius: ['40%', '75%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    normal: {
+                                        show: false,
+                                        position: 'center'
+                                    },
+                                    emphasis: {
+                                        show: true,
+                                        textStyle: {
+                                            fontSize: '20',
+                                            fontWeight: 'bold'
+                                        }
+                                    }
+                                },
+                                labelLine: {
+                                    normal: {
+                                        show: false
+                                    }
+                                },
+                                itemStyle: {
+                                    normal: {
+                                        color: function (params) {
+                                            let colorList = [
+                                                "#2644d6",
+                                                "#de73c7",
+                                                "#8bdc31",
+                                                "#d0651a",
+                                                "#42b7da",
+                                            ];
+                                            return colorList[params.dataIndex];
+                                        }
+                                    }
+                                },
+                                data: [4,6,8,6,7]
+                            }
+                        ]
+                    });
+
+            }
+        });
+
+        //时间下拉框
+        // $.ajax({
+        //     url: 'http://192.168.1.67:9930/gate/listDataKXU',
+        //     dataType: "json",
+        //     type: "get",
+        //     async:false,
+        //     success: function (data) {
+        //         var tua = data.rows;
+        //         var kui =[];
+        //         var zu = [];
+        //         for(var i=0;i<tua.length;i++){
+        //             var ki = tua[i].tm.toString().substring(0,4);
+        //             var result= $.inArray(ki, kui);
+        //             if(result == -1){
+        //                 kui.push(ki)
+        //             }
+        //         }
+        //
+        //         if(kui.length>0) {
+        //            kui.sort(function com(a,b){
+        //                if(parseInt(a) - parseInt(b)>0){
+        //                     return -1;
+        //                }
+        //            });
+        //             // zu.push(bu);
+        //             for(var tyo=0;tyo<kui.length;tyo++){
+        //                 $("#year").append(
+        //                     "<option value="+kui[tyo]+">"+kui[tyo]+"</option>"
+        //                 )
+        //             }
+        //
+        //         }
+        //
+        //
+        //     }
+        // })
+        // var yt =new Date().getFullYear();
+        //     for(var tuy=0;tuy<5;tuy++) {
+        //         $("#year").append(
+        //             // "<option value=" +yt-ju+ ">" + yt-ju + "</option>"
+        //             "<option value=" + (yt-tuy) + ">" + (yt-tuy) + "</option>"
+        //         )
+        //     }
+
+        //水质监测统计
+        var szjc = echarts.init(document.getElementById('shuizhijiance'));
+        $.ajax({
+            url: 'http://10.0.2.7:9930/gate/listDataK',
+            dataType: "json",
+            type: "get",
+            success: function (data) {
+                // debugger
+                var ui = [];
+                var ui1 = [];
+                var ui2 = [];
+                if(data[0].rows[0] != undefined){
+                    var k = data[0].rows[0].codcr
+                    var t = data[0].rows[0].codmn
+                    var io = data[0].rows[0].toc
+                }else{
+                    var  k =0;
+                    var  t=0;
+                    var io=0;
+                }
+                if(data[1].rows[0] != undefined){
+                    var k1 = data[1].rows[0].codcr
+                    var t1 = data[1].rows[0].codmn
+                    var io1 = data[1].rows[0].toc
+                }else{
+                    var k1 =0;
+                    var  t1 = 0;
+                    var  io1 =0;
+                }
+                if(data[2].rows[0] != undefined){
+                    var k2 = data[2].rows[0].codcr
+                    var t2 = data[2].rows[0].codmn
+                    var io2 = data[2].rows[0].toc
+                }else{
+                    var  k2 =0;
+                    var  t2 =0;
+                    var  io2 =0;
+                }
+                if(data[3].rows[0] != undefined){
+                    var k3 = data[3].rows[0].codcr
+                    var t3 = data[3].rows[0].codmn
+                    var io3 = data[3].rows[0].toc
+
+                }else{
+                    var  k3 =0;
+                    var  t3 =0;
+                    var  io3 =0;
+                }
+                if(data[4].rows[0] != undefined){
+                    var k4 = data[4].rows[0].codcr
+                    var t4 = data[4].rows[0].codmn
+                    var io4 = data[4].rows[0].toc
+
+                }else{
+                    var  k4 =0;
+                    var  t4 =0;
+                    var  io4 =0;
+                }
+                if(data[4].rows[0] != undefined){
+                    var k5 = data[5].rows[0].codcr
+                    var t5 = data[5].rows[0].codmn
+                    var io5 = data[5].rows[0].toc
+
+                }else {
+                    var  k5 =0;
+                    var  t5 =0;
+                    var  io5 =0;
+                }
+                ui.push(k)
+                ui.push(k1)
+                ui.push(k2)
+                ui.push(k3)
+                ui.push(k4)
+                ui.push(k5)
+                ui1.push(t)
+                ui1.push(t1)
+                ui1.push(t2)
+                ui1.push(t3)
+                ui1.push(t4)
+                ui1.push(t5)
+                ui2.push(io)
+                ui2.push(io1)
+                ui2.push(io2)
+                ui2.push(io3)
+                ui2.push(io4)
+                ui2.push(io5)
+
+               var optionP = {
+                    title: {
+                        // text: '某地区蒸发量和降水量',
+                        // subtext: '纯属虚构'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['OCD', 'TOC','COD'],
+                        x:'right'
+                    },
+                    toolbox: {
+                        // show: true,
+                        // feature: {
+                        //     dataView: {show: true, readOnly: false},
+                        //     magicType: {show: true, type: ['line', 'bar']},
+                        //     restore: {show: true},
+                        //     saveAsImage: {show: true}
+                        // }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: ['宋庄上游测站','宋庄下游测站','灰埠水质测站','东宋水质测站','黄水河水质测站','高疃水质测站'],
+                            axisLabel: {//把文字竖着放
+                                interval:0,
+                                rotate:40
+                            }
+                        },
+
+
+            ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: 'OCD',
+                            type: 'bar',
+                            data: ui1,
+                            color:'#ede831',
+
+                        },
+                        {
+                            name: 'TOC',
+                            type: 'bar',
+                            data: ui2,
+                            color:'#2d79ff',
+
+
+                        },
+                        {
+                            name: 'COD',
+                            type: 'bar',
+                            data: ui,
+                            color:'#ff5b3d',
+
+
+                        }
+                    ]
+                };
+                szjc.setOption(optionP, true);
+            }
+        })
+
+        //调水量统计
+        var tsl = echarts.init(document.getElementById('tiaoshuiliang'));
+        $.ajax({
+            url: 'http://10.0.2.7:9930/gate/listData',
+            dataType: "json",
+            type: "get",
+            success: function (data) {
+                var result =data.result.dsjhwc;
+                var na = [];
+                var to = [];
+                var tp=[];
+                if(result.length>0){
+                    for(var i=0;i<result.length;i++){
+                        na.push(result[i].addvnm);
+                        to.push(result[i].jhljysl);
+                        tp.push(result[i].ljysl)
+                    }
+                }
+                optionK = {
+                    title: {
+                        text: '单位 (万m³)',
+
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['计划配水量', '累计供水量']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: {show: false, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: false},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data:na
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    grid: {
+                        left: 50
+                    },
+                    series: [
+                        {
+                            color: '#55a4cf',
+                            name: '计划配水量',
+                            type: 'bar',
+                            data:to,
+
+                        },
+                        {
+                            color: '#c4cf49',
+                            name: '累计供水量',
+                            type: 'bar',
+                            data:tp,
+
+                        }
+                    ]
+                };
+                tsl.setOption(optionK, true);
+            }
+        })
+
+        // tsl.setOption({
+        //     color: ['#3398DB'],
+        //     tooltip: {
+        //         trigger: 'axis',
+        //         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+        //             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        //         }
+        //     },
+        //     grid: {
+        //         left: '3%',
+        //         right: '4%',
+        //         bottom: '3%',
+        //         containLabel: true
+        //     },
+        //     xAxis: [
+        //         {
+        //             type: 'category',
+        //             data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        //             axisTick: {
+        //                 alignWithLabel: true
+        //             }
+        //         }
+        //     ],
+        //     yAxis: [
+        //         {
+        //             type: 'value'
+        //         }
+        //     ],
+        //     series: [
+        //         {
+        //             name: '调水量',
+        //             type: 'bar',
+        //             barWidth: '60%',
+        //             data: [38, 50, 62, 43, 71, 68, 54, 45, 73, 40, 47, 28],
+        //             itemStyle: {
+        //                 normal: {
+        //                     color: '#5889d2'
+        //                 }
+        //             }
+        //         }
+        //     ]
+        // });
+
+        //水位曲线图
+        var swqx = echarts.init(document.getElementById('shuiweiquxian'));
+        $.ajax({
+            url: 'http://10.0.2.7:9930/gate/listDataKX',
+            dataType: "json",
+            type: "get",
+            success: function (data) {
+                var res = [];
+                var ty = [];
+                var max =100;
+                var tuo = data.rows;
+                 debugger
+                for(var u=0;u<tuo.length;u++){
+                    if(tuo[u].slnm == "渠首泵站"){
+                        if(tuo[u].dwz !=null){
+                            res.push({"name":"渠首泵站","value":tuo[u].dwz})
+                        }else{
+                            res.push({"name":"渠首泵站","value":0})
+                        }
+
+                    }
+                    if(tuo[u].slnm == "宋庄泵站"){
+                        if(tuo[u].dwz !=null){
+                            res.push({"name":"宋庄泵站","value":tuo[u].dwz})
+                        }else{
+                            res.push({"name":"宋庄泵站","value":0})
+                        }
+                    }
+                    if(tuo[u].slnm == "王耨泵站"){
+                        if(tuo[u].dwz !=null){
+                            res.push({"name":"王耨泵站","value":tuo[u].dwz})
+                        }else{
+                            res.push({"name":"王耨泵站","value":0})
+                        }
+                    }
+                    if(tuo[u].slnm == "亭口泵站"){
+                        if(tuo[u].dwz !=null){
+                            res.push({"name":"亭口泵站","value":tuo[u].dwz})
+                        }else{
+                            res.push({"name":"亭口泵站","value":0})
+                        }
+                    }
+                    if(tuo[u].slnm == "棘洪滩泵站"){
+                        if(tuo[u].dwz !=null){
+                            res.push({"name":"棘洪滩泵站","value":tuo[u].dwz})
+                        }else{
+                            res.push({"name":"棘洪滩泵站","value":0})
+                        }
+
+                    }
+
+
+
+                }
+                if(res.length>0){
+                    for(var hg=0;hg<res.length;hg++){
+                        var u = 0;
+                        for(var yu in res[hg]){
+                            if(yu == 'name'){
+                                if(res[hg][yu] == "渠首泵站"){
+                                    u =1;
+                                }
+                                if(res[hg][yu] == "宋庄泵站"){
+                                    u =2;
+                                }
+                                if(res[hg][yu] == "王耨泵站"){
+                                    u =3;
+                                }
+                                if(res[hg][yu] == "亭口泵站"){
+                                    u =4;
+                                }
+                                if(res[hg][yu] == "棘洪滩泵站"){
+                                    u =5;
+                                }
+
+                            }
+                            if(yu =='value'){
+                                if(u==1){
+                                    ty[0] = res[hg][yu];
+                                }
+                                if(u==2){
+                                    ty[1] = res[hg][yu];
+                                }
+                                if(u==3){
+                                    ty[2] = res[hg][yu];
+                                }
+                                if(u==4){
+                                    ty[3] = res[hg][yu];
+                                }
+                                if(u==5){
+                                    ty[4] = res[hg][yu];
+                                }
+
+                            }
+
+
+                        }
+
+
+                    }
+                }
+                // console.info(ty[0])
+                if(ty[0] == undefined){
+                    ty[0]=0;
+                }
+                if(ty[1] == undefined){
+                    ty[1]=0;
+                }
+                if(ty[2] == undefined){
+                    ty[2]=0;
+                }
+                if(ty[3] == undefined){
+                    ty[3]=0;
+                }
+                if(ty[4] == undefined){
+                    ty[4]=0;
+                }
+
+                var koi = ty[0];
+                for(var yui=0;yui<ty.length;yui++){
+                    if(koi<ty[yui]){
+                        koi = ty[yui]
+                    }
+                }
+
+                $("#qu").append(
+                //     灰埠泵站：<br>
+                // 流量<br>
+                 "渠首泵站：" +"<br>"+
+                  "水位："+ty[0].toString()+"<br>"
+
+                )
+                $("#qu").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                // <progress ></progress>
+                    "<progress id='qu1'>"+"</progress>"
+
+                )
+                $("#zhuang").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "宋庄泵站：" +"<br>"+
+                    "水位"+ty[1].toString()+"<br>"
+                )
+                $("#zhuang").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "<progress id='zhuang1'>"+"</progress>"
+                )
+                $("#wang").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "王耨泵站：" +"<br>"+
+                    "水位"+ty[2].toString()+"<br>"
+                )
+                $("#wang").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "<progress id='wang1'>"+"</progress>"
+                )
+                $("#ting").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "亭口泵站：" +"<br>"+
+                    "水位"+ty[3].toString()+"<br>"
+
+                )
+                $("#ting").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "<progress id='ting1'>"+"</progress>"
+
+                )
+                // $("#ji").append(
+                //     //     灰埠泵站：<br>
+                //     // 流量<br>
+                //     "棘洪滩泵站：" +"<br>"+
+                //     "水位"+ty[4].toString()+"<br>"
+                //
+                // )
+                // $("#ji").append(
+                //     //     灰埠泵站：<br>
+                //     // 流量<br>
+                //     "<progress id='ji1'>"+"</progress>"
+                //
+                // )
+
+                $("#qu1").val(ty[0])
+                $("#zhuang1").val(ty[1])
+                $("#wang1").val(ty[2])
+                $("#ting1").val(ty[3])
+                // $("#ji1").val(ty[4])
+                $("#qu1").attr("max",50)
+                $("#zhuang1").attr("max",50)
+                $("#wang1").attr("max",50)
+                $("#ting1").attr("max",50)
+                // $("#ji1").attr("max",50)
+
+                var optionOI = {
+                    tooltip: {
+                        show: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['渠首泵站', '宋庄泵站', '王耨泵站', '亭口泵站','棘洪滩泵站'],
+                        axisLabel: {//把文字竖着放
+                            interval:0,
+                            rotate:40
+                        }
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '水位',
+                        data: ty,
+                        smooth: true,
+                        type: 'line',
+                        itemStyle: {
+                            normal: {
+                                color: '#5889d2',
+                                lineStyle: {
+                                    color: '#5889d2'
+                                }
+                            }
+                        },
+                        areaStyle: {
+                            normal: {
+                                color: '#9fd5f5'
+                            }
+                        }
+                    }]
+                }
+                swqx.setOption(optionOI, true);
+
+            }
+        })
+
+        $.ajax({
+            url: 'http://10.0.2.7:9920/enginnering/listDateToKTo',
+            dataType: "json",
+            type: "post",
+            success: function (data) {
+                var result =data.data;
+                var str = [];
+                var str1 = new Array();
+                str.push(result[0].guanli)
+                str.push(result[0].gongcheng)
+                str.push(result[0].fushu)
+                str.push(result[0].gugan)
+                for(var i=1;i<result.length;i++){
+                    str1.push(result[i])
+                }
+                var str2 = $.unique(str1)
+                for(var t=0;t<str2.length;t++){
+                    $("#top").append(
+                        "<option>" + str2[t]+
+                        "</option>"
+                    )
+                }
+                var tu = result.length;
+                myChartb = echarts.init(document.getElementById('quanshengyuqing'));
+                var option2 = {
+                    title: {},
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['管理设施', '工程设施', '附属设施', '骨干工程']
+                    },
+                    series: [
+                        {
+                            itemStyle: {
+                                emphasis: {
+                                    barBorderRadius: 8
+                                },
+                                normal: {
+                                    barBorderRadius: 8
+                                }
+                            },
+                            color: ['#cf7618'],
+                            type: 'bar',
+                            barWidth: 15,
+                            data: str
+                        },
+                    ]
+                };
+                myChartb.setOption(option2, true);
+            }
+        })
+       // 流量曲线图
+        var llqx = echarts.init(document.getElementById('liuliangquxian'));
+        //历史曲线图，以后该需求需要
+        // $.ajax({
+        //     url: 'http://10.0.2.7:9930/gate/listDataKXUY',
+        //     dataType: "json",
+        //     type: "get",
+        //     success: function (data) {
+        //         debugger
+        //        //灰埠泵站
+        //        var tu = [];
+        //        //宋庄泵站
+        //        var songzhuang = [];
+        //        //高瞳泵站
+        //         var gaotong = [];
+        //         //黄水河泵站
+        //         var huangshuihe =[];
+        //         var year1 =  new Date().getFullYear().toString();
+        //        if(data[0].rows.length>0){
+        //            tu[0] = data[0].rows[0].all_q;
+        //        }else{
+        //            tu[0] =0;
+        //        }
+        //         if(data[1].rows.length>0){
+        //             tu[1] = data[1].rows[0].all_q;
+        //         }else{
+        //             tu[1] =0;
+        //         }
+        //         if(data[2].rows.length>0){
+        //             tu[2] = data[2].rows[0].all_q;
+        //         }else{
+        //             tu[2] =0;
+        //         }
+        //         if(data[3].rows.length>0){
+        //             tu[3] = data[3].rows[0].all_q;
+        //         }else{
+        //             tu[3] =0;
+        //         }
+        //         if(data[4].rows.length>0){
+        //             tu[4] = data[4].rows[0].all_q;
+        //         }else{
+        //             tu[4] =0;
+        //         }
+        //         if(data[5].rows.length>0){
+        //             tu[5] = data[5].rows[0].all_q;
+        //         }else{
+        //             tu[5] =0;
+        //         }
+        //         if(data[6].rows.length>0){
+        //             tu[6] = data[6].rows[0].all_q;
+        //         }else{
+        //             tu[6] =0;
+        //         }
+        //         if(data[7].rows.length>0){
+        //             tu[7] = data[7].rows[0].all_q;
+        //         }else{
+        //             tu[7] =0;
+        //         }
+        //         if(data[8].rows.length>0){
+        //             tu[8] = data[8].rows[0].all_q;
+        //         }else{
+        //             tu[8] =0;
+        //         }
+        //         if(data[9].rows.length>0){
+        //             tu[9] = data[9].rows[0].all_q;
+        //         }else{
+        //             tu[9] =0;
+        //         }
+        //         if(data[10].rows.length>0){
+        //             tu[10] = data[10].rows[0].all_q;
+        //         }else{
+        //             tu[10] =0;
+        //         }
+        //         if(data[11].rows.length>0){
+        //             tu[11] = data[11].rows[0].all_q;
+        //         }else{
+        //             tu[11] =0;
+        //         }
+        //         if(data[12].rows.length>0){
+        //             songzhuang[0] = data[12].rows[0].all_q;
+        //         }else{
+        //             songzhuang[0]  =0;
+        //         }
+        //         if(data[13].rows.length>0){
+        //             songzhuang[1] = data[13].rows[0].all_q;
+        //         }else{
+        //             songzhuang[1]  =0;
+        //         }
+        //         if(data[14].rows.length>0){
+        //             songzhuang[2] = data[14].rows[0].all_q;
+        //         }else{
+        //             songzhuang[2]  =0;
+        //         }
+        //         if(data[15].rows.length>0){
+        //             songzhuang[3] = data[15].rows[0].all_q;
+        //         }else{
+        //             songzhuang[3]  =0;
+        //         }
+        //         if(data[16].rows.length>0){
+        //             songzhuang[4] = data[16].rows[0].all_q;
+        //         }else{
+        //             songzhuang[4]  =0;
+        //         }
+        //         if(data[17].rows.length>0){
+        //             songzhuang[5] = data[17].rows[0].all_q;
+        //         }else{
+        //             songzhuang[5]  =0;
+        //         }
+        //         if(data[18].rows.length>0){
+        //             songzhuang[6] = data[18].rows[0].all_q;
+        //         }else{
+        //             songzhuang[6]  =0;
+        //         }
+        //         if(data[19].rows.length>0){
+        //             songzhuang[7] = data[19].rows[0].all_q;
+        //         }else{
+        //             songzhuang[7]  =0;
+        //         }
+        //         if(data[20].rows.length>0){
+        //             songzhuang[8] = data[20].rows[0].all_q;
+        //         }else{
+        //             songzhuang[8]  =0;
+        //         }
+        //         if(data[21].rows.length>0){
+        //             songzhuang[9] = data[21].rows[0].all_q;
+        //         }else{
+        //             songzhuang[9]  =0;
+        //         }
+        //         if(data[22].rows.length>0){
+        //             songzhuang[10] = data[22].rows[0].all_q;
+        //         }else{
+        //             songzhuang[10]  =0;
+        //         }
+        //         if(data[23].rows.length>0){
+        //             songzhuang[11] = data[23].rows[0].all_q;
+        //         }else{
+        //             songzhuang[11]  =0;
+        //         }
+        //         if(data[24].rows.length>0){
+        //             gaotong[0] = data[24].rows[0].all_q;
+        //         }else{
+        //             gaotong[0]  =0;
+        //         }
+        //         if(data[25].rows.length>0){
+        //             gaotong[1] = data[25].rows[0].all_q;
+        //         }else{
+        //             gaotong[1]  =0;
+        //         }
+        //         if(data[26].rows.length>0){
+        //             gaotong[2] = data[26].rows[0].all_q;
+        //         }else{
+        //             gaotong[2]  =0;
+        //         }
+        //         if(data[27].rows.length>0){
+        //             gaotong[3] = data[27].rows[0].all_q;
+        //         }else{
+        //             gaotong[3]  =0;
+        //         }
+        //         if(data[28].rows.length>0){
+        //             gaotong[4] = data[28].rows[0].all_q;
+        //         }else{
+        //             gaotong[4]  =0;
+        //         }
+        //         if(data[29].rows.length>0){
+        //             gaotong[5] = data[29].rows[0].all_q;
+        //         }else{
+        //             gaotong[5]  =0;
+        //         } if(data[30].rows.length>0){
+        //             gaotong[6] = data[30].rows[0].all_q;
+        //         }else{
+        //             gaotong[6]  =0;
+        //         } if(data[31].rows.length>0){
+        //             gaotong[7] = data[31].rows[0].all_q;
+        //         }else{
+        //             gaotong[7]  =0;
+        //         }
+        //         if(data[32].rows.length>0){
+        //             gaotong[8] = data[32].rows[0].all_q;
+        //         }else{
+        //             gaotong[8]  =0;
+        //         } if(data[33].rows.length>0){
+        //             gaotong[9] = data[33].rows[0].all_q;
+        //         }else{
+        //             gaotong[9]  =0;
+        //         }
+        //         if(data[34].rows.length>0){
+        //             gaotong[10] = data[34].rows[0].all_q;
+        //         }else{
+        //             gaotong[10]  =0;
+        //         }
+        //         if(data[35].rows.length>0){
+        //             gaotong[11] = data[35].rows[0].all_q;
+        //         }else{
+        //             gaotong[11]  =0;
+        //         }
+        //         if(data[36].rows.length>0){
+        //             huangshuihe[0] = data[36].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[0]  =0;
+        //         }
+        //         if(data[37].rows.length>0){
+        //             huangshuihe[1] = data[37].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[1]  =0;
+        //         }
+        //         if(data[38].rows.length>0){
+        //             huangshuihe[2] = data[38].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[2]  =0;
+        //         }
+        //         if(data[39].rows.length>0){
+        //             huangshuihe[3] = data[39].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[3]  =0;
+        //         }
+        //         if(data[40].rows.length>0){
+        //             huangshuihe[4] = data[40].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[4]  =0;
+        //         }
+        //         if(data[41].rows.length>0){
+        //             huangshuihe[5] = data[41].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[5]  =0;
+        //         }
+        //         if(data[42].rows.length>0){
+        //             huangshuihe[6] = data[42].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[6]  =0;
+        //         }
+        //         if(data[43].rows.length>0){
+        //             huangshuihe[7] = data[43].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[7]  =0;
+        //         }
+        //         if(data[44].rows.length>0){
+        //             huangshuihe[8] = data[44].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[8]  =0;
+        //         }
+        //         if(data[45].rows.length>0){
+        //             huangshuihe[9] = data[45].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[9]  =0;
+        //         }
+        //         if(data[46].rows.length>0){
+        //             huangshuihe[10] = data[46].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[10]  =0;
+        //         }
+        //         if(data[47].rows.length>0){
+        //             huangshuihe[11] = data[47].rows[0].all_q;
+        //         }else{
+        //             huangshuihe[11]  =0;
+        //         }
+        //
+        //       var   optionJU = {
+        //             tooltip: {
+        //                 trigger: 'axis',
+        //                 axisPointer: {
+        //                     type: 'cross',
+        //                     label: {
+        //                         backgroundColor: '#6a7985'
+        //                     }
+        //                 }
+        //             },
+        //             grid: {
+        //                 left: '3%',
+        //                 right: '4%',
+        //                 bottom: '3%',
+        //                 containLabel: true
+        //             },
+        //             // toolbox: {
+        //             //     feature: {
+        //             //         saveAsImage: {}
+        //             //     }
+        //             // },
+        //             xAxis: {
+        //                 type: 'category',
+        //
+        //                 data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月'],
+        //                 boundaryGap: false,
+        //                 splitLine: {
+        //                     show: true,
+        //                     lineStyle:{
+        //                         color: ['#ddd'],
+        //                         width: 1,
+        //                         type: 'solid'
+        //                     }
+        //                 },
+        //                 axisLabel: {//把文字竖着放
+        //                     interval:0,
+        //                     rotate:40
+        //                 }
+        //
+        //
+        //             },
+        //             yAxis: {
+        //                 type: 'value',
+        //                 splitLine: {
+        //                     lineStyle: {
+        //                         color: '#ddd'
+        //                     }
+        //                 },
+        //                 minorSplitLine: {
+        //                     show: true,
+        //                     lineStyle: {
+        //                         color: '#ddd'
+        //                     }
+        //                 }
+        //             },
+        //             series: [
+        //                 {
+        //                     name: '灰埠泵站',
+        //                     smooth: true,
+        //                     areaStyle: {
+        //                         normal: {
+        //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        //                             //       { offset: 0.3, color: "red" },
+        //                             //   { offset: 0.4, color: "transparent" },
+        //                             //   { offset: 0.8, color: "transparent" },
+        //                             //   { offset: 1, color: "transparent" }
+        //                             // ])
+        //                         }
+        //                     }, //填充区域样式
+        //                     // itemStyle: {
+        //                     //   color: "rgb(255, 70, 131)",
+        //                     //   opacity: 0 //为0不会绘制图形拐点消失
+        //                     // }, //拐点的样式
+        //                     //  symbol:'star',//拐点样式
+        //                     symbolSize: 6,//拐点大小
+        //                     type: 'line',
+        //                     stack: '流量',
+        //                     // areaStyle: {},
+        //                     color:'red',
+        //                     data: tu,
+        //                 },
+        //                 {
+        //                     name: '宋庄泵站',
+        //                     smooth: true,
+        //                     areaStyle: {
+        //                         normal: {
+        //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        //                             //       { offset: 0.3, color: "red" },
+        //                             //   { offset: 0.4, color: "transparent" },
+        //                             //   { offset: 0.8, color: "transparent" },
+        //                             //   { offset: 1, color: "transparent" }
+        //                             // ])
+        //                         }
+        //                     }, //填充区域样式
+        //                     // itemStyle: {
+        //                     //   color: "rgb(255, 70, 131)",
+        //                     //   opacity: 0 //为0不会绘制图形拐点消失
+        //                     // }, //拐点的样式
+        //                     //  symbol:'star',//拐点样式
+        //                     symbolSize: 6,//拐点大小
+        //                     type: 'line',
+        //                     stack: '流量',
+        //                     // areaStyle: {},
+        //                     color:'red',
+        //                     data: songzhuang,
+        //                 },
+        //                 {
+        //                     name: '高瞳泵站',
+        //                     smooth: true,
+        //                     areaStyle: {
+        //                         normal: {
+        //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        //                             //       { offset: 0.3, color: "red" },
+        //                             //   { offset: 0.4, color: "transparent" },
+        //                             //   { offset: 0.8, color: "transparent" },
+        //                             //   { offset: 1, color: "transparent" }
+        //                             // ])
+        //                         }
+        //                     }, //填充区域样式
+        //                     // itemStyle: {
+        //                     //   color: "rgb(255, 70, 131)",
+        //                     //   opacity: 0 //为0不会绘制图形拐点消失
+        //                     // }, //拐点的样式
+        //                     //  symbol:'star',//拐点样式
+        //                     symbolSize: 6,//拐点大小
+        //                     type: 'line',
+        //                     stack: '流量',
+        //                     // areaStyle: {},
+        //                     color:'red',
+        //                     data: gaotong,
+        //                 },
+        //                 {
+        //                     name: '黄水河泵站',
+        //                     smooth: true,
+        //                     areaStyle: {
+        //                         normal: {
+        //                             // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        //                             //       { offset: 0.3, color: "red" },
+        //                             //   { offset: 0.4, color: "transparent" },
+        //                             //   { offset: 0.8, color: "transparent" },
+        //                             //   { offset: 1, color: "transparent" }
+        //                             // ])
+        //                         }
+        //                     }, //填充区域样式
+        //                     // itemStyle: {
+        //                     //   color: "rgb(255, 70, 131)",
+        //                     //   opacity: 0 //为0不会绘制图形拐点消失
+        //                     // }, //拐点的样式
+        //                     //  symbol:'star',//拐点样式
+        //                     symbolSize: 6,//拐点大小
+        //                     type: 'line',
+        //                     stack: '流量',
+        //                     // areaStyle: {},
+        //                     color:'red',
+        //                     data: huangshuihe,
+        //                 },
+        //
+        //             ]
+        //         };
+        //         llqx.setOption(optionJU, true);
+        //     }
+        // })
+        $.ajax({
+            url: 'http://10.0.2.7:9930/gate/listDataKX',
+            dataType: "json",
+            type: "get",
+            success: function (data) {
+                var res = [];
+                var ty = [];
+                var max =100;
+                var tuo = data.rows;
+                for(var u=0;u<tuo.length;u++){
+                    if(tuo[u].slnm == "渠首泵站"){
+                        if(tuo[u].gtq !=null){
+                            res.push({"name":"渠首泵站","value":tuo[u].gtq})
+                        }else{
+                            res.push({"name":"渠首泵站","value":0})
+                        }
+
+                    }
+                    if(tuo[u].slnm == "宋庄泵站"){
+                        if(tuo[u].gtq !=null){
+                            res.push({"name":"宋庄泵站","value":tuo[u].gtq})
+                        }else{
+                            res.push({"name":"宋庄泵站","value":0})
+                        }
+                    }
+                    if(tuo[u].slnm == "王耨泵站"){
+                        if(tuo[u].gtq !=null){
+                            res.push({"name":"王耨泵站","value":tuo[u].gtq})
+                        }else{
+                            res.push({"name":"王耨泵站","value":0})
+                        }
+                    }
+                    if(tuo[u].slnm == "亭口泵站"){
+                        if(tuo[u].gtq !=null){
+                            res.push({"name":"亭口泵站","value":tuo[u].gtq})
+                        }else{
+                            res.push({"name":"亭口泵站","value":0})
+                        }
+                    }
+                    if(tuo[u].slnm == "棘洪滩泵站"){
+                        if(tuo[u].gtq !=null){
+                            res.push({"name":"棘洪滩泵站","value":tuo[u].gtq})
+                        }else{
+                            res.push({"name":"棘洪滩泵站","value":0})
+                        }
+
+                    }
+
+
+
+                }
+                if(res.length>0){
+                    for(var hg=0;hg<res.length;hg++){
+                        var u = 0;
+                        for(var yu in res[hg]){
+                            if(yu == 'name'){
+                                if(res[hg][yu] == "渠首泵站"){
+                                    u =1;
+                                }
+                                if(res[hg][yu] == "宋庄泵站"){
+                                    u =2;
+                                }
+                                if(res[hg][yu] == "王耨泵站"){
+                                    u =3;
+                                }
+                                if(res[hg][yu] == "亭口泵站"){
+                                    u =4;
+                                }
+                                if(res[hg][yu] == "棘洪滩泵站"){
+                                    u =5;
+                                }
+
+                            }
+                            if(yu =='value'){
+                                if(u==1){
+                                    ty[0] = res[hg][yu];
+                                }
+                                if(u==2){
+                                    ty[1] = res[hg][yu];
+                                }
+                                if(u==3){
+                                    ty[2] = res[hg][yu];
+                                }
+                                if(u==4){
+                                    ty[3] = res[hg][yu];
+                                }
+                                if(u==5){
+                                    ty[4] = res[hg][yu];
+                                }
+
+                            }
+
+
+                        }
+
+
+                    }
+                }
+                // console.info(ty[0])
+                if(ty[0] == undefined){
+                    ty[0]=0;
+                }
+                if(ty[1] == undefined){
+                    ty[1]=0;
+                }
+                if(ty[2] == undefined){
+                    ty[2]=0;
+                }
+                if(ty[3] == undefined){
+                    ty[3]=0;
+                }
+                if(ty[4] == undefined){
+                    ty[4]=0;
+                }
+
+                var koi = ty[0];
+                for(var yui=0;yui<ty.length;yui++){
+                    if(koi<ty[yui]){
+                        koi = ty[yui]
+                    }
+                }
+
+                $("#qu3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "渠首泵站：" +"<br>"+
+                    "流量："+ty[0].toString()+"<br>"
+
+                )
+                $("#qu3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    // <progress ></progress>
+                    "<progress id='qu2'>"+"</progress>"
+
+                )
+                $("#zhuang3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "宋庄泵站：" +"<br>"+
+                    "流量"+ty[1].toString()+"<br>"
+                )
+                $("#zhuang3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "<progress id='zhuang2'>"+"</progress>"
+                )
+                $("#wang3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "王耨泵站：" +"<br>"+
+                    "流量"+ty[2].toString()+"<br>"
+                )
+                $("#wang3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "<progress id='wang2'>"+"</progress>"
+                )
+                $("#ting3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "亭口泵站：" +"<br>"+
+                    "流量"+ty[3].toString()+"<br>"
+
+                )
+                $("#ting3").append(
+                    //     灰埠泵站：<br>
+                    // 流量<br>
+                    "<progress id='ting2'>"+"</progress>"
+
+                )
+                // $("#ji3").append(
+                //     //     灰埠泵站：<br>
+                //     // 流量<br>
+                //     "棘洪滩泵站：" +"<br>"+
+                //     "水位"+ty[4].toString()+"<br>"
+                //
+                // )
+                // $("#ji3").append(
+                //     //     灰埠泵站：<br>
+                //     // 流量<br>
+                //     "<progress id='ji2'>"+"</progress>"
+                //
+                // )
+
+                $("#qu2").val(ty[0])
+                $("#zhuang2").val(ty[1])
+                $("#wang2").val(ty[2])
+                $("#ting2").val(ty[3])
+                // $("#ji2").val(ty[4])
+                $("#qu2").attr("max",30)
+                $("#zhuang2").attr("max",30)
+                $("#wang2").attr("max",30)
+                $("#ting2").attr("max",30)
+                // $("#ji2").attr("max",50)
+
+                var optionOI = {
+                    tooltip: {
+                        show: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['渠首泵站', '宋庄泵站', '王耨泵站', '亭口泵站','棘洪滩泵站'],
+                        axisLabel: {//把文字竖着放
+                            interval:0,
+                            rotate:40
+                        }
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '水位',
+                        data: ty,
+                        smooth: true,
+                        type: 'line',
+                        itemStyle: {
+                            normal: {
+                                color: '#fec964',
+                                lineStyle: {
+                                    color: '#fec964'
+                                }
+                            }
+                        },
+                        areaStyle: {
+                            normal: {
+                                color: '#fed674'
+                            }
+                        }
+                    }]
+                }
+                llqx.setOption(optionOI, true);
+
+            }
+        })
+        //页面缩放
+        window.onresize = function () {
+            yqxx.resize();
+            szjc.resize();
+            tsl.resize();
+            swqx.resize();
+            myChartb.resize();
+            llqx.resize();
+        };
+
+    });
+    function xuanze(){
+        var date = $("#top option:selected").text();
+        $("#qing").remove();
+        $.ajax({
+            url: 'http://10.0.2.7:9920/alarm/listDateToK/'+date,
+            dataType: "json",
+            // data: {"date": date},
+            type: "get",
+            success: function (date) {
+                var result = date.data
+                // $("#tkk").empty();
+                // debugger
+                var str = [];
+                var str1 = new Array();
+                str.push(result[0].guanli)
+                str.push(result[0].gongcheng)
+                str.push(result[0].fushu)
+                str.push(result[0].gugan)
+                for(var i=1;i<result.length;i++){
+                    str1.push(result[i])
+
+                }
+                var tu = result.length;
+                myChartb = echarts.init(document.getElementById('tkk'));
+                var option2 = {
+                    title: {},
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['管理设施', '工程设施', '附属设施', '骨干工程']
+                    },
+                    series: [
+                        {
+                            itemStyle: {
+                                emphasis: {
+                                    barBorderRadius: 8
+                                },
+                                normal: {
+                                    barBorderRadius: 8
+                                }
+                            },
+                            color: ['#cf7618'],
+                            type: 'bar',
+                            barWidth: 15,
+                            data: str
+                        },
+
+                    ]
+                };
+                myChartb.setOption(option2, true);
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('服务资源管理')}
+            </div>
+            <div class="box-tools pull-right">
+                <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/or/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <div class="form-group">
+                <label class="control-label">${text('服务名称')}：</label>
+                <div class="control-inline">
+                    <#form:input path="name" maxlength="100" class="form-control width-250"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('服务分类')}：</label>
+                <div class="control-inline" style="width:150px" >
+                    <#form:select path="serviceClass" blankOption="true" blankOptionLabel="请选择" items="${services}" maxlength="100" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('接入类型')}：</label>
+                <div class="control-inline" style="width:150px" >
+                    <#form:select path="accessType"  blankOption="true" blankOptionLabel="请选择"  items="${accesses}" maxlength="100" class="form-control width-250"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('状态')}：</label>
+                <div class="control-inline" style="width:80px" >
+                    <#form:select path="status"  blankOption="true" blankOptionLabel="请选择"  items="${statuses}" maxlength="100" class="form-control width-100"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit"  class="btn btn-primary btn-sm icon-magnifier">${text('搜 索')}</button>
+                <button type="button" class="btn btn-sm btnTool" id="btnCancel" href="${ctx}/or/form?id=0000" title="${text('新增服务')}"><i class="fa fa fa-fw glyphicon-plus"></i> ${text('注 册')}</button>
+            </div>
+            </#form:form>
+            <table id="dataGrid"></table>
+            <div id="dataGridPage"></div>
+        </div>
+    </div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("服务ID")}', name:'id', index:'id', width:120, align:"center",sortable:false},
+            {header:'${text("服务名称")}', name:'name', index:'name', width:150, align:"center",sortable:false},
+            {header:'${text("服务分类")}', name:'serviceClass', index:'serviceClass', width:150, align:"center",sortable:false},
+            {header:'${text("接入类型")}', name:'accessType', index:'accessType', width:150, align:"center",sortable:false},
+            {header:'${text("状态")}', name:'status', index:'status', width:100, align:"center",sortable:false},
+            {header:'${text("创建时间")}', name:'createDate', index:'createDate', width:150, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:200, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/or/form?id='+row.id+'" class="btnList" title="${text("变更")}">&nbsp;&nbsp;变更</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/or/del?id='+row.id+'" class="btnList" title="${text("撤销")}"  data-confirm="${text("确认要撤销该服务吗？")}">撤销</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/or/info?id='+row.id+'" class="btnList" title="${text("详情")}">详情</a>&nbsp;&nbsp;');
+                    if (row.status == '停用'){
+                        actions.push('<a href="${ctx}/or/ups?id='+row.id+'&status=启用" class="btnList" title="${text("启用")}" data-confirm="${text("确认要启用该服务吗？")}">启用</a>&nbsp;&nbsp;');
+                    } else {
+                        actions.push('<a href="${ctx}/or/ups?id='+row.id+'&status=停用" class="btnList" title="${text("停用")}" data-confirm="${text("确认要停用该服务吗？")}">停用</a>&nbsp;&nbsp;');
+                    }
+
+                    return actions.join('');
+                }}
+        ],
+        showRownum: false,
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+
+    function search() {
+        $("#sName").val($('#iname').val());
+        $("#sAccess").val($('#access option:selected').val());
+        $("#sClass").val($('#service option:selected').val());
+        $("#sStatus").val($('#istatus option:selected').val());
+        $('#dataGrid').dataGrid('refresh');
+    }
+</script>

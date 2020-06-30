@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/chinags_actuator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_actuator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_config/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_config/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_eureka/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_turbine/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_turbine/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_zuul/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chinags_zuul/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_archives/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_archives/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_contract/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_contract/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_dbra/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_dbra/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_device/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_device/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_file/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_file/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_gis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_gis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_phone/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_phone/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_user/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service_user/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zipkin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zipkin/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,158 @@
+<% layout('/layouts/default.html', {title: '养护记录管理', libs: ['validate']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header with-border">
+            <div class="box-title">
+                <i class="fa fa-list-alt"></i> ${text(isNewRecord ? '新增养护记录' : '编辑养护记录')}
+            </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <#form:form id="inputForm" model="${maintainInfo}" action="${ctx}/sys/device/maintain/save" method="post" class="form-horizontal">
+        <div class="box-body">
+            <div class="form-unit">${text('基本信息')}</div>
+            <#form:hidden name="id" value="${maintainInfo!=null?maintainInfo.id:''}"/>
+            <#form:hidden name="createBy" value="${maintainInfo!=null?maintainInfo.createBy:''}"/>
+            <#form:hidden name="createDate" value="${maintainInfo!=null?maintainInfo.createDate:''}"/>
+            <#form:hidden name="deceiveName" value="${maintainInfo!=null?maintainInfo.deceiveId:''}"/>
+            <#form:hidden name="orgId" value="${maintainInfo!=null?maintainInfo.deceiveName:''}"/>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('部位名称')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:treeselect id="deceiveId" title="${text('列表')}" name="deceiveId"
+                            url="${ctx}/sys/device/treeData2" value="${maintainInfo!=null?maintainInfo.deceiveName:''}"
+                            class="required" allowClear="false" canSelectParent="false"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('维护完成时间')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input id="endTime" path="endTime" maxlength="20" class="form-control Wdate required"
+                            dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('维护责任人')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="responsiblePerson" maxlength="75" class="form-control required" value="${maintainInfo!=null?maintainInfo.responsiblePerson:''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('施工单位')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="workCompany" maxlength="75" class="form-control required" value="${maintainInfo!=null?maintainInfo.workCompany:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" title="">
+                            <span class="required hide">*</span> ${text('备注')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-11">
+                            <#form:textarea name="remarks" rows="4" placeholder="不能大于500字符!" maxlength="500" class="form-control" value="${maintainInfo!=null?maintainInfo.remarks:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-unit">${text('养护信息')}</div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('养护责任人')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="people" maxlength="75" class="form-control required" value="${maintainInfo!=null?maintainInfo.people:''}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('养护时间')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input id="peopleTime" path="peopleTime" maxlength="20" class="form-control Wdate required"
+                            dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" title="">
+                            <span class="required ">*</span> ${text('养护内容')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8">
+                            <#form:input name="content" maxlength="500" class="form-control required" value="${maintainInfo!=null?maintainInfo.content:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" title="">
+                            <span class="required hide">*</span> ${text('养护备注')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-11">
+                            <#form:textarea name="remark" rows="4" placeholder="不能大于500字符!" maxlength="500" class="form-control" value="${maintainInfo!=null?maintainInfo.remark:''}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+                    <button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+                </div>
+            </div>
+        </div>
+    </#form:form>
+
+    <#form:hidden id="deceiveName2" value="${maintainInfo!=null?maintainInfo.deceiveName:''}"/>
+</div>
+</div>
+<% } %>
+<script>
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                    js.closeCurrentTabPage(function(contentWindow){
+                        contentWindow.page();
+                    });
+                }
+            }, "json");
+        }
+    });
+
+    /*维护完成时间初始化*/
+    document.getElementById("endTime").value="${maintainInfo!=null?maintainInfo.endTime:''}";
+    document.getElementById("peopleTime").value="${maintainInfo!=null?maintainInfo.peopleTime:''}";
+
+    /*设备初始化*/
+    $(function () {
+        var deceiveName = $("#deceiveName2").val();
+        if(deceiveName){
+            $("#deceiveIdName").val(deceiveName);
+        }
+    });
+</script>

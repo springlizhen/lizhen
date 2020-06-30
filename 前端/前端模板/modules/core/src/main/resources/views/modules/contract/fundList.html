@@ -1,0 +1,42 @@
+<% layout('/layouts/default.html', {title: '合同收支', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('合同收支')}
+			</div>
+		</div>
+		<div >
+			<#form:form id="searchForm" action="${ctx}/fund/listData"  class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+
+			<input type="hidden" name="id" value="${comm.id}"/>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	//url:'${ctx}/fund/listFund?id=${comm.id}',
+	columnModel: [
+		{header:'${text("合同编码")}', name:'contractCode', index:'contractCode', width:100, align:"left", fixed:true,frozen:true},
+		{header:'${text("合同类型")}', name:'contractType', index:'a.contractType', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同标题")}', name:'title', index:'title', width:150,fixed:true,  align:"center"},
+		{header:'${text("款项性质")}', name:'fund', index:'fund', width:150, fixed:true, align:"center"},
+		{header:'${text("款项类别")}', name:'fundType', index:'a.fundType', width:150,fixed:true,  align:"center"},
+		{header:'${text("款项金额")}', name:'fundMoney', index:'fundMoney', width:150,fixed:true,  align:"center"},
+		{header:'${text("打款方式")}', name:'remitType', index:'a.remitType', width:150, fixed:true, align:"center"},
+		{header:'${text("打款账号")}', name:'remitAccount', index:'remitAccount', width:150, fixed:true, align:"center"}
+
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+
+	}
+});
+</script>

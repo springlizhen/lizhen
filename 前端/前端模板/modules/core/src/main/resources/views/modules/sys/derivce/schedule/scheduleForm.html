@@ -1,0 +1,252 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['dataGrid','validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<%
+				if(schedule==null) {
+				%>
+				<i class="fa icon-fire"></i>  ${text('新增进度')}
+				<%
+				} else {
+				%>
+				<i class="fa icon-fire"></i>  ${text('编辑进度')}
+				<%
+				}
+				%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${schedule}" action="${ctx}/sys/device/schedule/save" method="post" class="form-horizontal">
+			<#form:hidden name="id" maxlength="100" class="form-control" value="${schedule!=null?schedule.id:''}"/>
+			<#form:hidden name="createBy" maxlength="100" class="form-control" value="${schedule!=null?schedule.createBy:''}"/>
+			<#form:hidden name="updateBy" maxlength="100" class="form-control" value="${schedule!=null?schedule.updateBy:''}"/>
+			<#form:hidden name="endMoney" maxlength="100" class="form-control" value="${schedule!=null?schedule.endMoney:'0'}"/>
+			<div class="box-body">
+				<h4 style="color: #1ab7ea">基本信息</h4>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('工程项目')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" maxlength="100" class="form-control required" value="${schedule!=null?schedule.name:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('年度')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="year" path="year" readonly="true" maxlength="20" class="form-control required Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('合同金额')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input type="number" name="money" min="0" maxlength="10" class="form-control required" value="${schedule!=null?schedule.money:''}" />
+							</div>
+							<label class="control-label col-sm-1" title="">
+								${text('万元')}<i class="fa icon-question hide"></i></label>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('合同编号')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="htId" maxlength="100" class="form-control" value="${schedule!=null?schedule.htId:''}"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('关联计划')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="linkPlan" maxlength="100" class="form-control" value="${schedule!=null?schedule.linkPlan:''}"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('施工单位')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="construction" maxlength="100" class="form-control" value="${schedule!=null?schedule.construction:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('招标代理机构')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="bidAgn" maxlength="100" class="form-control" value="${schedule!=null?schedule.bidAgn:''}"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('相关附件')}：<i class="fa icon-question hide"></i></label>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-sm-11" style="left: 13%">
+							<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+									src="${ctx}/upload/list?pid=${schedule!=null?schedule.id:'schedule'}&readOnly=1"></iframe>
+						</div>
+					</div>
+				</div>
+				<h4 style="color: #1ab7ea">计划信息</h4>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('计划开工日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="planStartDate" path="planStartDate" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('计划完工日期')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="planEndDate" path="planEndDate" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4 style="color: #1ab7ea">完成信息</h4>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('实际开工日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="startDate" path="startDate" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('实际完工日期')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input id="endDate" path="endDate" readonly="true" maxlength="20" class="form-control Wdate "
+								dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4 style="color: #1ab7ea">项目信息</h4>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-12">
+							<label class="control-label col-sm-2" title=""></label>
+							<div class="col-sm-9">
+								<a href="${ctx}/sys/device/schedulePro/form?scheduleId=${schedule!=null?schedule.id:''}" style="background-color: #00b7ee; color: white" class="btn btn-default btnTool" title="${text('添加项目')}">${text('添加项目')}</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<label class="control-label col-sm-2" title=""></label>
+						<div class="col-sm-9">
+							<table id="dataGrid"></table>
+						</div>
+					</div>
+				</div>
+				<h4 style="color: #1ab7ea">其他</h4>
+				<hr/>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-12">
+							<label class="control-label col-sm-2" title="">
+								${text('备注')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-9">
+								<#form:textarea name="remarks" rows="5" maxlength="300" class="form-control" value="${schedule!=null?schedule.remarks:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<% if(schedule!=null) { %>
+							<a href="${ctx}/sys/device/scheduleComm/listData?scheduleId=${schedule!=null?schedule.id:''}"><button type="button" class="btn btn-sm btn-primary btnList" id="btnComm" title="${text("验收信息")}">${text('开 始 验 收 信 息')}</button></a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<% } %>
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+		<#form:form id="searchForm" action="${ctx}/sys/device/schedulePro/listData?scheduleId=${schedule!=null?schedule.id:'0000'}" method="post" class="form-inline hide">
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow) {
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	autoGridHeight: false,
+	columnModel: [
+		{header:'${text("项目名称")}', name:'name', width:120, align:"center"},
+		{header:'${text("工程量比例(%)")}', name:'quantityRatio',  width:150, align:"center"},
+		{header:'${text("计划金额(万元)")}', name:'planMoney',  width:150, align:"center"},
+		{header:'${text("实际金额(万元)")}', name:'money',  width: 150, align:"center"},
+		{header:'${text("状态")}', name:'status',  width:50, align:"center"},
+		{header:'${text("完成时间")}', name:'endDate',  width:100, align:"center"},
+		{header:'${text("备注")}', name:'remarks',  width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+				var actions = [];
+				actions.push('<a href="${ctx}/sys/device/schedulePro/form?id='+row.id+'&scheduleId='+row.scheduleId+'" class="btnList" title="${text("编辑项目")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/sys/device/schedulePro/del?id='+row.id+'" class="btnList" title="${text("删除项目")}" data-confirm="${text("确认要删除该项目吗？")}" data-deltreenode="'+row.id+'"><i class="fa fa-trash-o"></i></a>&nbsp;');
+				return actions.join('');
+			}}
+	],
+	showFooter: true,
+	ajaxSuccess: function(data){
+		var planMon=0;
+		var mon=0;
+		if (data!=null) {
+			for (i=0;i<data.length;i++) {
+				planMon=planMon+data[i].planMoney;
+				mon=mon+data[i].money;
+			}
+		}
+		$('#dataGrid').dataGrid("footerData", "set", {
+			'name' : '<em>小计 ：&nbsp;</em>',
+			'planMoney': planMon,
+			'money': mon
+		}, false);
+	}
+});
+
+document.getElementById("planStartDate").value="${schedule!=null?schedule.planStartDate:''}";
+document.getElementById("planEndDate").value="${schedule!=null?schedule.planEndDate:''}";
+document.getElementById("startDate").value="${schedule!=null?schedule.startDate:''}";
+document.getElementById("endDate").value="${schedule!=null?schedule.endDate:''}";
+document.getElementById("year").value="${schedule!=null?schedule.year:''}";
+</script>

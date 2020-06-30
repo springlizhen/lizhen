@@ -1,0 +1,242 @@
+<%/* Copyright (c) 2013-Now http://jeesite.com All rights reserved. */ %>
+<% layout('/layouts/default.html', {title: '角色管理', libs: ['validate', 'zTree']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-people"></i> 角色授权数据权限
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" action="${ctx}/role/saveAuthDataScope" method="post" class="form-horizontal">
+			<div class="box-body"><br/>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 角色名称：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:hidden name="oldRoleName" value="${role.roleName}"/>
+								<#form:input name="roleName" value="${role.roleName}" maxlength="100" readonly="true" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> 角色编码：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:hidden path="isNewRecord"/>
+								<#form:input name="roleCode" value="${role.roleCode}" maxlength="64" readonly="true" class="form-control required abc"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required ">*</span> 系统：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-4">
+								<select id="authCode" name="authCode" class="form-control required" >
+									<option value="">请选择</option>
+									<% for(e in sysCode){ %>
+									<option value="${e.code}" >${e.name}</option>
+									<% }%>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required ">*</span> 数据范围：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-10">
+								<#form:radio name="roleType" id="roleType" items="${dataType}" itemLabel="name" itemValue="code" class="form-control required" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-unit">授权数据权限</div>
+				<div id="dataScopeTrees"></div>
+				<script id="dataScopeTpl" type="text/template">
+					<div class="pull-left" style="padding:0 15px;min-width:300px;">
+						<div class="box box-solid" style="background:#FAFAFA">
+							<div class="box-header">
+								<div class="box-title icheck">
+									<label><input type="checkbox" id="checkall_{{d.key}}"
+										class="checkall"/> {{d.label}}</label>
+								</div>
+								<div class="box-tools pull-right" style="top:8px;">
+									<a class="btn btn-box-tool" id="expand_{{d.key}}"
+										value="dataScopeTree_{{d.key}}" >展开</a>/<a
+										class="btn btn-box-tool" id="collapse_{{d.key}}"
+										value="dataScopeTree_{{d.key}}" >折叠</a>
+								</div>
+							</div>
+							<div class="box-body">
+								<div id="dataScopeTree_{{d.key}}" class="ztree"></div>
+							</div>
+						</div>
+					</div>
+				</script>
+			    <#form:hidden name="roleDataScopeListJson"/>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> 保 存</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> 关 闭</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			// 获取数据权限数据
+			var dataScopeData = [];
+			$.each(dataScopeTrees, function(key, dataScopeTree){
+				var treeNodes = dataScopeTree.getCheckedNodes(true);
+				for(var i=0; i<treeNodes.length; i++) {
+					dataScopeData.push(treeNodes[i].id);
+				}
+			});
+			$("#roleDataScopeListJson").val(dataScopeData);
+			// 提交表单数据
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+	//加载数据权限树结构
+	var setting = {
+				check:{enable:true,nocheckInherit:true},
+				view:{selectedMulti:false,nameIsHTML: true},
+				data:{simpleData:{enable:true},key:{title:"title"}},
+				callback:{
+					beforeClick: function (treeId, treeNode, clickFlag) {
+						var tree = $.fn.zTree.getZTreeObj(treeId);
+						tree.checkNode(treeNode, !treeNode.checked, true, true);
+						return false;
+					},
+					onCheck: function (event, treeId, treeNode){
+						var tid = treeNode.tId;
+						if(!treeNode.checked){
+							$(".checkall[value="+treeId+"]").each(function(){
+								if(this.checked){
+									$(this).removeAttr("checked").iCheck('update');
+								}
+								return false;
+							});
+						}
+						// 选中 自定义权限 单选按钮
+						$('#dataScope3').parent().click();
+					}
+				}
+			},
+			moduleCodes = '${toJson(@ModuleUtils.getEnableModuleCodes())}';
+	dataScopes = [{
+		moduleCode: "core",
+		ctrlPermi: "0",
+		ctrlName: "机构权限",
+		ctrlName_en: "Office",
+		ctrlType: "Office",
+		ctrlDataUrl: "/sys/office/treeData",
+		chkboxType: {"Y":"ps","N":"ps"},
+		expandLevel: -1,
+		remarks: ""
+	}],
+			dataScopeTrees = {}; // 用sysCode分类存储所有菜单树
+	for (var i=0; i<dataScopes.length; i++){
+		var dataScope = dataScopes[i];
+		// 验证模块是否开启，如果未开启，则跳过
+		if (moduleCodes.indexOf("\""+dataScope.moduleCode+"\"") == -1){
+			continue;
+		}
+		// 控制权限 ctrlPermi: 0全部  1拥有权限  2管理权限
+		if (!(dataScope.ctrlPermi == '0'
+				|| dataScope.ctrlPermi == '1')){
+			continue;
+		}
+		$('#dataScopeTrees').append(js.template('dataScopeTpl', {
+			key: dataScope.ctrlType, label: dataScope.ctrlName_${lang()} || dataScope.ctrlName}));
+		var ctrlDataUrl = dataScope.ctrlDataUrl || '';
+		$.ajax({
+			type: 'POST',
+			url: "${ctx}" + ctrlDataUrl + (ctrlDataUrl.indexOf("?")!=-1?'&':'?') + "___t=" + new Date().getTime(),
+			data: {ctrlPermi: '2'},
+			dataType: 'json',
+			async: false,
+			error: function(data){
+				js.showErrorMessage(data.responseText);
+			},
+			success: function(data, status, xhr){
+				// 初始化树结构
+				var tree = $.fn.zTree.init($("#dataScopeTree_"+dataScope.ctrlType), setting, data);
+				tree.setting.check.chkboxType = dataScope.chkboxType;
+				// 默认展开节点（如果级别设置为-1，则：如果有1个根节点，则展开一级节点，否则不展开）
+				$.fn.zTree.expandNodeByLevel(tree, dataScope.expandLevel);
+				$.fn.zTree.parent
+				// 树结构：全选、取消全选
+				$('#checkall_'+dataScope.ctrlType).iCheck({
+					checkboxClass:'icheckbox_minimal-grey'
+				}).on('ifChecked ifUnchecked', function(){
+					var ctrlType = $(this).attr('ctrlType');
+					if(this.checked){
+						dataScopeTrees[ctrlType].checkAllNodes(true);
+					}else{
+						dataScopeTrees[ctrlType].checkAllNodes(false);
+					}
+				}).attr("ctrlType", dataScope.ctrlType);
+				// 展开和折叠按钮绑定
+				$('#expand_'+dataScope.ctrlType).click(function(){
+					var ctrlType = $(this).attr('ctrlType');
+					dataScopeTrees[ctrlType].expandAll(true);
+				}).attr("ctrlType", dataScope.ctrlType);
+				$('#collapse_'+dataScope.ctrlType).click(function(){
+					var ctrlType = $(this).attr('ctrlType');
+					dataScopeTrees[ctrlType].expandAll(false);
+				}).attr("ctrlType", dataScope.ctrlType);
+				// 将树对象存储到全局数组里
+				dataScopeTrees[dataScope.ctrlType] = tree;
+			}
+		});
+	}
+
+	$('#authCode').change(function(){
+		var authCode = $(this).val();
+		$.ajax({
+			type: 'GET',
+			url: "${ctx}/role/roleOfficeDate?___t=" + new Date().getTime(),
+			data: {roleCode: '${role!=null?role.roleCode}',authCode: authCode},
+			dataType: 'json',
+			async: false,
+			error: function (data) {
+				js.showErrorMessage(data.responseText);
+			},
+			success: function (datas, status, xhr) {
+				var zTree = $.fn.zTree.getZTreeObj("dataScopeTree_Office");//ztree对象
+				zTree.checkAllNodes(false);//设置全部为false,不选中节点
+				for (var d in datas){
+					$('#roleType'+(parseInt(datas[d].roleType)+1)).iCheck('check');
+					console.log(datas[d]);
+					try{dataScopeTrees['Office'].checkNode(dataScopeTrees['Office']
+							.getNodeByParam("id",datas[d].ctrlData), true, false);}catch(e){}
+				}
+			}
+		});
+	});
+</script>

@@ -1,0 +1,93 @@
+<% layout('/layouts/default.html', {title: '图层信息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('图层信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" action="${ctx}/sys/gisdesk/save" method="post" class="form-horizontal">
+            <#form:hidden name="id" class="form-control" value="${gisdesk!=null?gisdesk.id:''}"/>
+			<div class="box-body">
+				<div class="form-unit">${text('图层信息')}</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('图层名称')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-6">
+								<#form:input name="name" maxlength="100" class="form-control required" value="${gisdesk!=null?gisdesk.name:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('图层类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-6">
+								<#form:input name="type" maxlength="100" class="form-control required" value="${gisdesk!=null?gisdesk.type:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+                                <span class="required ">*</span> ${text('图层服务地址')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-6">
+                                <#form:input name="url" maxlength="100" class="form-control required" value="${gisdesk!=null?gisdesk.url:''}"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+                                <span class="required ">*</span> ${text('图层比例尺')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-6">
+                                <#form:input name="scale" maxlength="100" class="form-control required" value="${gisdesk!=null?gisdesk.scale:''}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-6">
+                            <label class="control-label col-sm-4" title="">
+                                ${text('发布状态')}：<i class="fa icon-question hide"></i></label>
+                            <div class="col-sm-6">
+                                <select name="sysCode" class="form-control" >
+                                    <option value="">请选择</option>
+                                    <option <%if(gisdesk!=null&&gisdesk.userStatus=="发布"){%>selected = "selected"<%}%> value="发布" >发布</option>
+                                    <option <%if(gisdesk!=null&&gisdesk.userStatus=="未发布"){%>selected = "selected"<%}%> value="未发布" >未发布</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>

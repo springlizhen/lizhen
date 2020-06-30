@@ -1,0 +1,1586 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title data-i18n="resources.title_splinesData"></title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			overflow: hidden;
+			background: #fff;
+			width: 100%;
+			height: 100%
+		}
+
+		#map {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border: 1px solid #3473b7;
+		}
+		.toolbar-bottom {
+			position: absolute;
+			top: 274px !important;
+			right: 10px;
+			text-align: center;
+			z-index: 100;
+			border-radius: 4px;
+		}
+
+		#toolbar {
+			position: absolute;
+			top: 50px;
+			right: 10px;
+			text-align: center;
+			z-index: 100;
+			border-radius: 4px;
+		}
+		.popup-table{
+	   margin:10px;
+		
+		}
+		
+		.popup-td{
+		border:1px solid #5bc8ff;
+		padding:6px;
+		text-align:center;
+		width:150px!important;
+		font-size:12px;
+		
+		}
+		.popup-td1{
+		border:1px solid #5bc8ff;
+		padding:6px;
+		text-align:center;
+		width:150px!important;
+		font-size:12px;
+		background-color:rgba(69,214,194,0.41);
+		
+		}
+		
+	</style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+	<div class='panel-heading'>
+		<h5 class='panel-title text-center' data-i18n="resources.text_splinesData"></h5></div>
+	<div class='panel-body content' style="line-height:40px">
+		<input type="button" class="btn btn-default" id="createPoint" value="水文图层" selectcolor="a" onclick="createPoint()"/>
+		<input type="button" class="btn btn-default" id="createPoint1" value="水质图层" selectline="a" onclick="createPoint1()"/></br>
+		<input type="button" class="btn btn-default" id="createPoint2" value="水情图层" selectcolor="a" onclick="createPoint6()"/>
+		<input type="button" class="btn btn-default"  id="createPoint3" value="视频图层" selectcolor="a" onclick="createPoint3()"/></br>
+		<input type="button" class="btn btn-default" id="createPoint4" value="事件图层" selectcolor="a" onclick="createPoint4()"/>
+		<input type="button" class="btn btn-default" id="createPoint5" value="工程安全" selectcolor="a" onclick="createPoint5()"/>
+
+
+
+	</div>
+		<div class='panel-body content' style="line-height:40px">
+
+	<div id="layer"></div>
+		</div>
+</div>
+<div id="map">
+</div>
+<script src="${ctxStatic}/examples/js/jquery-3.3.1.js"></script>
+<script src="${ctxStatic}/examples/layer/layer.js"></script>
+<link href="${ctxStatic}/examples/js/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="${ctxStatic}/libs/SuperMap.Include.js"></script>
+<script src="${ctxStatic}/libs/InfoWindow.js"></script>
+<link href="${ctxStatic}/libs/InfoWindow.css" rel="stylesheet" type="text/css">
+<script src="${ctxStatic}/examples/js/utils.js"></script>
+<script src="${ctxStatic}/examples/js/widgets.js"></script>
+<script src="${ctxStatic}/examples/js/bootstrap.min.js"></script>
+<script>
+function createPoint6(){
+	var val=$("#createPoint2").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+	$("#createPoint2").attr("selectcolor","a");
+		$("#createPoint2").css("background-color","white");
+				$("#createPoint2").css("color","black");
+	
+		$('#layer').html("");
+			return;
+			}
+			if(val=='a'){
+	$('#layer').html("<div id='toolbar' class='panel panel-primary toolbar-bottom'><div class='panel-heading'><h5 class='panel-title text-center' data-i18n='resources.text_splinesData'></h5></div><div class='panel-body content' style='line-height:40px'><input type='button' class='btn btn-default' id='createAAC' value='泵' style='margin-right:10px' selectcolor='a' onclick='createAAC()'/><input type='button' class='btn btn-default' id='createAAB' value='闸' selectcolor='a' onclick='createPoint2()'/></br><input type='button' class='btn btn-default' id='createAAD' style='margin-right:10px' value='阀' selectcolor='a' onclick='createAAD()'/><input type='button' class='btn btn-default'  id='createdaohong' value='倒虹' selectcolor='a' onclick='createdaohong()'/></br><input type='button' class='btn btn-default'  id='createducao' value='渡槽' style='margin-right:10px' selectcolor='a' onclick='createducao()'/><input type='button' class='btn btn-default'  id='createfenshui' value='分水口' selectcolor='a' onclick='createfenshui()'/></br></div></div>");
+		$("#createPoint2").attr("selectcolor",'b');
+		$("#createPoint2").css("background-color","blue");
+	$("#createPoint2").css("color","white");
+
+
+	}
+}
+					        //markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>硝氮</td><td class='popup-td'>"+type.data[0].硝氮+"</td></tr> <tr><td class='popup-td1'>氨氮</td><td class='popup-td'>"+type.data[0].氨氮+"</td></tr> <tr><td class='popup-td1'>氟化物（以Fˉ计）</td><td class='popup-td'>"+type.data[0].氟化物+"</td></tr> <tr><td class='popup-td1'>硫化物</td><td class='popup-td'>"+type.data[0].硫化物+"</td></tr> </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='测站基础信息' class='btn btn-default'  onclick='abc(\"" + marker.b + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='测站基础信息' class='btn btn-default'  onclick='abc(" + JSON.stringify(type) +  ")' /> ");	
+   
+
+	
+	function deviceparam(marker){
+		console.log(marker);
+		 if(marker.startsWith('AAD')){
+		 var url='http://10.0.2.7:9930/gate/selectAADParam';
+		 }
+		  if(marker.startsWith('AAB')){
+		  var url='http://10.0.2.7:9930/gate/selectDeviceParam';
+		  }
+	 if(marker.startsWith('AAC')){
+	 var url='http://10.0.2.7:9930/gate/getAACParam';
+	 }
+	$.ajax({
+	url:url,
+	type:'get',
+	data:{id:marker},
+	success:function(data){
+	  if(data.data[0].启用状态=='0'){
+	data.data[0].启用状态='未启用';
+     }	
+	 if(data.data[0].启用状态=='1'){
+	data.data[0].启用状态='启用';
+     }	
+	 if(data.data[0].启用状态=='2'){
+	data.data[0].启用状态='废弃';
+     }	
+	 if(data.data[0].是否接入自动化=='1'){
+	data.data[0].是否接入自动化='是';
+     }	
+	 if(data.data[0].是否接入自动化=='0'){
+	data.data[0].是否接入自动化='否';
+     }
+	 if(data.data[0].岸别=='1'){
+	data.data[0].岸别='左岸';
+     }
+	 if(data.data[0].岸别=='2'){
+	data.data[0].岸别='右岸';
+     }
+	 if(data.data[0].岸别=='3'){
+	data.data[0].岸别='中岸';
+     }
+	 if(data.data[0].闸站类型=='1'){
+	data.data[0].闸站类型='节制闸';
+     }	
+	 if(data.data[0].闸站类型=='2'){
+	data.data[0].闸站类型='泄水闸';
+     }	
+	 if(data.data[0].闸站类型=='3'){
+	data.data[0].闸站类型='分水闸';
+     }	
+	 if(data.data[0].闸站类型=='4'){
+	data.data[0].闸站类型='引水闸';
+     }
+	 if(data.data[0].闸站类型=='5'){
+	data.data[0].闸站类型='左岸';
+     }
+	  if(data.data[0].闸站类型=='6'){
+	data.data[0].闸站类型='节制闸';
+     }	
+	 if(data.data[0].闸站类型=='9'){
+	data.data[0].闸站类型='泄水闸';
+     }	
+	 if(data.data[0].闸站类型=='10'){
+	data.data[0].闸站类型='分水闸';
+     }	
+	 if(data.data[0].闸站类型=='11'){
+	data.data[0].闸站类型='引水闸';
+     }
+	 if(data.data[0].闸站类型=='12'){
+	data.data[0].闸站类型='排涝闸';
+     }
+	 if(data.data[0].岸别=='6'){
+	data.data[0].岸别='右岸';
+     }
+	 if(data.data[0].岸别=='3'){
+	data.data[0].岸别='中岸';
+     }
+	 if(marker.startsWith('AAD')){
+		 var content="<table class='popup-table'><tbody><tr><td class='popup-td1'>启用状态</td><td class='popup-td'>"+data.data[0].启用状态+"</td><td class='popup-td1'>工程等级</td><td class='popup-td'>"+data.data[0].工程等级+"</td></tr> <tr><td class='popup-td1'>是否接入自动化</td><td class='popup-td'>"+data.data[0].是否接入自动化+"</td><td class='popup-td1'>桩号</td><td class='popup-td'>"+data.data[0].桩号+"</td></tr> <tr><td class='popup-td1'>纬度</td><td class='popup-td'>"+data.data[0].纬度+"</td><td class='popup-td1'>经度</td><td class='popup-td'>"+data.data[0].经度+"</td></tr>  </tbody></table> ";
+		 }
+		  if(marker.startsWith('AAB')){
+		  var content="<table class='popup-table'><tbody><tr><td class='popup-td1'>启用状态</td><td class='popup-td'>"+data.data[0].启用状态+"</td><td class='popup-td1'>工程等级</td><td class='popup-td'>"+data.data[0].工程等级+"</td></tr> <tr><td class='popup-td1'>是否接入自动化</td><td class='popup-td'>"+data.data[0].是否接入自动化+"</td><td class='popup-td1'>桩号</td><td class='popup-td'>"+data.data[0].桩号+"</td></tr> <tr><td class='popup-td1'>纬度</td><td class='popup-td'>"+data.data[0].纬度+"</td><td class='popup-td1'>经度</td><td class='popup-td'>"+data.data[0].经度+"</td></tr> <tr><td class='popup-td1'>岸别</td><td class='popup-td'>"+data.data[0].岸别+"</td><td class='popup-td1'>闸孔数量</td><td class='popup-td'>"+data.data[0].闸孔数量+"</td></tr> <tr><td class='popup-td1'>闸站类型</td><td class='popup-td'>"+data.data[0].闸站类型+"</td></tbody></table> ";
+
+		  }
+	 if(marker.startsWith('AAC')){
+	 var content="<table class='popup-table'><tbody><tr><td class='popup-td1'>启用状态</td><td class='popup-td'>"+data.data[0].启用状态+"</td><td class='popup-td1'>工程等级</td><td class='popup-td'>"+data.data[0].工程等级+"</td></tr> <tr><td class='popup-td1'>是否接入自动化</td><td class='popup-td'>"+data.data[0].是否接入自动化+"</td><td class='popup-td1'>桩号</td><td class='popup-td'>"+data.data[0].桩号+"</td></tr> <tr><td class='popup-td1'>纬度</td><td class='popup-td'>"+data.data[0].纬度+"</td><td class='popup-td1'>经度</td><td class='popup-td'>"+data.data[0].经度+"</td></tr> <tr><td class='popup-td1'>主机组</td><td class='popup-td'>"+data.data[0].主机组+"</td><td class='popup-td1'>调节机组</td><td class='popup-td'>"+data.data[0].调节机组+"</td></tr> <tr><td class='popup-td1'>进水池桩号</td><td class='popup-td'>"+data.data[0].进水池桩号+"</td><td class='popup-td1'>出水池桩号</td><td class='popup-td'>"+data.data[0].出水池桩号+"</td></tr> <tr><td class='popup-td1'>是否交叉建筑物</td><td class='popup-td'>"+data.data[0].是否交叉建筑物+"</td>  </tbody></table> ";
+	 }
+ 
+	 
+		 console.log(data);
+			 layer.open({
+      type: 1,
+	  title:'测站基础信息',
+      area: ['600px', '360px'],
+      shadeClose: true, //点击遮罩关闭
+      content: content
+    });
+	}
+	});
+	}
+	
+
+
+	function monitor(marker){
+	console.log(marker);
+	//var slcd=marker.rows[0].slcd;
+	 if(marker.rows.length==0&&marker.device_code.startsWith('AAC')){	
+	 var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>泵前水位</td><td class='popup-td'></td><td class='popup-td1'>泵后水位</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td><td class='popup-td1'>开机状态</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'></td><td class='popup-td1'>总流量</td><td class='popup-td'></td></tr>  </tbody></table> ";
+	 }
+	 if(marker.rows.length>0&&marker.device_code.startsWith('AAC')){	
+	 	 var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>泵前水位</td><td class='popup-td'>"+marker.rows[0].upz+"</td><td class='popup-td1'>泵后水位</td><td class='popup-td'>"+marker.rows[0].dwz+"</td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'>"+marker.rows[0].gtq+"</td><td class='popup-td1'>开机状态</td><td class='popup-td'>"+marker.rows[0].open_status+"</td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'>"+marker.rows[0].day_q+"</td><td class='popup-td1'>总流量</td><td class='popup-td'>"+marker.rows[0].all_q+"</td></tr>  </tbody></table> ";
+		 }
+		  if(marker.rows.length==0&&marker.device_code.startsWith('AAD')){	
+	 var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>阀前压力</td><td class='popup-td'></td><td class='popup-td1'>阀后压力</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td><td class='popup-td1'>开启状态</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'></td><td class='popup-td1'>累计流量</td><td class='popup-td'></td></tr>  </tbody></table> ";
+	 }
+	 if(marker.rows.length>0&&marker.device_code.startsWith('AAD')){	
+	 	 var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>阀前压力</td><td class='popup-td'>"+marker.rows[0].uppressure+"</td><td class='popup-td1'>阀后压力</td><td class='popup-td'>"+marker.rows[0].dwpressure+"</td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'>"+marker.rows[0].mp_q+"</td><td class='popup-td1'>开启状态</td><td class='popup-td'>"+marker.rows[0].open_status+"</td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'>"+marker.rows[0].day_q+"</td><td class='popup-td1'>累计流量</td><td class='popup-td'>"+marker.rows[0].all_q+"</td></tr>  </tbody></table> ";
+		 }
+		 
+	 if(marker.rows.length==0&&marker.device_code.startsWith('AAB')){	
+	 var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>闸上水位</td><td class='popup-td'></td><td class='popup-td1'>闸下水位</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td><td class='popup-td1'>开度</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'></td><td class='popup-td1'>总流量</td><td class='popup-td'></td></tr>  </tbody></table> ";
+	 }
+	 if(marker.rows.length>0&&marker.device_code.startsWith('AAB')){	
+	 	 var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>闸上水位</td><td class='popup-td'>"+marker.rows[0].upz+"</td><td class='popup-td1'>闸下水位</td><td class='popup-td'>"+marker.rows[0].dwz+"</td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'>"+marker.rows[0].gtq+"</td><td class='popup-td1'>开度</td><td class='popup-td'>"+marker.rows[0].openSz+"</td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'>"+marker.rows[0].day_q+"</td><td class='popup-td1'>总流量</td><td class='popup-td'>"+marker.rows[0].all_q+"</td></tr>  </tbody></table> ";
+		 }
+
+			 layer.open({
+      type: 1,
+	  title:'设施信息',
+      area: ['600px', '360px'],
+      shadeClose: true, //点击遮罩关闭
+      content:html
+
+    });
+	
+	}
+
+	function abc(marker){
+	console.log(marker);	
+	if(marker.data.length==0){
+	var html= "<table class='popup-table'><tbody><tr><td class='popup-td1'>PH传感器</td><td class='popup-td'></td><td class='popup-td1'>化学需氧量</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>叶绿素</td><td class='popup-td'></td><td class='popup-td1'>总有机碳</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>总硬度</td><td class='popup-td'></td><td class='popup-td1'>氟化物</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>氨氮</td><td class='popup-td'></td><td class='popup-td1'>氯化物</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>浊度传感器</td><td class='popup-td'></td><td class='popup-td1'>温度测量</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>溶解氧传感器</td><td class='popup-td'></td><td class='popup-td1'>生物毒性检测仪</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>电导率传感器</td><td class='popup-td'></td><td class='popup-td1'>硝氮</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>硫化物</td><td class='popup-td'></td><td class='popup-td1'>硫酸盐分析仪</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>硫酸盐分析仪</td><td class='popup-td'></td><td class='popup-td1'>高锰酸盐指数</td><td class='popup-td'></td></tr> </tbody></table> "
+
+	}
+		if(marker.data.length>0){
+			var html="<table class='popup-table'><tbody><tr><td class='popup-td1'>PH传感器</td><td class='popup-td'>"+marker.data[0].PH传感器+"</td><td class='popup-td1'>化学需氧量</td><td class='popup-td'>"+marker.data[0].化学需氧量+"</td></tr> <tr><td class='popup-td1'>叶绿素</td><td class='popup-td'>"+marker.data[0].叶绿素+"</td><td class='popup-td1'>总有机碳</td><td class='popup-td'>"+marker.data[0].总有机碳+"</td></tr> <tr><td class='popup-td1'>总硬度</td><td class='popup-td'>"+marker.data[0].总硬度+"</td><td class='popup-td1'>氟化物</td><td class='popup-td'>"+marker.data[0].氟化物+"</td></tr> <tr><td class='popup-td1'>氨氮</td><td class='popup-td'>"+marker.data[0].氨氮+"</td><td class='popup-td1'>氯化物</td><td class='popup-td'>"+marker.data[0].氯化物+"</td></tr> <tr><td class='popup-td1'>浊度传感器</td><td class='popup-td'>"+marker.data[0].浊度传感器+"</td><td class='popup-td1'>温度测量</td><td class='popup-td'>"+marker.data[0].温度测量+"</td></tr> <tr><td class='popup-td1'>溶解氧传感器</td><td class='popup-td'>"+marker.data[0].溶解氧传感器+"</td><td class='popup-td1'>生物毒性检测仪</td><td class='popup-td'>"+marker.data[0].生物毒性检测仪+"</td></tr> <tr><td class='popup-td1'>电导率传感器</td><td class='popup-td'>"+marker.data[0].电导率传感器+"</td><td class='popup-td1'>硝氮</td><td class='popup-td'>"+marker.data[0].硝氮+"</td></tr> <tr><td class='popup-td1'>硫化物</td><td class='popup-td'>"+marker.data[0].硫化物+"</td><td class='popup-td1'>硫酸盐分析仪</td><td class='popup-td'>"+marker.data[0].硫酸盐分析仪+"</td></tr> <tr><td class='popup-td1'>硫酸盐分析仪</td><td class='popup-td'>"+marker.data[0].硫酸盐分析仪+"</td><td class='popup-td1'>高锰酸盐指数</td><td class='popup-td'>"+marker.data[0].高锰酸盐指数+"</td></tr> </tbody></table> "
+}
+	
+
+			 layer.open({
+      type: 1,
+	  title:'测站基础信息',
+      area: ['600px', '360px'],
+      shadeClose: true, //点击遮罩关闭
+      content: html
+	})
+	}
+
+
+ 
+	var featuresOrigin = [];
+	var map, local, layer1, pointLayer, drawPoint, lineLayer, markerLayer, vector, select;
+	var pointArray = [];
+	var styleDraw = {
+		strokeColor: "#304DBE",
+		strokeWidth: 2,
+		pointerEvents: "visiblePainted",
+		fillColor: "#304DBE",
+		fillOpacity: 0.8,
+		pointRadius: 6
+	};
+	style = {
+		strokeColor: "#304DBE",
+		strokeWidth: 2,
+		pointerEvents: "visiblePainted",
+		fillColor: "#304DBE",
+		fillOpacity: 0.8
+	};
+
+	var style_green = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#545BF4'
+	};
+
+	var style_green1 = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#50E7F8'
+	};
+
+	var style_green2 = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#0C9CFE'
+	};
+	var style1 = {
+		fillColor: '#F00',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+
+	var style2 = {
+		fillColor: '#0F0',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+
+	var style3 = {
+		fillColor: '#00F',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+	var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+			url = "http://10.0.2.7:8090/iserver/services/map-china400/rest/maps/China"
+
+		//新建点矢量图层
+	markers = new SuperMap.Layer.Markers("Markers");
+
+	var a = [
+		new SuperMap.Geometry.Point(119.81180, 37.14436),
+		new SuperMap.Geometry.Point(120.61452, 37.63172),
+		new SuperMap.Geometry.Point(121.11547, 37.47140),
+		new SuperMap.Geometry.Point(119.70521, 36.98648),
+		new SuperMap.Geometry.Point(119.47407, 36.76855),
+		new SuperMap.Geometry.Point(119.47500, 36.76834)
+
+	];
+	vector = new SuperMap.Layer.Vector("vector");
+
+	for(var i=0;i<a.length;i++){
+		var pointVector = new SuperMap.Feature.Vector(a[i]);
+		pointVector.style = {
+			fillColor: "red",
+			strokeColor: "yellow",
+			pointRadius: 6
+		};
+		vector.addFeatures([pointVector ]);
+
+
+				}
+							marker4 = new SuperMap.Layer.Markers("Markers");
+							marker3 = new SuperMap.Layer.Markers("Markers");
+						marker2 = new SuperMap.Layer.Markers("Markers");
+					marker1 = new SuperMap.Layer.Markers("Markers");
+					markerAAC = new SuperMap.Layer.Markers("Markers");
+					markerAAD = new SuperMap.Layer.Markers("Markers");
+
+					
+
+					markers = new SuperMap.Layer.Markers("Markers");
+					line = new SuperMap.Layer.Markers("createPoint");
+					heatMapLayer = new SuperMap.Layer.HeatMapLayer(
+                "heatMap",
+                {
+                    "radius": 20,
+                    "featureWeight": "value",
+					"maxWeight":500
+
+
+                }
+				);
+
+	//vector = new SuperMap.Layer.Vector("vector");
+	//var point = new SuperMap.Geometry.Point(119.81180, 37.14436);
+	//var pointVector = new SuperMap.Feature.Vector(point);
+	//pointVector.style = {
+		//fillColor: "red",
+		//strokeColor: "yellow",
+		//pointRadius: 6
+	//};
+	function createPoint(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createPoint").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+		 heatMapLayer.removeAllFeatures();
+
+	$("#createPoint").attr("selectcolor","a");
+		$("#createPoint").css("background-color","white");
+				$("#createPoint").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+		
+		var a=[{x:121.725000,y:37.357300,zv:581.4},{x:122.546400,y:37.371800,zv:576.6},{x:122.126600,y:37.487600,zv:306.5},{x:118.710833,y:36.654167,zv:195},{x:118.783333,y:37.200000,zv:266.8},{x:121.216667,y:37.566667,zv:710}];
+		
+			 var heatPoints = [];
+
+	     var pointarr=new Array();
+
+	for(var i=0;i<a.length;i++){
+	  
+      heatPoints[i]= new SuperMap.Feature.Vector(
+                    new SuperMap.Geometry.Point(
+                           a[i].x, a[i].y
+                    ),
+                    {
+                        "value": a[i].zv,
+                      
+                    }
+            );
+   
+      //pointarr.push(point);
+	  }
+       heatMapLayer.addFeatures(heatPoints);
+	$("#createPoint").attr("selectcolor",'b');
+    $("#createPoint").css("background-color","blue");
+	$("#createPoint").css("color","white");
+
+
+	}
+	}
+	
+	function createPoint1(){
+    	
+			var val1=$("#createPoint1").attr("selectline");
+			console.log(val1);
+			if(val1=='b'){
+			line.clearMarkers();
+			map.removeAllPopup();
+	$("#createPoint1").attr("selectline","a");
+		$("#createPoint1").css("background-color","white");
+						$("#createPoint1").css("color","black");
+			return;
+			}
+		
+					if(val1=='a'){
+	var a1=[{
+"device_code":"AEA37060102B001",
+"device_name":"黄水河泵站水质测站",
+"device_position":"120.61452, 37.63172",
+"device_number":"010000A8900016F000169DC0",
+"DEVICE_CODE":"AAC37060102B001"},
+{
+"device_code":"AEA37060604B001",
+"device_name":"高疃泵站水质测站",
+"device_position":"121.11547, 37.47140",
+"device_number":"010000A8900016F000169DC1",
+"DEVICE_CODE":"AAC37060604B001"},
+{
+"device_code":"AEA37070207B001",
+"device_name":"宋庄泵站上游水质测站",
+"device_position":"119.47407, 36.76855",
+"device_number":"010000A8900016F000169DC4",
+"DEVICE_CODE":"AAC37070207B001"},
+{
+"device_code":"AEA37060204B001",
+"device_name":"东宋泵站水质测站",
+"device_position":"119.81180, 37.14436",
+"device_number":"010000A8900016F000169DC2",
+"DEVICE_CODE":"AAC37060204B001"
+},
+{
+"device_code":"AEA37070207B002",
+"device_name":"宋庄泵站下游水质测站",
+"device_position":"119.47500, 36.76834",
+"device_number":"010000A8900016F000169DC5",
+"DEVICE_CODE":"AAC37070207B002"},
+{
+"device_code":"AAC37020112B001",
+"device_name":"灰埠泵站水质测站",
+"device_position":"119.70521, 36.98648",
+"device_number":"010000A8900016F000169DC3",
+"DEVICE_CODE":"AAC37020112B001"}];
+	for(var i=0;i<a1.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/水质监测站点.png', size, offset);
+		//初始化标记覆盖物类
+		marker = new SuperMap.Marker(new SuperMap.LonLat(a1[i].device_position.split(',')[0], a1[i].device_position.split(',')[1]), icon);
+		marker.a=a1[i].device_name;
+		marker.mn=a1[i].device_number;
+		marker.DEVICE_CODE=a1[i].DEVICE_CODE;
+
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		line.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+			map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			var contentHTML = "<div style='   font-size:12px; opacity: 0.8' >";
+contentHTML += "<table style='width:100%;height:100%;'><tbody><tr><td>"+marker.a+"</td></tr><tr><td style='width:50%;'>ph值:20</td><td>cod:8</td></tr> <tr><td>pod:10</td><td>氧化物:8</td></tr> </tbody></table>   ";
+	size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w ), -size.h*2/3 );
+		icon = new SuperMap.Icon('img/markerbig_select.png', size, offset);
+			popup = new SuperMap.Popup(
+					"chicken",
+					marker.getLonLat(),
+					new SuperMap.Size(220, 140),
+					"<div>123456</div></div>",
+					true,
+					null
+			);
+			var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+
+		//console.log(a.x);
+			console.log(marker.a);
+			var type;
+				$.ajax({
+   url:'http://10.0.2.7:9930/gate/selectStation',
+   type:'get',
+   async:false,
+	data:{mn:marker.mn},
+	success: function (data) {
+		type=data;
+        //markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>硝氮</td><td class='popup-td'>20</td></tr> <tr><td class='popup-td1'>氯化物（以Clˉ计）</td><td class='popup-td'>8</td></tr> <tr><td class='popup-td1'>氟化物（以Fˉ计）</td><td class='popup-td'>10</td></tr> <tr><td class='popup-td1'>硫化物</td><td class='popup-td'>8</td></tr> </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='测站基础信息' class='btn btn-default'  onclick='abc(\"" + marker.b + "\")'  /><input type='button' style='margin-left:10px;margin-top:10px' value='测站基础信息' class='btn btn-default'  onclick='abc(\"" + marker.b + "\")'  /> ");	
+	}
+				});
+						console.log(type.data);
+						if(type.data.length==0){
+										        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>硝氮</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>氨氮</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>氟化物（以Fˉ计）</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>硫化物</td><td class='popup-td'></td></tr> </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='测站基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE+ "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='水质基础信息' class='btn btn-default'  onclick='abc(" + JSON.stringify(type) +  ")' /> ");	
+                          }
+                      if(type.data.length>0){
+				        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>硝氮</td><td class='popup-td'>"+type.data[0].硝氮+"</td></tr> <tr><td class='popup-td1'>氨氮</td><td class='popup-td'>"+type.data[0].氨氮+"</td></tr> <tr><td class='popup-td1'>氟化物（以Fˉ计）</td><td class='popup-td'>"+type.data[0].氟化物+"</td></tr> <tr><td class='popup-td1'>硫化物</td><td class='popup-td'>"+type.data[0].硫化物+"</td></tr> </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='测站基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE+ "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='水质基础信息' class='btn btn-default'  onclick='abc(" + JSON.stringify(type) +  ")' /> ");	
+                    }
+			console.log(marker.a);
+			framedCloud = new SuperMap.Popup.FramedCloud(
+					"chicken",
+					marker.getLonLat(),
+					null,
+					contentHTML,
+					icon,
+					true,
+					null,
+					true
+			);
+			popup.setBackgroundColor("#FFBBBB");
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+		}
+		$("#createPoint1").attr("selectline",'b');
+		$("#createPoint1").css("background-color","blue");
+		$("#createPoint1").css("color","white");
+
+	}
+	}
+	function createPoint2(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createAAB").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			marker1.clearMarkers();
+			map.removeAllPopup();
+	$("#createAAB").attr("selectcolor","a");
+		$("#createAAB").css("background-color","white");
+				$("#createAAB").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+$.ajax({
+   url:'http://10.0.2.7:9930/gate/selectGate',
+   //async:false,
+   type:'get',
+	data:{type:"AAB"},
+	success: function (data) {
+	//console.log(data.data);
+  
+for(var i=0;i<data.data.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/水闸（进口闸、出口闸、分水闸、退水闸、节制闸、引水闸、排冰闸、检修闸）.png', size, offset);
+		//console.log(icon);
+		//初始化标记覆盖物类
+		var marker = this;
+		marker = new SuperMap.Marker(new SuperMap.LonLat(data.data[i].DEVICE_POSITION.split(',')[0], data.data[i].DEVICE_POSITION.split(',')[1]), icon);
+		marker.DEVICE_CODE=data.data[i].DEVICE_CODE;
+		marker.a=data.data[i].DEVICE_NAME;
+		marker.id=data.data[i].ID;
+
+		//marker.time=a[i].time;
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		marker1.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			console.log(marker.a);
+		  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE); 
+
+
+		//console.log(a.x);
+		 setTimeout(function(){
+		$.ajax({
+   url:'http://10.0.2.7:9930/gate/list',
+   type:'get',
+   //async:false,
+	data:{slcd:marker.DEVICE_CODE},
+	success: function (data) {
+	data.device_code=marker.DEVICE_CODE;
+
+	console.log(data);
+
+			  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE);
+			if(data.rows.length>0){	
+        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>闸上水位</td><td class='popup-td'>"+data.rows[0].upz+"</td></tr> <tr><td class='popup-td1'>闸下水位</td><td class='popup-td'>"+data.rows[0].dwz+"</td></tr><tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'>"+data.rows[0].gtq+"</td></tr>   </tbody></table><input type='button' style='margin-left:20px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' /> ");	
+		}
+		if(data.rows.length==0){	
+		        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>闸上水位</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>闸下水位</td><td class='popup-td'></td></tr><tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td></tr>  </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' /> ");	
+				}			
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		 },
+ 
+   });
+           }, 0);
+			/* infowin = markerPop;
+			framedCloud = new SuperMap.Popup.FramedCloud(
+					"chicken",
+					marker.getLonLat(),
+					null,
+					contentHTML,
+					icon,
+					true,
+					null,
+					true
+			);
+			popup.setBackgroundColor("#FFBBBB");
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop); */
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+	}
+	 }
+ 
+   });
+  
+ 
+ 
+ 
+	$("#createAAB").attr("selectcolor",'b');
+    $("#createAAB").css("background-color","blue");
+	$("#createAAB").css("color","white");
+
+
+	}
+	}
+	function createAAC(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createAAC").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			markerAAC.clearMarkers();
+			map.removeAllPopup();
+	$("#createAAC").attr("selectcolor","a");
+		$("#createAAC").css("background-color","white");
+				$("#createAAC").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+ $.ajax({
+   url:'http://10.0.2.7:9930/gate/selectGate',
+   //async:false,
+   type:'get',
+	data:{type:"AAC"},
+	success: function (data) {
+	//console.log(data.data);
+  
+for(var i=0;i<data.data.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/泵站.png', size, offset);
+		//console.log(icon);
+		//初始化标记覆盖物类
+		var marker = this;
+		marker = new SuperMap.Marker(new SuperMap.LonLat(data.data[i].DEVICE_POSITION.split(',')[0], data.data[i].DEVICE_POSITION.split(',')[1]), icon);
+		marker.DEVICE_CODE=data.data[i].DEVICE_CODE;
+		marker.a=data.data[i].DEVICE_NAME;
+		marker.id=data.data[i].ID;
+
+		//marker.time=a[i].time;
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		markerAAC.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			
+			console.log(marker.a);
+	 		  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE); 
+
+
+		//console.log(a.x);
+		 setTimeout(function(){
+		$.ajax({
+   url:'http://10.0.2.7:9930/gate/list',
+   type:'get',
+   //async:false,
+	data:{slcd:marker.DEVICE_CODE},
+	success: function (data) {
+		data.device_code=marker.DEVICE_CODE;
+
+
+	console.log(data);
+
+			  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE);
+			if(data.rows.length>0){	
+        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>泵前水位</td><td class='popup-td'>"+data.rows[0].upz+"</td></tr> <tr><td class='popup-td1'>泵后水位</td><td class='popup-td'>"+data.rows[0].dwz+"</td></tr><tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'>"+data.rows[0].gtq+"</td></tr>  </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' /> ");	
+		}
+		if(data.rows.length==0){	
+		        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>泵前水位</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>泵后水位</td><td class='popup-td'></td></tr><tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td></tr>   </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' /> ");	
+				}
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		 },
+ 
+   });
+           }, 0);
+		
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+	}
+	 }
+	    });
+  
+ 
+
+ 
+	$("#createAAC").attr("selectcolor",'b');
+    $("#createAAC").css("background-color","blue");
+	$("#createAAC").css("color","white");
+
+
+	}
+	}
+	function createAAD(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createAAD").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			markerAAD.clearMarkers();
+			map.removeAllPopup();
+	$("#createAAD").attr("selectcolor","a");
+		$("#createAAD").css("background-color","white");
+				$("#createAAD").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+  $.ajax({
+   url:'http://10.0.2.7:9930/gate/selectGate',
+   //async:false,
+   type:'get',
+	data:{type:"AAD"},
+	success: function (data) {
+	//console.log(data.data);
+  
+for(var i=0;i<data.data.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/检修井.png', size, offset);
+		//console.log(icon);
+		//初始化标记覆盖物类
+		var marker = this;
+		marker = new SuperMap.Marker(new SuperMap.LonLat(data.data[i].DEVICE_POSITION.split(',')[0], data.data[i].DEVICE_POSITION.split(',')[1]), icon);
+		marker.DEVICE_CODE=data.data[i].DEVICE_CODE;
+		marker.a=data.data[i].DEVICE_NAME;
+		marker.id=data.data[i].ID;
+
+		//marker.time=a[i].time;
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		markerAAD.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			console.log(marker.a);
+	 		  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE); 
+
+
+		//console.log(a.x);
+		 setTimeout(function(){
+		$.ajax({
+   url:'http://10.0.2.7:9930/gate/list',
+   type:'get',
+   //async:false,
+	data:{slcd:marker.DEVICE_CODE},
+	success: function (data) {
+		data.device_code=marker.DEVICE_CODE;
+
+
+	console.log(data);
+
+			  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE);
+			if(data.rows.length>0){	
+	 	         markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>阀前压力</td><td class='popup-td'>"+data.rows[0].uppressure?data.rows[0].uppressure:+"</td><td class='popup-td1'>阀后压力</td><td class='popup-td'>"+data.rows[0].dwpressure+"</td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'>"+data.rows[0].mp_q+"</td><td class='popup-td1'>开启状态</td><td class='popup-td'>"+data.rows[0].open_status+"</td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'>"+data.rows[0].day_q+"</td><td class='popup-td1'>累计流量</td><td class='popup-td'>"+data.rows[0].all_q+"</td></tr>  </tbody></table> <input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' />");	
+		}
+		if(data.rows.length==0){	
+	 	         markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>阀前压力</td><td class='popup-td'></td><td class='popup-td1'>阀后压力</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td><td class='popup-td1'>开启状态</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>日流量</td><td class='popup-td'></td><td class='popup-td1'>累计流量</td><td class='popup-td'></td></tr>  </tbody></table> <input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' />");	
+				}
+
+		infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		 },
+ 
+   });
+           }, 0);
+			/* infowin = markerPop;
+			framedCloud = new SuperMap.Popup.FramedCloud(
+					"chicken",
+					marker.getLonLat(),
+					null,
+					contentHTML,
+					icon,
+					true,
+					null,
+					true
+			);
+			popup.setBackgroundColor("#FFBBBB");
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop); */
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+	}
+	 }
+ 
+   });
+  
+ 
+ 
+
+ 
+	$("#createAAD").attr("selectcolor",'b');
+    $("#createAAD").css("background-color","blue");
+	$("#createAAD").css("color","white");
+
+
+	}
+	}
+	function createdaohong(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createdaohong").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			//markerAAD.clearMarkers();
+			//map.removeAllPopup();
+	$("#createdaohong").attr("selectcolor","a");
+		$("#createdaohong").css("background-color","white");
+				$("#createdaohong").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+	$("#createdaohong").attr("selectcolor",'b');
+    $("#createdaohong").css("background-color","blue");
+	$("#createdaohong").css("color","white");
+
+
+	}
+	}
+		function createducao(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createducao").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			//markerAAD.clearMarkers();
+			//map.removeAllPopup();
+	$("#createducao").attr("selectcolor","a");
+		$("#createducao").css("background-color","white");
+				$("#createducao").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+	$("#createducao").attr("selectcolor",'b');
+    $("#createducao").css("background-color","blue");
+	$("#createducao").css("color","white");
+
+
+	}
+	}
+	
+		function createfenshui(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createfenshui").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			//markerAAD.clearMarkers();
+			//map.removeAllPopup();
+	$("#createfenshui").attr("selectcolor","a");
+		$("#createfenshui").css("background-color","white");
+				$("#createfenshui").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+	$("#createfenshui").attr("selectcolor",'b');
+    $("#createfenshui").css("background-color","blue");
+	$("#createfenshui").css("color","white");
+
+
+	}
+	}
+	
+	
+	
+		function createPoint3(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createPoint3").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			marker3.clearMarkers();
+			map.removeAllPopup();
+	$("#createPoint3").attr("selectcolor","a");
+		$("#createPoint3").css("background-color","white");
+				$("#createPoint3").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+		
+		var a=[{x:121.026316,y:36.952853,a:"嵩山水库站",b:"100ml",time:"1小时"},{x:119.078888,y:36.620833,a:"白浪河水库",b:"100ml",time:"1小时"},{x:120.5317,y:36.826944,a:"河崖水库",b:"100ml",time:"1小时"},{x:119.708,y:35.6557,a:"旺山水厂",b:"100ml",time:"1小时"}];
+for(var i=0;i<a.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/marker-icon.png', size, offset);
+		//console.log(icon);
+		//初始化标记覆盖物类
+		var marker = this;
+		marker = new SuperMap.Marker(new SuperMap.LonLat(a[i].x, a[i].y), icon);
+		marker.a=a[i].a;
+		marker.b=a[i].b;
+		marker.time=a[i].time;
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		marker3.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			var contentHTML = "<div style='   font-size:12px; opacity: 0.8' >";
+contentHTML += "<table style='width:100%;height:100%;'><tbody><tr><td>"+marker.a+"</td></tr><tr><td style='width:50%;'>ph值:20</td><td>cod:8</td></tr> <tr><td>pod:10</td><td>氧化物:8</td></tr> </tbody></table>   ";
+	size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w ), -size.h*2/3 );
+		icon = new SuperMap.Icon('img/markerbig_select.png', size, offset);
+			popup = new SuperMap.Popup(
+					"chicken",
+					marker.getLonLat(),
+					new SuperMap.Size(220, 140),
+					"<div>123456</div></div>",
+					true,
+					null
+			);
+			console.log(marker.a);
+			  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+
+		//console.log(a.x);
+
+        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>视频设备1</td><td class='popup-td'>正常</td></tr> <tr><td class='popup-td1'>视频设备</td><td class='popup-td'>正常</td></tr><tr><td class='popup-td1'>视频设备</td><td class='popup-td'>正常</td></tr><tr><td class='popup-td1'>视频设备</td><td class='popup-td'>正常</td></tr> </tbody></table> ");	
+			infowin = markerPop;
+			framedCloud = new SuperMap.Popup.FramedCloud(
+					"chicken",
+					marker.getLonLat(),
+					null,
+					contentHTML,
+					icon,
+					true,
+					null,
+					true
+			);
+			popup.setBackgroundColor("#FFBBBB");
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+	}
+	$("#createPoint3").attr("selectcolor",'b');
+    $("#createPoint3").css("background-color","blue");
+	$("#createPoint3").css("color","white");
+
+
+	}
+	}
+		
+		function createPoint4(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createPoint4").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			marker4.clearMarkers();
+			map.removeAllPopup();
+	$("#createPoint4").attr("selectcolor","a");
+		$("#createPoint4").css("background-color","white");
+				$("#createPoint4").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+		
+		$.ajax({
+   url:'http://10.0.2.7:9930/gate/selectOffice',
+   //async:false,
+   type:'get',
+	success: function (data) {
+	console.log(data);
+  
+for(var i=0;i<data.data.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/一级管理机构（总公司）.png', size, offset);
+	
+		//console.log(icon);
+		//初始化标记覆盖物类
+		var marker = this;
+		marker = new SuperMap.Marker(new SuperMap.LonLat(data.data[i].LONGITUDE, data.data[i].LATITUDE), icon);
+		marker.deptId=data.data[i].VIEW_CODE;
+		marker.a=data.data[i].FULL_NAME;
+
+		//marker.time=a[i].time;
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		marker4.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			console.log(marker.a);
+
+
+		//console.log(a.x);
+		 setTimeout(function(){
+		$.ajax({
+   url:'http://10.0.2.7:9930/gate/getScheduling?deptId='+marker.deptId,
+   type:'get',
+   //async:false,
+	//data:{deviceCode:marker.DEVICE_CODE},
+	success: function (data) {
+	//data.device_code=marker.DEVICE_CODE;
+
+	console.log(data);
+
+			  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+		var html='';
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE);
+				for(var i=0;i<data.result.length;i++){
+				 html+="<tr><td class='popup-td1'>值班日期</td><td class='popup-td'>"+data.result[i].tm+"</td><td class='popup-td1'>部门名称</td><td class='popup-td'>"+data.result[i].dept_name+"</td><td class='popup-td1'>值班人姓名</td><td class='popup-td'>"+data.result[i].watchman+"</td><td class='popup-td1'>带班领导姓名</td><td class='popup-td'>"+data.result[i].leader_name+"</td></tr>";
+				}
+			if(data.result.length>0){	
+        markerPop.setContentHTML(null,"<table class='popup-table'><tbody>"+html+"  </tbody></table> ");	
+		}
+		if(data.result.length==0){	
+		        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>闸上水位</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>闸下水位</td><td class='popup-td'></td></tr><tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td></tr>  </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' /> ");	
+				}			
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		 },
+ 
+   });
+           }, 0);
+		
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+	}
+	}
+	});
+	$("#createPoint4").attr("selectcolor",'b');
+    $("#createPoint4").css("background-color","blue");
+	$("#createPoint4").css("color","white");
+
+
+	}
+	}
+	
+	
+		function createPoint5(){
+	    //markers.clearMarkers();
+			//map.removeAllPopup();
+			var val=$("#createPoint5").attr("selectcolor");
+			console.log(val);
+			if(val=='b'){
+			marker4.clearMarkers();
+			map.removeAllPopup();
+	$("#createPoint5").attr("selectcolor","a");
+		$("#createPoint5").css("background-color","white");
+				$("#createPoint5").css("color","black");
+
+
+			return;
+			}
+			if(val=='a'){
+			$.ajax({
+   url:'http://10.0.2.7:9920/deviceQuery/findIsHavePointTopList',
+   //async:false,
+   type:'get',
+	success: function (data) {
+	console.log(data);
+  
+for(var i=0;i<data.data.length;i++) {
+		size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+		if(data.data[i].deviceCode.startsWith('AAD')){
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/检修井.png', size, offset);
+		}
+		if(data.data[i].deviceCode.startsWith('AAB')){
+				icon = new SuperMap.Icon('${ctxStatic}/examples/img/水闸（进口闸、出口闸、分水闸、退水闸、节制闸、引水闸、排冰闸、检修闸）.png', size, offset);
+		}
+		if(data.data[i].deviceCode.startsWith('AAC')){
+		icon = new SuperMap.Icon('${ctxStatic}/examples/img/泵站.png', size, offset);
+		}
+		//console.log(icon);
+		//初始化标记覆盖物类
+		var marker = this;
+		marker = new SuperMap.Marker(new SuperMap.LonLat(data.data[i].devicePosition.split(',')[0], data.data[i].devicePosition.split(',')[1]), icon);
+		marker.deviceCode=data.data[i].deviceCode;
+		marker.a=data.data[i].deviceName;
+
+		//marker.time=a[i].time;
+
+  
+		//添加覆盖物到标记图层
+
+		//vector.addFeatures([pointVector]);
+		marker4.addMarker(marker);
+		marker.events.on({
+			"click": mouseClickHandler,
+			"touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+		});
+
+		var infowin = null;
+
+		function mouseClickHandler(event) {
+					map.removeAllPopup();
+
+			closeInfoWin();
+					var marker = this;
+
+			//初始化popup类
+			console.log(marker.a);
+
+
+		//console.log(a.x);
+		 setTimeout(function(){
+		$.ajax({
+   url:'http://10.0.2.7:9920/point/findAllByDeviceCode/'+marker.deviceCode,
+   type:'get',
+   //async:false,
+	//data:{deviceCode:marker.DEVICE_CODE},
+	success: function (data) {
+	data.device_code=marker.DEVICE_CODE;
+
+	console.log(data);
+
+			  var markerPop = new SuperMap.InfoWindow(
+"chicken",
+                         marker.a,
+                         "元素信息",
+                         "example InfoWindow",
+                         true        );
+		markerPop.titleBox = true;
+        markerPop.contentSize = new SuperMap.Size(600, 200);
+		var html='';
+       // markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat( marker.getLonLat());
+				console.log(marker.DEVICE_CODE);
+				for(var i=0;i<data.data.length;i++){
+				 html+="<tr><td class='popup-td1'>测点编码</td><td class='popup-td'>"+data.data[i].pointId+"</td><td class='popup-td1'>测点种类</td><td class='popup-td'>"+data.data[i].such+"</td><td class='popup-td1'>本期沉浮</td><td class='popup-td'>"+data.data[i].upDown+"</td><td class='popup-td1'>累计沉浮</td><td class='popup-td'>"+data.data[i].upDownSum+"</td></tr>";
+				}
+			if(data.data.length>0){	
+        markerPop.setContentHTML(null,"<table class='popup-table'><tbody>"+html+"  </tbody></table> ");	
+		}
+		if(data.data.length==0){	
+		        markerPop.setContentHTML(null,"<table class='popup-table'><tbody><tr><td class='popup-td1'>闸上水位</td><td class='popup-td'></td></tr> <tr><td class='popup-td1'>闸下水位</td><td class='popup-td'></td></tr><tr><td class='popup-td1'>瞬时流量</td><td class='popup-td'></td></tr>  </tbody></table><input type='button' style='margin-left:10px;margin-top:10px' value='设施基础信息' class='btn btn-default'  onclick='deviceparam(\"" + marker.DEVICE_CODE + "\")'  /><input type='button' style='margin-left:30px;margin-top:10px' value='设施监测信息' class='btn btn-default'  onclick='monitor(" + JSON.stringify(data) +  ")' /> ");	
+				}			
+
+			infowin = markerPop;
+			//添加弹窗到map图层
+			map.addPopup(markerPop);
+		 },
+ 
+   });
+           }, 0);
+		
+		}
+
+		function closeInfoWin() {
+			if (infowin) {
+				try {
+					infowin.hide();
+					infowin.destroy();
+				} catch (e) {
+				}
+			}
+		}
+	}
+	 }
+ 
+   });
+   
+   
+	$("#createPoint5").attr("selectcolor",'b');
+    $("#createPoint5").css("background-color","blue");
+	$("#createPoint5").css("color","white");
+
+
+	}
+	}
+	
+	
+	       var resolutions=[295829355.1,
+			147914677.6,
+			73957338.78,
+			36978669.39,
+			18489334.69,
+			9244667.347,
+			4622333.674,
+			2311166.837,
+			1155583.418,
+			577791.7092,
+			288895.8546,
+			144447.9273,
+			72223.96365,
+			36111.98183,
+			18055.99091,
+			9027.995456,
+			4513.997728,
+			2256.998864,
+			1128.499432,
+			564.249716
+			];
+
+	layer1 = new SuperMap.Layer.TiledDynamicRESTLayer("World", "http://10.0.2.4:8090/iserver/services/map-JDDSgis/rest/maps/JDDS", {transparent:true}, {maxResolution: "auto"});
+var tiandituLayer = new SuperMap.Layer.WMTS({
+    	name: "vec",
+		url: "http://10.0.6.6:81/TileService/SDMap2000",
+		layer: "vec",
+		style: "default",
+		matrixSet: "c",
+		format: "tiles",
+		opacity: 1,
+		requestEncoding: "KVP"
+	});
+       layer1.events.on({"layerInitialized": addLayer2});
+	 
+		
+	
+	
+	function addLayer2(){
+
+
+		map = new SuperMap.Map("map", {
+			controls: [
+				new SuperMap.Control.OverviewMap(),
+				new SuperMap.Control.ScaleLine(),
+				new SuperMap.Control.Zoom(),
+				new SuperMap.Control.Navigation({
+					dragPanOptions: {
+						enableKinetic: true
+					}
+				})
+			], allOverlays: true
+		});
+		map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+
+
+		map.addLayers([tiandituLayer,layer1,markers,line,marker1,markerAAC,markerAAD,marker2,marker3,marker4,heatMapLayer]);
+		map.setCenter(new SuperMap.LonLat(119.95 , 37.36), 8);
+		}
+
+	/*for(var i=0;i<a1.length;i++) {
+var contentHTML = "<div style='   font-size:12px; opacity: 0.8' >";
+contentHTML += "<table style='width:100%;height:100%;'><tbody><tr><td>"+a1[i].a+"</td></tr><tr><td style='width:50%;'>ph值:20</td><td>cod:8</td></tr> <tr><td>pod:10</td><td>氧化物:8</td></tr> </tbody></table>   ";
+	size = new SuperMap.Size(30, 30);
+		offset = new SuperMap.Pixel(-(size.w ), -size.h*2/3 );
+		icon = new SuperMap.Icon('img/markerbig_select.png', size, offset);
+
+
+var popwin = new SuperMap.Popup.FramedCloud("chicken",
+new SuperMap.LonLat(a1[i].x, a1[i].y),
+new SuperMap.Size(80,20),
+contentHTML,
+icon,
+false,
+null);
+popwin.fixedRelativePosition
+			//popwin.setBackgroundColor("#FFBBBB");
+
+ if(popwin) map.removePopup(popwin);
+ map.addPopup(popwin);
+ }
+ */
+ //}
+
+
+
+
+</script>
+</body>
+</html>

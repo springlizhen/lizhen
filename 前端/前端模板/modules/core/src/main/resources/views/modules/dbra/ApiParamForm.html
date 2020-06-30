@@ -1,0 +1,111 @@
+<% layout('/layouts/default.html', {title: '系统消息', libs: ['validate','fileupload','ueditor']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<%
+				if(param==null) {
+				%>
+				<i class="fa icon-speech"></i>  ${text('新增参数')}
+				<%
+				} else {
+				%>
+				<i class="fa icon-speech"></i>  ${text('编辑参数')}
+				<%
+				}
+				%>
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${param}" action="${ctx}/api/param/save" method="post" class="form-horizontal">
+			<#form:hidden name="id" maxlength="100" class="form-control" value="${param!=null?param.id:''}"/>
+			<#form:hidden name="apiId" maxlength="100" class="form-control" value="${apiId}"/>
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('参数名')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="name" maxlength="100" class="form-control required" value="${param!=null?param.name:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('是否必填')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="isNull" id="isNull" class="form-control required" >
+									<% if(param != null && param.isNull == '否') { %>
+									<option value="否">否</option>
+									<option value="是" >是</option>
+									<% } else { %>
+									<option value="是" >是</option>
+									<option value="否">否</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('参数类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="colType" maxlength="100" class="form-control required" value="${param!=null?param.colType:''}"/>
+							</div>
+						</div>
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('类别')} ： <i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<select name="type" id="type" class="form-control required" >
+									<% if(param != null && param.type == 'sy') { %>
+									<option value="私有参数">私有参数</option>
+									<option value="公共参数" >公共参数</option>
+									<% } else { %>
+									<option value="公共参数" >公共参数</option>
+									<option value="私有参数">私有参数</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group col-xs-6">
+							<label class="control-label col-sm-4" title="">
+								${text('描述')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-7">
+								<#form:input name="remarks" maxlength="100" class="form-control" value="${param!=null?param.remarks:''}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>

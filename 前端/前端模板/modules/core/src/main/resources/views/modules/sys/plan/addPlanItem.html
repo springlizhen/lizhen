@@ -1,0 +1,114 @@
+<% layout('/layouts/default.html', {title: '维护养护对象', libs: ['layout','zTree']}){ %>
+<div class="ui-layout-west">
+    <div class="main-content">
+        <div class="box box-main">
+            <div class="box-header">
+                <div class="box-title">
+                    <i class="fa icon-grid"></i> ${text('维护养护对象')}
+                </div>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool addTabPage" data-href="${ctx}/sys/derviceOffice/list" title="${text('维护养护对象')}"><i class="fa fa-edit"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnExpand" title="${text('展开')}" style="display:none;"><i class="fa fa-chevron-up"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnCollapse" title="${text('折叠')}"><i class="fa fa-chevron-down"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="${text('刷新')}"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+            <div class="ui-layout-content">
+                <div id="tree" class="ztree"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui-layout-center">
+    <iframe id="mainFrame" name="mainFrame" class="ui-layout-content p0"
+            src="${ctx}/sys/project/addPlanItemMsg"></iframe>
+</div>
+<% } %>
+<script>
+    var dataSelectTree = [];
+        // 初始化布局
+    $('body').layout({
+        west__initClosed: false, // 是否默认关闭
+        west__size: 180
+    });
+    // 主页框架
+    var win = $("#mainFrame")[0].contentWindow;
+    // 树结构初始化加载
+    var setting = {view:{},data:{key:{title:"title"},simpleData:{enable:true}},
+        callback:{onClick:function(event, treeId, treeNode) {
+                tree.expandNode(treeNode);
+                var treeObj = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.titleStatus!='1'){
+                    dataSelectTree = treeObj.getSelectedNodes();
+                    var names = "";
+                    var id = "";
+                    for (var i = 0; i < dataSelectTree.length; i++) {
+                        names += (dataSelectTree[i].name + (i == dataSelectTree.length - 1 ? "" : "</br>"));
+                        id += (dataSelectTree[i].id + (i == dataSelectTree.length - 1 ? "" : "</br>"));
+                    }
+                    win.$('#proItemName').html(names);
+                    $.ajax({
+                        type : "get",
+                        url : "${ctx}/sys/device/kb",
+                        data : {
+                            "id":id,
+                        },
+                        dataType : "json",
+                        success : function(data) {
+                            win.$('#kdv').html(data);
+                        }
+                    })
+                    win.page();
+                }else{
+                    treeObj.cancelSelectedNode(treeNode);
+                    for (var i = 0; i < dataSelectTree.length; i++) {
+                        treeObj.selectNode(dataSelectTree[i],true);
+                    }
+                }
+            }}
+    }, tree, loadTree = function(){
+        js.ajaxSubmit("${ctx}/sys/device/treeDataT?___t=" + new Date().getTime(), {ctrlPermi:'2'/*1拥有的权限 2管理的权限*/}, function(data){
+            tree = $.fn.zTree.init($("#tree"), setting, data);//.expandAll(true);
+            // 展开第一级节点
+            var nodes = tree.getNodesByParam("level", 0);
+            for(var i=0; i<nodes.length; i++) {
+                tree.expandNode(nodes[i], true, false, false);
+            }
+            // 展开第二级节点
+// 		nodes = tree.getNodesByParam("level", 1);
+// 		for(var i=0; i<nodes.length; i++) {
+// 			tree.expandNode(nodes[i], true, false, false);
+// 		}
+        }, null, null, js.text('loading.message'));
+    };loadTree();
+    // 工具栏按钮绑定
+    $('#btnExpand').click(function(){
+        tree.expandAll(true);
+        $(this).hide();
+        $('#btnCollapse').show();
+    });
+    $('#btnCollapse').click(function(){
+        tree.expandAll(false);
+        $(this).hide();
+        $('#btnExpand').show();
+    });
+    $('#btnRefresh').click(function(){
+        loadTree();
+    });
+    //调用子页分页函数
+    function page(){
+        // win.page();
+    }
+    function getdataSelectTree() {
+        return dataSelectTree;
+    }
+    function getType() {
+        return win.showMsg();
+    }
+    function getTypeShow() {
+        return win.$('#planType-error').show();
+    }
+    function getOrgShow() {
+        return win.$('#orgId-error').show();
+    }
+</script>

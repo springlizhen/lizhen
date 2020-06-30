@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据服务</title>
+    <link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+    <script src="${ctxStatic}/js/jquery.min.js"></script>
+</head>
+
+<body class="sjmlBg">
+<div class="topBoxBgColor">
+    <div class="logoBox">
+        <img src="${ctxStatic}/img/logo2.png">
+    </div>
+    <div class="searchBox">
+        <!--				<input type="text">
+                        <a href="">
+                            <img src="${ctxStatic}/img/ss_icon.png">
+                        </a>-->
+    </div>
+</div>
+<div class="navBox">
+    <div class="navConter">
+        <a href="${ctx}/index">
+            <div class="navList">首页</div>
+        </a>
+        <a href="${ctx}/sjml/index">
+            <div class="navList">数据目录</div>
+        </a>
+        <a href="${ctx}/sjfw/index">
+            <div class="navList active">数据服务</div>
+        </a>
+        <a href="${ctx}/daml/index">
+            <div class="navList ">档案目录</div>
+        </a>
+        <a href="${ctx}/service/record">
+            <div class="navList">个人中心</div>
+        </a>
+    </div>
+</div>
+<div class="contentBox">
+    <div class="flBox fenlei">
+        <div>分类：</div>
+<!--        <div class="heColor active">推荐</div>-->
+<!--        <div class="heColor">其他</div>-->
+    </div>
+    <div class="flBox">
+        <div>共 <span id="spanmout"></span> 个API</div>
+        <div class="heColor orderBy active" onclick="getDataByOrderBy(this)" condition="createDate" style="cursor: pointer">综合排序</div>
+        <div class="heColor orderBy" onclick="getDataByOrderBy(this)" condition="updateDate" style="cursor: pointer">更新时间</div>
+        <div class="heColor orderBy" onclick="getDataByOrderBy(this)" condition="connNum" style="cursor: pointer">应用连接数</div>
+        <div class="flSbox">
+            <input type="text" id="keyword">
+            <a onclick="getDataByName()">
+                <img src="${ctxStatic}/img/ss2_icon.png">
+            </a>
+        </div>
+    </div>
+    <div id="dataList">
+
+    </div>
+    <div class="fyBox" style="width:60%;">
+        <!--<a href="" class="onPage">上一页</a>-->
+        <!--<a href="" class="numberPage active">1</a>-->
+        <!--<a href="" class="nextPage">下一页</a>-->
+    </div>
+</div>
+<div class="bottomBox">
+    ©胶东调水数据资源共享平台
+</div>
+</body>
+<script>
+
+    $(function () {
+        //数据服务分类
+        $.ajax({
+            type: 'GET',
+            url: "${ctx}/sjfw/serviceClass",
+            dataType: 'json',
+            async: false,
+            error: function(data){
+                js.showErrorMessage(data.responseText);
+            },
+            success: function(data, status, xhr) {
+                console.log(data);
+                var fenleiBox = $('.fenlei');
+                for (var i=0;i<data.length;i++){
+                    fenleiBox.append('<div class="heColor serviceClass" onclick="getDataByClassName(this)" style="cursor: pointer">'+data[i]+'</div>');
+                }
+            }
+        });
+    });
+
+    function getDataByClassName(dom) {
+        $('.serviceClass').removeClass('active');
+        $(dom).addClass('active');
+        serviceClass = $(dom).html();
+        pageNo = 1;
+        pageSize = 20;
+        pageNoMax = 1;
+        getData();
+    }
+
+    function getDataByOrderBy(dom) {
+        $('.orderBy').removeClass('active');
+        $(dom).addClass('active');
+        orderBy = $(dom).attr('condition');
+        pageNo = 1;
+        pageSize = 20;
+        pageNoMax = 1;
+        getData();
+    }
+
+    function getDataByName() {
+        if ($('#keyword').val() != null && $('#keyword').val() != '') {
+            name = $('#keyword').val();
+        } else {
+            name = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN';
+        }
+        pageNo = 1;
+        pageSize = 20;
+        pageNoMax = 1;
+        getData();
+    }
+
+    var pageNo = 1;
+    var pageSize = 20;
+    var pageNoMax = 1;
+    var serviceClass = 'N';
+    var orderBy = 'createDate';
+    var name = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNN';
+    getData();
+
+    //重置上/下一页，数字
+    function pageMouth() {
+        $('.fyBox').empty();
+        var box = $('.fyBox');
+        switch (pageNo) {
+            case 1:
+                $(box).css('width', pageNoMax > 1 ? '60%' : '54%');
+                break;
+            case pageNoMax:
+                $(box).css('width', pageNoMax > 1 ? '60%' : '54%');
+                break;
+            default:
+                $(box).css('width', '70%');
+        }
+        if (pageNo != 1) {
+            box.append('<a href="javascript:;" class="onPage" onclick="getDataDown()">上一页</a>');
+        }
+        for (var i = 1; i <= pageNoMax; i++) {
+            box.append('<a href="javascript:;" class="numberPage" mout="' + i + '" onclick="getDataMou(' + i + ')">' + i + '</a>');
+        }
+        if (pageNo != pageNoMax && pageNoMax != 0) {
+            box.append('<a href="javascript:;" class="nextPage" onclick="getDataAdd()">下一页</a>');
+        }
+        console.log($('a[mout="' + pageNo + '"]').text());
+        $('a[mout="' + pageNo + '"]').addClass("active");
+    }
+
+    //重置上下一页按钮
+    function pageClass() {
+        pageMouth();
+    }
+
+    //上一页
+    function getDataAdd() {
+        pageNo += 1;
+        getData();
+    }
+
+    //下一页
+    function getDataDown() {
+        if (pageNo != 0) {
+            pageNo -= 1;
+        }
+        getData();
+    }
+
+    //点击数字跳转
+    function getDataMou(mou) {
+        if (pageNo != mou) {
+            pageNo = mou;
+            getData();
+        }
+    }
+
+    //获取list并重置
+    function getData() {
+        $.ajax({
+            type: 'GET',
+            url: "${ctx}/sjfw/findByPage?pageNo=" + pageNo + "&pageSize=" + pageSize + "&serviceClass=" + serviceClass + "&orderBy=" + orderBy + "&name=" + name,
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+            },
+            success: function (data, status, xhr) {
+                $('#spanmout').text("0");
+                if (data == null) {
+                    $('#dataList').empty();
+                    pageNoMax = 0;
+                } else {
+                    $('#spanmout').text(data.count);
+                    pageNoMax = Math.ceil(data.count / data.pageSize);
+                    data = data.list;
+                    $('#dataList').empty();
+                    var box = $('#dataList');
+                    console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+                        box.append('<div class="sjListBox">\n' +
+                            '\t\t\t<div class="sjicon"><img src="${ctxStatic}/img/sj_icon.png"></div>\n' +
+                            '\t\t\t<div class="rightSjInfo">\n' +
+                            '\t\t\t\t<div class="sjInfoTitle">\n' +
+                            '\t\t\t\t\t<a href="${ctx}/sjfw/fwms?id=' + data[i].id + '"><div class="leftFloat">' + data[i].name + '</div></a>\n' +
+                            '\t\t\t\t\t<a href="${ctx}/sjfw/fwms?id=' + data[i].id + '"><div class="rightFloat">申请</div></a>\n' +
+                            '\t\t\t\t\t<!--<div class="rightFloat">测试</div>-->\n' +
+                            // '\t\t\t\t\t<div class="rightFloat">收藏</div>\n' +
+                            '\t\t\t\t</div>\n' +
+                            '\t\t\t\t<div class="jkzt">接口状态：' + data[i].status + '</div>\n' +
+                            '\t\t\t\t<div class="tgbm">提供部门：' + data[i].provider + '&nbsp;&nbsp;&nbsp;&nbsp;调用次数：' + data[i].callNum + '&nbsp;&nbsp;&nbsp;&nbsp;链接应用数：' + data[i].connNum + '&nbsp;&nbsp;&nbsp;&nbsp;更新时间：' + data[i].updateDate + '</div>\n' +
+                            '\t\t\t\t<div class="tgbm">' + data[i].name + '</div>\n' +
+                            '\t\t\t</div>\n' +
+                            '\t\t</div>');
+                    }
+                }
+            }
+        });
+        pageClass();
+    }
+
+</script>
+</html>

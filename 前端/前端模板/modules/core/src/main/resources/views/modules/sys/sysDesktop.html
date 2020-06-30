@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>工程安全与维护管理系统</title>
+    <link href="../static/device/css/style.css" rel="stylesheet"/>
+    <script src="../static/device/js/jquery-1.12.4.min.js"></script>
+    <script src="../static/dbra/js/echarts.min.js"></script>
+</head>
+<body>
+<style>
+    .book-name {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 11px;
+        color: #6A6A6A;
+    }
+    .myZdyStyle {
+        margin-left: 0px !important;
+        margin-right: 29px;
+    }
+</style>
+<div class="content">
+    <!--左边部分-->
+    <div class="main-left">
+        <!--分中心养护计划表-->
+        <div class="warningList">
+            <div class="title">
+                <img src="../static/device/img/icon-a.png"/>
+                <p>分中心养护计划表</p>
+            </div>
+            <div class="contentBox">
+                <div class="leftTab">
+                    <!--选中状态添加active，db02的img名加A，添加sj一行代码-->
+                    <div class="db active" onclick="daiban()">
+                        <div class="db01" style="cursor: pointer">
+                            待办<br/>
+                            <div class="kg" id="kg"></div>
+                            <!--							<div class="dbbg"></div>-->
+                        </div>
+                        <div class="db02">
+                            <img src="../static/device/img/dbImgA.png"/>
+                        </div>
+                        <!--右边橙色箭头-->
+                        <img class="sj" src="../static/device/img/sj.png" id="daiban"/>
+                    </div>
+                    <div class="yb" onclick="yiban()">
+                        <div class="db01" style="cursor: pointer">
+                            已办<br/>
+                            <div class="kg" id="ybbg"></div>
+                        </div>
+                        <div class="db02">
+                            <img src="../static/device/img/ybImg.png"/>
+                        </div>
+                        <img class="sj" src="../static/device/img/sj_b.png" id="yiban"/>
+                    </div>
+                </div>
+                <div class="warningListTable">
+                    <div class="tabBox">
+                        <!--待办事项切换选中状态btnBox-active，img需换成active_taba.png（这块是右侧斜图）-->
+                        <div class="btnBox btnBox-active" onclick="tp()" id="fen"
+
+                        >
+                            <span class="btn-left" id="fenzhongxin" style="cursor: pointer">分中心</span>
+
+                            <img src="../static/device/img/tabA.png" id="ufen"/>
+                        </div>
+                        <div class="btnBox floatStyle" onclick="tLo()" id="sheng">
+                            <span class="btn-left" id="shengzhongxin" style="cursor: pointer">省中心</span>
+
+                            <img src="../static/device/img/tab.png" id="khsheng"/>
+
+                        </div>
+                    </div>
+                    <table cellspacing="0px">
+                        <thead>
+                        <tr>
+                            <th width="10%">序号</th>
+                            <th width="25%">发起单位</th>
+                            <th width="25%">发起时间</th>
+                            <th width="15%">计划编号</th>
+                            <th width="25%">计划名称</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tid"  style="cursor: pointer">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--阈值预警通知-->
+        <div class="water_Map">
+            <div class="title">
+                <img src="../static/device/img/icon-b.png"/>
+                <p>阈值预警通知</p>
+            </div>
+            <div class="contentBox" style="cursor: pointer">
+                <table cellspacing="0px">
+                    <thead>
+                    <tr>
+                        <th width="25%">触发时间</th>
+                        <th width="20%">预警类型</th>
+                        <th width="20%">点位编码</th>
+                        <th width="20%">预警当前值</th>
+                        <th width="15%">阈值</th>
+                    </tr>
+                    </thead>
+                    <tbody id="hi">
+                    <!--					<tr>-->
+                    <!--						<td width="30%">2020-3-12 10:40:56</td>-->
+                    <!--						<td width="15%">XXXX</td>-->
+                    <!--						<td width="15%">DBS00X</td>-->
+                    <!--						<td width="18%">4156</td>-->
+                    <!--						<td width="12%">415</td>-->
+                    <!--					</tr>-->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--水位分析图-->
+        <div class="analysis">
+            <div class="title">
+                <img src="../static/device/img/icon-c.png"/>
+                <p>养护计划金额</p>
+            </div>
+            <div class="contentBox" id="yp">
+
+
+                <!--                <img src="../static/device/img/pei_chart.png" style="width: 90%;"/>-->
+            </div>
+        </div>
+        <!--设施设备养护类别统计-->
+        <div class="water_Map">
+            <div class="title">
+                <img src="../static/device/img/icon-d.png"/>
+                <p>设施设备养护类别统计</p>
+            </div>
+            <div class="contentBox" >
+                <div class="selectBox">
+                    <div>选择时间：</div>
+                    <select id="top" onchange="ppK()">
+<!--                        <option>2019年</option>-->
+<!--                        <option>2018年</option>-->
+<!--                        <option>2017年</option>-->
+                            <option id="qing">请选择</option>
+                    </select>
+                </div>
+
+                <div id="tkk" style="width: 90%;height: 300px;">
+
+                </div>
+
+
+                <!--                <img src="../static/device/img/y_chart.png" style="width: 90%;"/>-->
+            </div>
+        </div>
+        <!--养护记录Top5-->
+        <div class="analysis">
+            <div class="title">
+                <img src="../static/device/img/icon-e.png"/>
+                <p>养护记录Top5</p>
+            </div>
+            <div class="contentBox">
+                <div class="topBox" id="shebei" style="cursor: pointer">
+                    <div class="topTitle">
+                        <div class="nameBox">设施设备</div>
+                        <div class="frequencyBox">养护次数</div>
+                        <div class="rankingBox">名次</div>
+                        <div class="iconBox"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--右边部分-->
+    <div class="main-right">
+        <!--人工测点地图-->
+        <div class="warningList">
+            <div class="title">
+                <img src="../static/device/img/icon-f.png"/>
+                <p>人工测点地图</p>
+            </div>
+            <div class="contentBox">
+                <div class="pointMap">
+                    <!--                    <img src="../static/device/img/mapimg.png" width="100%" height="100%"/>-->
+                    <iframe id="upload" name="upload" readonly="true" class="form-control"
+                            style="width: 100%;height: 100%"
+                            src="${ctx}/sys/contract/listCheck3"></iframe>
+                </div>
+                <div>
+                    <div class="topBox" id="pid" style="cursor: pointer">
+                        <div class="topTitle">
+                            <div class="nameBox">超阈值预警TOP5</div>
+                            <div class="frequencyBox"></div>
+                            <div class="rankingBox"></div>
+                            <div class="iconBox"></div>
+                        </div>
+<!--                                                <div class="rankList" >-->
+<!--                                                    <div class="nameBox" style="width:70px;overflow:hidden; white-space:nowrap; text-overflow:ellipsis">DSB00X7</div>-->
+<!--                                                    <div class="frequencyBox">46次</div>-->
+<!--                                                    <div class="rankingBox">1</div>-->
+<!--                                                    <div class="iconBox">-->
+<!--                                                        <img src="../static/device/img/icon-up.png"/>-->
+<!--                                                    </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="rankList">-->
+                        <!--                            <div class="nameBox">DSB00X</div>-->
+                        <!--                            <div class="frequencyBox">46次</div>-->
+                        <!--                            <div class="rankingBox">2</div>-->
+                        <!--                            <div class="iconBox">-->
+                        <!--                                <img src="../static/device/img/icon-up.png"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="rankList">-->
+                        <!--                            <div class="nameBox">DSB00X</div>-->
+                        <!--                            <div class="frequencyBox">46次</div>-->
+                        <!--                            <div class="rankingBox">3</div>-->
+                        <!--                            <div class="iconBox">-->
+                        <!--                                <img src="../static/device/img/icon-up.png"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="rankList">-->
+                        <!--                            <div class="nameBox">DSB00X</div>-->
+                        <!--                            <div class="frequencyBox">46次</div>-->
+                        <!--                            <div class="rankingBox rank45">4</div>-->
+                        <!--                            <div class="iconBox">-->
+                        <!--                                <img src="../static/device/img/icon-up.png"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="rankList">-->
+                        <!--                            <div class="nameBox">DSB00X</div>-->
+                        <!--                            <div class="frequencyBox">46次</div>-->
+                        <!--                            <div class="rankingBox rank45">5</div>-->
+                        <!--                            <div class="iconBox">-->
+                        <!--                                <img src="../static/device/img/icon-down.png"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--指定设备测点数分析-->
+        <div class="water_Map">
+            <div class="title">
+                <img src="../static/device/img/icon-g.png"/>
+                <p>指定设备测点数分析</p>
+            </div>
+            <div class="contentBox" id="yht">
+                <div class="selectBox">
+                    <div>选择设备：</div>
+                    <select id="xuanze" onchange="xuanzeshebei()">
+                        <option id="xin">请选择</option>
+<!--                        <option value="">设备名称</option>-->
+<!--                        <option value="">设备名称</option>-->
+                    </select>
+                </div>
+                <div style="clear: none"></div>
+                <div id="yht1" style="margin-top: 80px;height: 300px;">
+                </div>
+                <!--                <img-->
+                <!--                        width="90%"-->
+                <!--                        style="margin-top: 80px;"-->
+                <!--                        src="../static/device/img/bpei_chart.png"-->
+                <!--                />-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        var fen = 0;
+        var sheng = 0;
+        window.onresize = function(){
+            // myChartTo.resize();
+            // myChartb.resize();
+            // myChart.resize();
+        }
+        $("#yiban").hide();
+        $("#khfen").hide();
+        $("#usheng").hide();
+        $.ajax({
+            url: '${ctx}/sys/alarmmeasure/findAll',
+            dataType: "json",
+            type: "post",
+            success: function (result) {
+                var num = null;
+                var count = result.length;
+                if (count > 5) {
+                    num = 5;
+                } else {
+                    num = count;
+                }
+
+                for (var i = 0; i < num; i++) {
+                    var yu = result[i].msg;
+                    var k = "";
+                    if (yu === "本期沉浮超上限") {
+                        k = result[i].nowUpper
+                    } else if(yu === "本期沉浮超下限") {
+                        k = result[i].nowLower
+                    }else if(yu === "累计沉浮超下限"){
+                        k = result[i].addLower
+                    }else if(yu === "累计沉浮超上限"){
+                        k = result[i].addUpper
+                    }
+                    $("#hi").append(
+                        "<tr>" +
+                        "<td title='"+result[i].createDate+"'>" + result[i].createDate +
+                        "</td>" +
+                        " <td title='"+result[i].type+"'>" + result[i].type +
+                        "</td>" +
+                        "<td title='"+result[i].equ+"'>" + result[i].equ +
+                        "</td>" +
+                        "<td title='"+result[i].upDown+"'>" + result[i].upDown +
+                        "</td>" +
+                        "<td>" + k +
+                        "</td>" +
+                        "</tr>"
+                    )
+                }
+
+            }
+        })
+        //
+        $.ajax({
+            url: '${ctx}/sys/device/maintain/count',
+            dataType: "json",
+            type: "post",
+
+            success: function (result) {
+                // debugger
+                var num1 = result.length;
+                var num2 = 5;
+                var tu = null;
+                if (num1 > 0) {
+                    for (var z = 0; z < num2; z++) {
+                        $("#shebei").append(
+                            "<div class=\"rankList\">" +
+                            "<div class=\"nameBox\" title='"+ result[z].deceiveName+"'>" + result[z].deceiveName +
+                            "</div>" +
+                            " <div class=\"frequencyBox\" title='"+ result[z].count + '次'+"'>" + result[z].count + '次' +
+                            "</div>" +
+                            "<div class=\"rankingBox\" title='"+(z + 1)+"'>" + (z + 1) +
+                            "</div>" +
+                            "</div>"
+                        )
+
+                    }
+                }
+
+
+            }
+        })
+        $.ajax({
+            url: '${ctx}/sys/alarmmeasure/pid',
+            dataType: "json",
+            type: "post",
+
+            success: function (result) {
+
+                var num = null;
+                var count = result.length;
+                if (count > 5) {
+                    num = 5;
+                } else {
+                    num = count;
+                }
+                for (var i = 0; i < num; i++) {
+                    var k = "";
+                    var cout = result[i].EQU.length
+                    if (null !== result[i].EQU && count>8) {
+                        k = result[i].EQU.substr(0, 8) + "..";
+                    }else if(null !== result[i].EQU){
+                        k = result[i].EQU
+                    }
+                    $("#pid").append(
+                        "<div class=\"rankList\">" +
+                        "<div class = \"nameBox\" style=\"width:80px;overflow:hidden; white-space:nowrap; text-overflow:ellipsis\" title= '"+result[i].EQU+"'>" + result[i].EQU +
+                        "</div>" +
+                        " <div class=\"frequencyBox\" title='"+ result[i].COUNT_NUM + '次'+"'>" + result[i].COUNT_NUM + '次' +
+                        "</div>" +
+                        "<div class=\"rankingBox\" title='"+(i + 1)+"'>" + (i + 1) +
+                        "</div>" +
+                        "</div>"
+                    )
+                }
+            }
+        })
+        $.ajax({
+            url: '${ctx}/sys/plan/listDataOAL',
+            dataType: "json",
+            type: "post",
+            success: function (result) {
+                var list = result.list;
+                var num = list.length;
+                $("#kg").html(result.count);
+                // fen = (result.count + fen);
+                var k = null;
+                if (num > 5) {
+                    k = 5;
+                } else {
+                    k = num;
+                }
+                for (var i = 0; i < k; i++) {
+                    // debugger
+                    var p = list[i].sendUserName;
+                    var o = list[i].sendTime;
+                    var t = list[i].workId;
+                    // var k = list[i].trackId;
+                    // var u = list[i].subjectionId;
+                    var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                    $.ajax({
+                        url: '${ctx}/sys/alarmmeasure/pidTo',
+                        dataType: "json",
+                        data: {"workId": t, "sendUserName": p},
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            $("#tid").append(
+                                "<tr onclick=\"openWindow('"+url+"')\">"+
+                                "<td>" + (i + 1) +
+                                "</td>" +
+                                " <td>" + result[1] +
+                                "</td>" +
+                                "<td>" + o +
+                                "</td>" +
+                                "<td>" + result[0].PLAN_CODE +
+                                "</td>" +
+                                "<td>" + result[0].PLAN_NAME +
+                                "</td>" +
+                                "</tr>"
+                            )
+
+
+                        }
+                    })
+
+                }
+
+            }
+        })
+        // $.ajax({
+        //     url: '${ctx}/sys/plan/listDataOATo',
+        //     dataType: "json",
+        //     type: "post",
+        //     async:false,
+        //     success: function (result) {
+        //         var num = result.count;
+        //         fen = (fen + num);
+        //         $("#ybbg").html(num);
+        //     }
+        // })
+        // $.ajax({
+        //     url: '${ctx}/sys/plan/listDataOAL',
+        //     dataType: "json",
+        //     type: "post",
+        //     async:false,
+        //     success: function (result) {
+        //         var num = result.count;
+        //         fen = (fen + num);
+        //
+        //     }
+        // })
+        // $.ajax({
+        //     url: '${ctx}/sys/subCentersPlan/listDataOATo',
+        //     dataType: "json",
+        //     type: "post",
+        //     async:false,
+        //     success: function (result) {
+        //         var num = result.count;
+        //         sheng = (sheng + num);
+        //
+        //
+        //     }
+        // })
+        // $.ajax({
+        //     url: '${ctx}/sys/subCentersPlan/listDataOAL',
+        //     dataType: "json",
+        //     type: "post",
+        //     async:false,
+        //     success: function (result) {
+        //         var num = result.count;
+        //         sheng = (sheng + num);
+        //
+        //
+        //     }
+        // })
+        $.ajax({
+            url: '${ctx}/sys/plan/listDataCount',
+            dataType: "json",
+            type: "post",
+            async:false,
+            success: function (result) {
+                for(var i=0;i<result.length;i++){
+                    fen = result[0].count;
+                    $("#ybbg").html( result[1].count);
+                    sheng = result[2].count;
+                }
+            }
+        })
+        $("#fenzhongxin").html("分中心(" + fen + ")");
+        $("#shengzhongxin").html("省中心(" + sheng + ")");
+       /* function rn(min,max) {
+            return Math.floor(Math.random()*(max-min)+min);
+        };*/
+        $.ajax({
+            url: '${ctx}/sys/enginnering/listDateTo',
+            dataType: "json",
+            type: "post",
+            success: function (result) {
+                var num = result.length
+                var str = [];
+                var color = ['#20bfcf',  '#cf7046', '#cf5687', '#61cf16','#cfc790','#9765cf','#4965cf','#2258cf'];
+                var u = 0;
+                if(num>0){
+                    for(var i=0;i<num;i++){
+                        if(result[i].count !==0){
+                            // data += {value:result[i].count,name:result[i].enginneringName}
+                            var str3 = new Object();
+                            // var r=rn(200,255);
+                            // var g=rn(200,255);
+                            // var b=rn(200,255);
+                            // var color1 = "rgb("+r+','+g+','+b+")";
+                            if(u>color.length-1){
+                                u=0;
+                            }
+                            str3.value = result[i].count;
+                            str3.name = result[i].enginneringName;
+                            str3.itemStyle = {color:color[u]};
+                            str.push(str3);
+                            u++;
+                            // option.series[0].data.push({value:result[i].count,name:result[i].enginneringName})
+                        }
+                    }
+                    myChart = echarts.init(document.getElementById('yp'));
+                    var option = {
+                        title: {
+                            text: '养护计划金额',
+                            left: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b} : {c} ({d}%)'
+                        },
+                        // legend: {
+                        //     orient: 'vertical',
+                        //     left: 'left',
+                        //     data: ['大修工程经费', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                        // },
+                        graphic: [{　　　　　　　　　　　　　　　　//环形图中间添加文字
+                            type: 'text',　　　　　　　　　　　　//通过不同top值可以设置上下显示
+                            left: 'center',
+                            top: '40%',
+                            style: {
+                                text: "全部",
+                                textAlign: 'center',
+                                fill: '#cfc722',　　　　　　　　//文字的颜色
+                                width: 30,
+                                height: 50,
+                                fontSize: 30,
+                                // color: "#4d4f5c",
+                                // fontFamily: "Microsoft YaHei"
+                            }
+                        }, {
+                            type: 'text',
+                            left: 'center',
+                            top: '55%',
+                            style: {
+                                text: '100%',
+                                textAlign: 'center',
+                                fill: '#3f70c9',
+                                width: 5,
+                                height: 10,
+                                fontSize: 20,
+                            }
+                        }],
+                        series: [
+                            {
+                                text: '全部',
+                                name: '访问来源',
+                                type: 'pie',
+                                // radius: '55%',
+                                radius: ['40%', '80%'],
+                                // center: ['50%', '60%'],
+                                // color: ['#cf9552',  '#2258cf', '#6884cf', '#cfc780','#cfc790','#cfc680','#cfc890','#cfc990'],
+                                data: str
+                            }
+                        ]
+                    };
+
+                    // option.series[0].data = str;
+                    myChart.setOption(option, true);
+                }
+
+            }
+        })
+        $.ajax({
+            url: '${ctx}/sys/device/cedianbilie',
+            dataType: "json",
+            type: "post",
+
+            success: function (result) {
+                var num = result.length;
+                if (num > 0) {
+                    for (var i = 0; i < num; i++) {
+                        $("#xuanze").append(
+                            "<option value="+result[i].deviceCode+">" + result[i].deviceName +
+                            "</option>"
+                        )
+                    }
+                }
+            }
+        })
+        $.ajax({
+            url: '${ctx}/sys/device/cedianbilieTo',
+            dataType: "json",
+            type: "post",
+            success: function (result) {
+                var shuiping = result[0].shuiping
+                var gaocheng = result[0].gaocheng
+                var sum = shuiping+gaocheng;
+                myChartTo = echarts.init(document.getElementById('yht1'));
+                var str = [];
+
+                var str3 = new Object();
+                var str4 = new Object();
+                if(shuiping !==0){
+                    var stt = new Object();
+                    str3.value = shuiping;
+                    str3.name = "水平";
+                    stt.trigger = 'item';
+                    stt.formart = function(a,b,c){
+                        var name = a.name;
+                        var value = a.data.value;
+                        var percent = a.percent*2;
+                        return '访问来源<br/>'+name+':'+value+'('+percent+'%)';
+                    }
+
+                    str.push(str3);
+                }
+                if(gaocheng !==0){
+                    var stt = new Object();
+                    str4.value = gaocheng;
+                    str4.name = "高程";
+                    stt.trigger = 'item';
+                    stt.formart = function(a,b,c){
+                        var name = a.name;
+                        var value = a.data.value;
+                        var percent = a.percent*2;
+                        return '访问来源<br/>'+name+':'+value+'('+percent+'%)';
+                    }
+                    str.push(str4);
+                }
+                var str5=new Object();
+                str5.value = shuiping+gaocheng;
+                str5.name = '';
+                str5.cursor = 'auto';
+                str.push(str5)
+                var option1 = {
+                    title: {
+                        // text: '养护比例',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+
+                    },
+                    // legend: {
+                    //     orient: 'vertical',
+                    //     left: 'left',
+                    //     data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                    // },
+                    graphic: [{　　　　　　　　　　　　　　　　//环形图中间添加文字
+                        type: 'text',　　　　　　　　　　　　//通过不同top值可以设置上下显示
+                        left: 'center',
+                        top: '40%',
+                        style: {
+                            text: "养护比例",
+                            textAlign: 'center',
+                            fill: '#cfc722',　　　　　　　　//文字的颜色
+                            width: 30,
+                            height: 50,
+                            fontSize: 25,
+                            // color: "#4d4f5c",
+                            // fontFamily: "Microsoft YaHei"
+                        }
+                    }, {
+                        type: 'text',
+                        left: 'center',
+                        top: '55%',
+                        style: {
+                            text: '100%',
+                            textAlign: 'center',
+                            fill: '#3f70c9',
+                            width: 5,
+                            height: 10,
+                            fontSize: 20,
+                        }
+                    }],
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: ['40%', '80%'],
+                            center: ['50%', '50%'],
+                            startAngle: 180,
+                            color: ['#4675cf', '#6c66cf', 'transparent'],
+                            data: [
+                                {
+                                    value: shuiping, name: '水平测点',tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (a,b,c) {
+                                            var name = a.name;
+                                            var value = a.data.value;
+                                            var percent = a.percent*2;
+                                            return '访问来源<br/>'+name+':'+value+'('+percent+'%)';
+                                        }
+                                    }
+                                },
+                                {
+                                    value: gaocheng, name: '高程测点', tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (a,b,c) {
+                                            var name = a.name;
+                                            var value = a.data.value;
+                                            var percent = a.percent*2;
+                                            return '访问来源<br/>'+name+':'+value+'('+percent+'%)';
+                                        }
+                                    }
+
+                                },
+                                {
+                                    value: shuiping+gaocheng, name: '', cursor: 'auto',tooltip: {
+                                        trigger: 'none',
+
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+                myChartTo.setOption(option1, true);
+            }
+        })
+        $.ajax({
+            url: '${ctx}/sys/enginnering/listDateToKTo',
+            dataType: "json",
+            type: "post",
+            success: function (result) {
+                var str = [];
+                var str1 = new Array();
+                str.push(result[0].guanli)
+                str.push(result[0].gongcheng)
+                str.push(result[0].fushu)
+                str.push(result[0].gugan)
+                for(var i=1;i<result.length;i++){
+                    str1.push(result[i])
+
+                }
+               var str2 = $.unique(str1)
+                for(var t=0;t<str2.length;t++){
+                    $("#top").append(
+                        "<option>" + str2[t]+
+                        "</option>"
+                    )
+                }
+                var tu = result.length;
+                myChartb = echarts.init(document.getElementById('tkk'));
+                var option2 = {
+                    title: {},
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['管理设施', '工程设施', '附属设施', '骨干工程']
+                    },
+                    series: [
+                        {
+                            itemStyle: {
+                                emphasis: {
+                                    barBorderRadius: 8
+                                },
+                                normal: {
+                                    barBorderRadius: 8
+                                }
+                            },
+                            color: ['#cf7618'],
+                            type: 'bar',
+                            barWidth: 15,
+                            data: str
+                        },
+                    ]
+                };
+                myChartb.setOption(option2, true);
+            }
+        })
+        // "<tr class=\"check-box\">\n" +
+        // "<td  name=\"gz\" type = \"checkbox\" value=" + data3[i] + ">" + data3[i] +
+        // " </tr>"
+
+    })
+
+    function daiban() {
+        $("#yiban").hide();
+        $("#daiban").show();
+        $("#tid").empty();
+        //如果分中心是隐藏的话 取得是省中心待办的数据
+        if ($("#ufen")[0].src === "http://10.0.2.7:9010/jdds/static/device/img/tab.png") {
+            $.ajax({
+                url: '${ctx}/sys/subCentersPlan/listDataOAL',
+                dataType: "json",
+                type: "post",
+
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#kg").html("");
+                    $("#kg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidToK',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+            //分中心待办
+        } else {
+            $.ajax({
+                url: '${ctx}/sys/plan/listDataOAL',
+                dataType: "json",
+                type: "post",
+
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#kg").html("");
+                    $("#kg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidTo',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    function yiban() {
+        $("#daiban").hide();
+        $("#yiban").show();
+        $("#tid").empty();
+        // alert($("#khsheng")[0].src)
+        if ($("#khsheng")[0].src === "http://10.0.2.7:9010/jdds/static/device/img/tabA.png") {
+            $.ajax({
+                url: '${ctx}/sys/subCentersPlan/listDataOATo',
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#ybbg").html("");
+                    $("#ybbg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidToK',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+                            }
+                        })
+
+                    }
+
+                }
+            })
+            //分中心已办
+        } else {
+            $.ajax({
+                url: '${ctx}/sys/plan/listDataOATo',
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#ybbg").html("");
+                    $("#ybbg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidTo',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+        }
+    }
+
+    function tp() {
+        // $("#khfen").hide();
+        // $("#usheng").hide();
+        $("#tid").empty();
+        $("#ufen").attr("src", "../static/device/img/tabA.png");
+        $("#khsheng").attr("src", "../static/device/img/tab.png");
+        $("#fen").removeClass("btnBox floatStyle").addClass("btnBox btnBox-active");
+        $("#sheng").removeClass("btnBox btnBox-active").addClass("btnBox floatStyle");
+        $("#fen").attr("style", "");
+        $.ajax({
+            url: '${ctx}/sys/plan/listDataOATo',
+            dataType: "json",
+            type: "post",
+            async:false,
+            success: function (result) {
+                $("#ybbg").html("");
+                $("#ybbg").html(result.count);
+            }
+        })
+        $.ajax({
+            url: '${ctx}/sys/plan/listDataOAL',
+            dataType: "json",
+            type: "post",
+            async:false,
+            success: function (result) {
+                $("#kg").html("");
+                $("#kg").html(result.count);
+            }
+        })
+        //分中心已办
+        if ($("#daiban").is(':hidden')) {
+            $.ajax({
+                url: '${ctx}/sys/plan/listDataOATo',
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#ybbg").html("");
+                    $("#ybbg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidTo',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+            //分中心待办
+        } else {
+            $.ajax({
+                url: '${ctx}/sys/plan/listDataOAL',
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#kg").html("");
+                    $("#kg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidTo',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+        }
+
+    }
+    function openWindow(url){
+        window.open(url);
+    }
+    function ppK(){
+        var date = $("#top option:selected").text();
+        $("#qing").remove();
+        $.ajax({
+            url: '${ctx}/sys/alarmmeasure/listDateToK',
+            dataType: "json",
+            data: {"date": date},
+            type: "post",
+            success: function (result) {
+                // $("#tkk").empty();
+                // debugger
+                var str = [];
+                var str1 = new Array();
+                str.push(result[0].guanli)
+                str.push(result[0].gongcheng)
+                str.push(result[0].fushu)
+                str.push(result[0].gugan)
+                for(var i=1;i<result.length;i++){
+                    str1.push(result[i])
+
+                }
+                var tu = result.length;
+                myChartb = echarts.init(document.getElementById('tkk'));
+                var option2 = {
+                    title: {},
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['管理设施', '工程设施', '附属设施', '骨干工程']
+                    },
+                    series: [
+                        {
+                            itemStyle: {
+                                emphasis: {
+                                    barBorderRadius: 8
+                                },
+                                normal: {
+                                    barBorderRadius: 8
+                                }
+                            },
+                            color: ['#cf7618'],
+                            type: 'bar',
+                            barWidth: 15,
+                            data: str
+                        },
+
+                    ]
+                };
+                myChartb.setOption(option2, true);
+            }
+        })
+    }
+    function tLo() {
+        // $("#khsheng").hide();
+        // $("#ufen").hide();
+        $("#tid").empty();
+        $("#ufen").attr("src", "../static/device/img/tab.png");
+        $("#khsheng").attr("src", "../static/device/img/tabA.png");
+        $("#sheng").removeClass("btnBox floatStyle").addClass("btnBox btnBox-active");
+        $("#fen").removeClass("btnBox btnBox-active").addClass("btnBox floatStyle");
+        $("#fen").attr("style", "margin-right: 29px");
+        // $.ajax({
+        //     url: '${ctx}/sys/subCentersPlan/listDataOATo',
+        //     dataType: "json",
+        //     type: "post",
+        //     async:false,
+        //     success: function (result) {
+        //         $("#ybbg").html("");
+        //         $("#ybbg").html(result.count);
+        //     }
+        // })
+        // $.ajax({
+        //     url: '${ctx}/sys/subCentersPlan/listDataOAL',
+        //     dataType: "json",
+        //     type: "post",
+        //     async:false,
+        //     success: function (result) {
+        //         $("#kg").html("");
+        //         $("#kg").html(result.count);
+        //     }
+        // })
+        //省中心已办
+        if ($("#daiban").is(':hidden')) {
+            $.ajax({
+                url: '${ctx}/sys/subCentersPlan/listDataOATo',
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    var list = result.list;
+                    var num = list.length;
+                    $("#tid").empty();
+                    $("#ybbg").html("");
+                    $("#ybbg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidToK',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+            //省中心待办
+        } else {
+            $.ajax({
+                url: '${ctx}/sys/subCentersPlan/listDataOAL',
+                dataType: "json",
+                type: "post",
+                success: function (result) {
+                    $("#tid").empty();
+                    var list = result.list;
+                    var num = list.length;
+                    $("#kg").html("");
+                    $("#kg").html(result.count);
+                    var k = null;
+                    if (num > 5) {
+                        k = 5;
+                    } else {
+                        k = num;
+                    }
+                    for (var i = 0; i < k; i++) {
+                        var p = list[i].sendUserName;
+                        var o = list[i].sendTime;
+                        var t = list[i].workId;
+                        var url = "http://10.0.2.5:9020/horizon-workflow-boot/workflow/module/workflow/index.html?workId="+list[i].workId+"&trackId="+list[i].trackId+"&subjection="+list[i].subjectionId
+                        $.ajax({
+                            url: '${ctx}/sys/alarmmeasure/pidToK',
+                            dataType: "json",
+                            data: {"workId": t, "sendUserName": p},
+                            type: "post",
+                            async: false,
+                            success: function (result) {
+                                $("#tid").append(
+                                    "<tr onclick=\"openWindow('"+url+"')\">" +
+                                    "<td>" + (i + 1) +
+                                    "</td>" +
+                                    " <td>" + result[1] +
+                                    "</td>" +
+                                    "<td>" + o +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_CODE +
+                                    "</td>" +
+                                    "<td>" + result[0].PLAN_NAME +
+                                    "</td>" +
+                                    "</tr>"
+                                )
+
+
+                            }
+                        })
+
+                    }
+
+                }
+            })
+        }
+    }
+    function xuanzeshebei() {
+        $("#xin").remove();
+        var se = $("#xuanze option:selected").val();
+        $.ajax({
+            url: '${ctx}/sys/device/cedianbilieToK',
+            dataType: "json",
+            data:{"deviceCode":se},
+            type: "post",
+            success: function (result) {
+                var shuiping = result[0].shuiping
+                var gaocheng = result[0].gaocheng
+                var sum = shuiping+gaocheng;
+                myChartTo = echarts.init(document.getElementById('yht1'));
+                var str = [];
+                var str3 = new Object();
+                var str4 = new Object();
+                if(shuiping !==0){
+                    var stt = new Object();
+                    str3.value = shuiping;
+                    str3.name = "水平";
+                    stt.trigger = 'item';
+                    str.push(str3);
+                }
+                if(gaocheng !==0){
+                    str4.value = gaocheng;
+                    str4.name = "高程";
+                    str.push(str4);
+                }
+                var str5=new Object();
+                str5.value = shuiping+gaocheng;
+                str5.name = '';
+                str5.cursor = 'auto';
+                str.push(str5)
+                var option1 = {
+                    title: {
+                        // text: '养护比例',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                    },
+                    // legend: {
+                    //     orient: 'vertical',
+                    //     left: 'left',
+                    //     data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                    // },
+                    graphic: [{　　　　　　　　　　　　　　　　//环形图中间添加文字
+                        type: 'text',　　　　　　　　　　　　//通过不同top值可以设置上下显示
+                        left: 'center',
+                        top: '40%',
+                        style: {
+                            text: "养护比例",
+                            textAlign: 'center',
+                            fill: '#cfc722',　　　　　　　　//文字的颜色
+                            width: 30,
+                            height: 50,
+                            fontSize: 25,
+                            // color: "#4d4f5c",
+                            // fontFamily: "Microsoft YaHei"
+                        }
+                    }, {
+                        type: 'text',
+                        left: 'center',
+                        top: '55%',
+                        style: {
+                            text: '100%',
+                            textAlign: 'center',
+                            fill: '#3f70c9',
+                            width: 5,
+                            height: 10,
+                            fontSize: 20,
+                        }
+                    }],
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: ['40%', '80%'],
+                            center: ['50%', '50%'],
+                            startAngle: 180,
+                            color: ['#4675cf', '#6c66cf', 'transparent'],
+                            data: [
+                                {
+                                    value: shuiping, name: '水平测点',tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (a,b,c) {
+                                            var name = a.name;
+                                            var value = a.data.value;
+                                            var percent = a.percent*2;
+                                            return '访问来源<br/>'+name+':'+value+'('+percent+'%)';
+                                        }
+                                    }
+                                },
+                                {
+                                    value: gaocheng, name: '高程测点', tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (a,b,c) {
+                                            var name = a.name;
+                                            var value = a.data.value;
+                                            var percent = a.percent*2;
+                                            return '访问来源<br/>'+name+':'+value+'('+percent+'%)';
+                                        }
+                                    }
+
+                                },
+                                {
+                                    value: shuiping+gaocheng, name: '', cursor: 'auto',tooltip: {
+                                        trigger: 'none',
+
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+                myChartTo.setOption(option1, true);
+            }
+        })
+    }
+
+</script>
+</html>

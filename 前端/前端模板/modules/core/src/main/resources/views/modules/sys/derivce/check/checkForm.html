@@ -1,0 +1,282 @@
+<% layout('/layouts/default.html', {title: '新增巡检', libs: ['validate','fileupload']}){ %>
+<style type="text/css">
+
+
+	#left{
+		 float:left;
+		 width:50%;
+		 height:100%;
+
+	 }
+	#right{
+		 float:right;
+		 width:50%;
+		 height:100%;
+
+	 }
+	</style>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<% if(check==null){ %>
+				<i class="fa icon-grid"></i> 新增巡检
+				<% }else{ %>
+				<i class="fa icon-grid"></i> 编辑巡检
+				<%}%>
+
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${check}" action="${ctx}/sys/check/save" method="post" class="form-horizontal">
+		<#form:hidden name="id" value="${check!=null?check.id:''}"/>
+		<div class="box-body">
+			<div class="form-unit">
+				<% if(check==null){ %>
+				<i class="fa icon-grid"></i> ${text('新增巡检')}
+				<% }else{ %>
+				<i class="fa icon-grid"></i> ${text('编辑巡检')}
+				<%}%></div>
+			<div class="left-align" id="left">
+				<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('分中心')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<select name="checkCenter" id="checkCenter"  class="form-control required" onchange="guanlizhan()">
+								<option value="">请选择</option>
+								<% for(e in checkCenter){ %>
+								<option <% if(check!=null&&check.checkCenter==e.OFFICE_NAME){ %>  selected="selected" <% } %> value=${e.OFFICE_NAME} >${e.OFFICE_NAME}</option>
+								<% } %>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								${text('管理站')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<select name="manageStation" id="manageStation" class="form-control" onchange="guanlisuo()">
+									<option value="">请选择</option>
+									<% if(check!=null&&check.manageStation !=null){ %>
+									<option <% if(check!=null&&check.manageStation !=null){ %>  selected="selected" <% } %> value=${check.manageStation} id = "manageStation1">${check.manageStation}</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								 ${text('管理所')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<select name="manageOffice" id="manageOffice" class="form-control ">
+									<option value="">请选择</option>
+
+									<% if(check!=null&&check.manageOffice !=null){ %>
+									<option <% if(check!=null&&check.manageOffice !=null){ %>  selected="selected" <% } %> value=${check.manageOffice} id = "manageOffice1">${check.manageOffice}</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div  class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4"><span class="required">*</span>${text('巡检点编号')}：</label>
+							<div class="col-sm-8">
+								<#form:input name="checkId" value="${check!=null?check.checkId:''}" maxlength="200" class="form-control required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+
+	<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('巡检点名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="checkName" maxlength="64" value="${check!=null?check.checkName:''}"  class="form-control required "/>
+						</div>
+				</div>
+			</div>
+	</div>
+	            <div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required hide">*</span> ${text('巡检内容描述')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="checkDescription" value="${check!=null?check.checkDescription:''}" rows="4" maxlength="500" class="form-control "/>
+
+						</div>
+					</div>
+			</div>
+	</div>
+	            <div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('误差(m)')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="checkDeviation" maxlength="64" value="${check!=null?check.checkDeviation:'1000'}"  class="form-control required "/>
+						</div>
+				</div>
+
+			<!--<#form:extend collapsed="true" />-->
+		</div>
+	</div>
+	        <div class="row">
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="control-label col-sm-4" title="">
+						<span class="required ">*</span>${text('经度')}：<i class="fa icon-question hide"></i></label>
+					<div class="col-sm-8">
+						<#form:input name="longitude" maxlength="64" value="${check!=null?check.longitude:''}"  class="form-control required "/>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	            <div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('纬度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="latitude" maxlength="64" value="${check!=null?check.latitude:''}"  class="form-control required "/>
+
+					</div>
+				</div>
+			</div>
+	</div>
+			</div>
+
+			<div class="right-align" id="right">
+			<iframe id="mainFrame" name="mainFrame"
+					src="${ctx}/sys/check/listCheck" style="width: 100%;height: 600px"></iframe>
+			</div>
+
+
+
+
+
+			<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+
+</div>
+</div>
+
+
+<% } %>
+
+<script>
+	var t = "请选择";
+	$(function () {
+		//管理站
+		var checkCenter2 =  $("#manageStation option:selected").val();
+		//管理所
+		var checkCenter1 =  $("#manageOffice option:selected").val();
+		var checkCenter =  $("#checkCenter option:selected").val();
+		if(checkCenter2 === '' && checkCenter1 === ''){
+			$.ajax({
+				url:'${ctx}/sys/checkNote/listCheckTo',
+				type:'GET',
+				data:{"officeName":checkCenter},
+				dataType:'json',
+				success:function(data){
+					// console.log(data)
+					// $("#manageStation").append("<option value=''>" + t + "</option>")
+					for(var i=0;i<data.length;i++){
+						$("#manageStation").append("<option value='" + data[i] + "'>"+data[i]+"</option>")
+					}
+
+				}
+			});
+		}else if(checkCenter2 !== '' &&  checkCenter1 === ''){
+			$.ajax({
+				url:'${ctx}/sys/checkNote/listCheckTo',
+				type:'GET',
+				data:{"officeName":checkCenter2},
+				dataType:'json',
+				success:function(data){
+					// console.log(data)
+					// $("#manageOffice").append("<option value=''>" + t + "</option>")
+					for(var i=0;i<data.length;i++){
+						$("#manageOffice").append("<option value='" + data[i] + "'>" + data[i] + "</option>")
+
+					}
+
+				}
+			});
+		}
+	})
+	function guanlizhan(){
+		var checkCenter =  $("#checkCenter option:selected").val();
+		$("#manageStation").html("")
+		$.ajax({
+			url:'${ctx}/sys/checkNote/listCheckTo',
+			type:'GET',
+			data:{"officeName":checkCenter},
+			dataType:'json',
+			success:function(data){
+				// console.log(data)
+				$("#manageStation").append("<option value=''>" + t + "</option>")
+				for(var i=0;i<data.length;i++){
+					$("#manageStation").append("<option value='" + data[i] + "'>"+data[i]+"</option>")
+				}
+
+			}
+		});
+	}
+	function guanlisuo(){
+		$("#manageOffice").html("")
+		var checkCenter =  $("#manageStation option:selected").val();
+		$.ajax({
+			url:'${ctx}/sys/checkNote/listCheckTo',
+			type:'GET',
+			data:{"officeName":checkCenter},
+			dataType:'json',
+			success:function(data){
+				// console.log(data)
+				$("#manageOffice").append("<option value=''>" + t + "</option>")
+				for(var i=0;i<data.length;i++){
+
+						$("#manageOffice").append("<option value='" + data[i] + "'>" + data[i] + "</option>")
+
+				}
+
+			}
+		});
+	}
+    $("#inputForm").validate({
+        submitHandler: function(form){
+            js.ajaxSubmitForm($(form), function(data){
+                js.showMessage(data.message);
+                if(data.result == Global.TRUE){
+                    js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+                    });
+                }
+            }, "json");
+        }
+    });
+
+</script>

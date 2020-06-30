@@ -1,0 +1,149 @@
+<% layout('/layouts/default.html', {title: '计划管理', libs: ['validate','zTree']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-body">
+            <div class="row" style="padding: 10px">
+                <div class="col-xs-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 col-xs-4" title="">
+                            ${text('项目名称')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8 col-xs-8" id="proItemName">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 col-xs-4" title="">
+                            <span class="required ">*</span> ${text('项目类型')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8 col-xs-8">
+                            <#form:select id="proType" name="proType" items="${type}" itemLabel="dictValue" itemValue="dictCode" blankOption="true" class="form-control"/>
+                            <label id="planType-error" class="has-error" for="proType" style="top: 25px; left: 20px;">必填信息</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-xs-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 col-xs-4" title="">
+                            <span class="required ">*</span> ${text('所属机构')}：<i class="fa icon-question hide"></i></label>
+                        <div class="col-sm-8 col-xs-8">
+<!--                            <div class="input-group treeselect" id="orgIdDiv" data-url="/js/a/sys/office/treeData?ctrlPermi=2">-->
+<!--                                <input id="orgIdName" type="text" name="orgIdName" value="" class="form-control  " readonly="readonly">-->
+<!--                                <input id="orgIdCode" type="hidden" name="orgId" value="" class="isReset">-->
+<!--                                <span class="input-group-btn">-->
+<!--                                    <a id="orgIdButton" href="javascript:" class="btn btn-default "><i class="fa fa-search"></i></a>-->
+<!--	                            </span>-->
+<!--                            </div>-->
+                            <div class="col-sm-8 col-xs-8" id="kdv">
+
+                            </div>
+                            <label id="orgId-error" class="has-error" for="orgId" style="top: 25px; left: 20px;">必填信息</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#planType-error').hide();
+        $('#orgId-error').hide();
+    })
+    function showMsg() {
+
+        var type = $('#proType').val();
+        var orgId = $('#orgIdCode').val();
+        var name = $("#proType").find("option:selected").text();
+        if(type){
+            return name+","+type+","+orgId;
+        }
+        return null;
+    }
+    $('#proType').change(function () {
+        $('#planType-error').hide();
+    });
+    $('#orgIdDiv').change(function () {
+        $('#orgId-error').hide();
+    });
+
+
+
+
+
+    $("#orgIdButton,#orgIdName").click(function(){
+        if ($("#orgIdButton").hasClass("disabled")){
+            return true;
+        }
+        var options = {
+            type: 2,
+            maxmin: true,
+            shadeClose: true,
+            title: '所属机构',
+            area: ['300px', '400px'],
+            content: '/jdds/tags/treeselect',
+            zIndex: window.parent.parent.layer.zIndex,
+            contentFormData: {
+                url: "${ctx}/sys/office/treeData",
+                checkbox: 'false',
+                expandLevel: '-1',
+                selectCodes: $("#orgIdCode").val(),
+                isReturnValue: 'false'
+            },
+            success: function(layero, index){
+                if ($(layer.window).width() < 300 || $(layer.window).height() < 400){
+                    layer.full(index);
+                }
+            },
+            btn: ['<i class="fa fa-check"></i> 确定'],
+            btn1: function(index, layero){
+                var win = layero.iframeWindow();
+                win.$('#keyword').val('').change();
+                var codes = [], names = [], nodes;
+                if ("false" == "true"){
+                    nodes = win.tree.getCheckedNodes(true);
+                }else{
+                    nodes = win.tree.getSelectedNodes();
+                }
+                for(var i=0; i<nodes.length; i++) {
+                    var code = nodes[i]['false'=='true'?'value':'id'], name = nodes[i]['name'];
+                    codes.push(code.replace(/^u_/g,''));
+                    names.push(name.replace(/\([0-9]*\)/g,''));
+                    break;
+                }
+                if(typeof treeselectCheck == 'function'){
+                    if (!treeselectCheck('orgId', nodes)){
+                        return false;
+                    }
+                }
+                $("#orgIdCode").val(codes.join(',')).change();
+                $("#orgIdName").val(names.join(',')).change();
+                try { $('#orgIdCode,#orgIdName').valid(); }catch(e){}
+                if(typeof treeselectCallback == 'function'){
+                    treeselectCallback('orgId', 'ok', index, layero, nodes);
+                }
+            }
+        };
+
+        options.btn.push('<i class="fa fa-eraser"></i> 清除');
+        options['btn'+options.btn.length] = function(index, layero){
+            $("#orgIdCode").val('').change();
+            $("#orgIdName").val('').change();
+            if(typeof treeselectCallback == 'function'){
+                treeselectCallback('orgId', 'clear', index, layero);
+            }
+        };
+        options.btn.push('<i class="fa fa-close"></i> 关闭');
+        options['btn'+options.btn.length] = function(index, layero){
+            if(typeof treeselectCallback == 'function'){
+                treeselectCallback('orgId', 'cancel', index, layero);
+            }
+        };
+        window.parent.parent.layer.open(options);
+    });
+</script>
+<% } %>

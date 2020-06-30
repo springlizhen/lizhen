@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>数据目录</title>
+<link href="${ctxStatic}/css/style.css" type="text/css" rel="stylesheet">
+<script src="${ctxStatic}/js/jquery.min.js"></script>
+</head>
+<style>
+	.text-length{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>
+<body class="sjmlBg">
+		<div class="topBoxBgColor">
+			<div class="logoBox">
+				<img src="${ctxStatic}/img/logo2.png">
+			</div>
+			<div class="searchBox">
+				<!--				<input type="text">
+                                <a href="">
+                                    <img src="${ctxStatic}/img/ss_icon.png">
+                                </a>-->
+			</div>
+		</div>
+		<div class="navBox">
+			<div class="navConter">
+				<a href="${ctx}/index"><div class="navList">首页</div></a>
+				<a href="${ctx}/sjml/index"><div class="navList active">数据目录</div></a>
+				<a href="${ctx}/sjfw/index"><div class="navList">数据服务</div></a>
+				<a href="${ctx}/daml/index"><div class="navList">档案目录</div></a>
+				<a href="${ctx}/service/record">
+					<div class="navList">个人中心</div>
+				</a>
+			</div>
+			
+		</div>
+	<div class="contentBox">
+		<div class="leftListBox">
+			<div class="flTitle">分类</div>
+			<div id="dataTheme">
+			</div>
+		</div>
+		<div class="rightConBox" style="padding-bottom:0px;height: 680px;">
+			<div class="sjjTit">共 <span id="spanmout">0</span> 个数据集</div>
+			<!--<div class="sxBox">
+				<select class="">
+					<option>更新时间</option>
+					<option>状态1</option>
+					<option>状态2</option>
+				</select>
+				<select class="">
+					<option>数据量</option>
+					<option>状态1</option>
+					<option>状态2</option>
+				</select>
+				<select class="">
+					<option>访问量</option>
+					<option>状态1</option>
+					<option>状态2</option>
+				</select>
+				<select class="">
+					<option>下载量</option>
+					<option>状态1</option>
+					<option>状态2</option>
+				</select>
+				<select class="">
+					<option>评分</option>
+					<option>状态1</option>
+					<option>状态2</option>
+				</select>
+			</div>-->
+			<div id="dataList">
+
+			</div>
+		</div>
+		<div style="float: right;width: 80%;background: #fff;/* padding-bottom: 10px; */">
+			<div class="fyBox" style="margin-top: 4px;padding-bottom: 4px;">
+				<!--<a href="javascript:;" class="onPage" onclick="getDataDown()">上一页</a>-->
+				<!--<a href="javascript:;" class="numberPage active" onclick="getDataMou(1)">1</a>-->
+				<!--<a href="javascript:;" class="nextPage" onclick="getDataAdd()">下一页</a>-->
+			</div>
+		</div>
+	</div>
+	<div class="bottomBox">
+		©胶东调水数据资源共享平台
+	</div>
+</body>
+<script>
+	var pageNo = 1;
+	var pageSize = 20;
+	var pageNoMax = 1;
+	var id = '${id}';
+    $.ajax({
+        type: 'GET',
+        url: "${ctx}/ztfl",
+        dataType: 'json',
+        async: false,
+        error: function(data){
+            js.showErrorMessage(data.responseText);
+        },
+        success: function(data, status, xhr) {
+            console.log(data)
+            var box = $('#dataTheme');
+            for (var i=0;i<data.length;i++){
+                box.append('<a href="javascript:;" onclick="getIdData(\''+data[i].id+'\')" class="flList_a">\n' +
+                    '\t\t\t\t\t<span class="leftText">'+data[i].name+'</span>\n' +
+                    '\t\t\t\t\t<span class="rightNumber"></span>\n' +
+                    '\t\t\t\t</a>');
+            }
+        }
+    });
+    getData();
+    //重置并加载
+    function getIdData(ids) {
+        id = ids;
+        pageNo = 1;
+        pageSize = 20;
+        pageNoMax = 1;
+        getData();
+    }
+    //重置上/下一页，数字
+    function pageMouth() {
+        $('.fyBox').empty();
+        var box = $('.fyBox');
+        switch (pageNo){
+			case 1:
+                $(box).css('width',pageNoMax>1?'60%':'54%');
+			    break;
+			case pageNoMax:
+                $(box).css('width',pageNoMax>1?'60%':'54%');
+			    break;
+			default:
+                $(box).css('width','70%');
+		}
+        if(pageNo!=1){
+			box.append('<a href="javascript:;" class="onPage" onclick="getDataDown()">上一页</a>');
+        }
+		for(var i=1;i<=pageNoMax;i++){
+			box.append('<a href="javascript:;" class="numberPage" mout="'+i+'" onclick="getDataMou('+i+')">'+i+'</a>');
+		}
+        if(pageNo!=pageNoMax && pageNoMax!=0) {
+            box.append('<a href="javascript:;" class="nextPage" onclick="getDataAdd()">下一页</a>');
+        }
+        console.log($('a[mout="'+pageNo+'"]').text());
+        $('a[mout="'+pageNo+'"]').addClass("active");
+    }
+    //重置上下一页按钮
+	function pageClass() {
+        pageMouth();
+    }
+    //上一页
+    function getDataAdd(){
+        pageNo += 1;
+        getData();
+	}
+	//下一页
+	function getDataDown() {
+		if(pageNo!=0){
+        	pageNo -= 1;
+        }
+        getData();
+    }
+    //点击数字跳转
+    function getDataMou(mou) {
+        if(pageNo!=mou){
+            pageNo = mou;
+        	getData();
+        }
+    }
+    //获取list并重置
+    function getData() {
+        var url = "${ctx}/sjml/findByPage?pageNo="+pageNo+"&pageSize="+pageSize;
+        if(id){
+            url += "&id="+id;
+		}
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            async: false,
+            error: function(data){
+				js.showErrorMessage(data.responseText);
+            },
+            success: function(data, status, xhr) {
+				$('#spanmout').text("0");
+            	if (data == null) {
+					$('#dataList').empty();
+					pageNoMax = 0;
+				} else {
+					$('#spanmout').text(data.count);
+					pageNoMax = Math.ceil(data.count/data.pageSize);
+					data = data.list;
+					$('#dataList').empty();
+					var box = $('#dataList');
+					console.log(data);
+					for (var i=0;i<data.length;i++){
+						var message = data[i].provider;
+						if(message.length>8){
+							message = message.substring(0,8);
+							message += "...";
+						}
+						box.append('<div class="shujujiBox">\n' +
+								'\t\t\t\t<a class="shujuTitle text-length" href="${ctx}/sjml/jbxx?id='+data[i].id+'&mouth='+data[i].dataSize+'&name='+data[i].nameCn+'">'+data[i].nameCn+'</a>\n' +
+								'\t\t\t\t<div class="xzStyle text-length">'+data[i].nameCn+'</div>\n' +
+								'\t\t\t\t<div class="pfBox"><img src="${ctxStatic}/img/pjImg.png"><img src="${ctxStatic}/img/pjImg.png"><img src="${ctxStatic}/img/pjImg.png"></div>\n' +
+								'\t\t\t\t<div class="shujitongji">数据量： '+data[i].dataSize+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接口数量：2</div>\n' +
+								'\t\t\t\t<div class="Rborder text-length">'+message+'</div><!--<div class="Rborder">气象</div>-->\n' +
+								'\t\t\t</div>');
+					}
+				}
+            }
+        });
+        pageClass();
+    }
+</script>
+</html>

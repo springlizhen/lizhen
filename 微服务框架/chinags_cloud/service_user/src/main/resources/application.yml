@@ -1,0 +1,24 @@
+server:
+  port: 9911
+spring:
+  application:
+    name: service-user #指定服务名
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.1.2:1521:orcl
+    username: base
+    password: base
+  jpa:
+    database: oracle
+    show-sql: true
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9900/eureka/
+  instance:
+    prefer-ip-address: true
+
+swagger:
+  base-package: com.chinags

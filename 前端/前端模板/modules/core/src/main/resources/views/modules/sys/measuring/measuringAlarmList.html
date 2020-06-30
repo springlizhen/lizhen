@@ -1,0 +1,178 @@
+<% layout('/layouts/default.html', {title: '测点数据录入', libs: ['dataGrid']}){ %>
+<style>
+	.button-bg-border{
+		border: solid #ccc 1px;
+		border-bottom: 0px;
+		height: 36px;
+		padding: 0px;
+	}
+	.button-border{
+		float: left;
+		padding: 7px;
+	}
+	.button-color{
+		background-color: #cccccc57;
+	}
+
+</style>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> ${text('测点报警')}
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/sys/alarmmeasure/listData" method="post" class="form-inline "
+			data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <#form:hidden name="such" maxlength="100" class="form-control" value="高程"/>
+		</#form:form>
+		<div class="button-bg-border">
+			<div id="sp" onclick="spcd()" class="button-border">水平测点</div>
+			<div id="gc" onclick="gccd()" class="button-border button-color">高程测点</div>
+			<div style="float: right;padding: 2px;">
+<!--				<button type="submit" class="btn btn-primary btn-sm" id="btnImport"><i class="fa fa-plus"></i>  导入</button>-->
+			</div>
+		</div>
+		<table id="dataGrid"></table>
+		<div id="dataGridPage"></div>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("观测点编号")}', name:'sctionId', width:120, align:"center",sortable:false},
+            {header:'${text("基准点编号")}', name:'pointId',  width:120, align:"center",sortable:false},
+			{header:'${text("初始值(m)")}', name:'inValue',  width:60, align:"center",sortable:false},
+            {header:'${text("填报期数")}', name:'dateNum',  width: 150, align:"center",sortable:false},
+			{header:'${text("本期沉降(m)")}', name:'upDown',  width:120, align:"center",sortable:false},
+			{header:'${text("累计沉降(m)")}', name:'upDownSum',  width:120, align:"center",sortable:false},
+			{header:'${text("报警信息")}', name:'msg',  width:200, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+					actions.push('<a href="${ctx}/sys/alarmmeasure/find?id='+row.id+'" class="btnList" title="${text("测点报警信息")}">查看</a>&nbsp;');
+					if (row.status==0)
+						actions.push('<a href="${ctx}/sys/alarmmeasure/status?id='+row.id+'" class="btnList" title="${text("处理")}" data-confirm="${text("确认标记为已处理吗？")}">处理</a>&nbsp;');
+					return actions.join('');
+                }}
+        ],
+        defaultExpandLevel: 0,	// 默认展开的层次
+        expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+    
+    function tabledo() {
+		var such = $('#such').val();
+		if (such == "水平") {
+			spcd();
+		} else {
+			gccd();
+		}
+	}
+
+    function spcd() {
+       document.getElementById("such").value='水平';
+       document.getElementById("sp").className='button-border button-color';
+       document.getElementById("gc").className='button-border';
+        $('#dataGrid').jqGrid('GridUnload');
+        // 初始化DataGrid对象
+        $('#dataGrid').dataGrid({
+            searchForm: $("#searchForm"),
+            columnModel: [
+                {header:'${text("观测点编号")}', name:'sctionId', width:120, align:"center",sortable:false},
+                {header:'${text("基准点编号")}', name:'pointId',  width:120, align:"center",sortable:false},
+                {header:'${text("X轴初始值(m)")}', name:'inValue',  width:80, align:"center",sortable:false},
+				{header:'${text("Y轴初始值(m)")}', name:'yinValue',  width:80, align:"center",sortable:false},
+                {header:'${text("填报期数")}', name:'dateNum',  width: 150, align:"center",sortable:false},
+                {header:'${text("X变形量(m)")}', name:'upDown',  width:120, align:"center",sortable:false},
+                {header:'${text("X累计变形量(m)")}', name:'upDownSum',  width:120, align:"center",sortable:false},
+                {header:'${text("Y变形量(m)")}', name:'yupDown',  width:120, align:"center",sortable:false},
+                {header:'${text("Y累计变形量(m)")}', name:'yupDownSum',  width:120, align:"center",sortable:false},
+				{header:'${text("报警信息")}', name:'msg',  width:200, align:"center",sortable:false},
+                {header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+						actions.push('<a href="${ctx}/sys/alarmmeasure/find?id='+row.id+'" class="btnList" title="${text("测点报警信息")}">查看</a>&nbsp;');
+						if (row.status==0)
+							actions.push('<a href="${ctx}/sys/alarmmeasure/status?id='+row.id+'" class="btnList" title="${text("处理")}" data-confirm="${text("确认标记为已处理吗？")}">处理</a>&nbsp;');
+						return actions.join('');
+                    }}
+            ],
+            defaultExpandLevel: 0,	// 默认展开的层次
+            expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+            ajaxSuccess: function(data){
+
+            }
+        });
+    }
+
+    function gccd() {
+        document.getElementById("such").value='高程';
+        document.getElementById("gc").className='button-border button-color';
+        document.getElementById("sp").className='button-border';
+        $('#dataGrid').jqGrid('GridUnload');
+        // 初始化DataGrid对象
+        $('#dataGrid').dataGrid({
+            searchForm: $("#searchForm"),
+            columnModel: [
+				{header:'${text("观测点编号")}', name:'sctionId', width:120, align:"center",sortable:false},
+				{header:'${text("基准点编号")}', name:'pointId',  width:120, align:"center",sortable:false},
+				{header:'${text("初始值(m)")}', name:'inValue',  width:60, align:"center",sortable:false},
+				{header:'${text("填报期数")}', name:'dateNum',  width: 150, align:"center",sortable:false},
+				{header:'${text("本期沉降(m)")}', name:'upDown',  width:120, align:"center",sortable:false},
+				{header:'${text("累计沉降(m)")}', name:'upDownSum',  width:120, align:"center",sortable:false},
+				{header:'${text("报警信息")}', name:'msg',  width:200, align:"center",sortable:false},
+                {header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+						actions.push('<a href="${ctx}/sys/alarmmeasure/find?id='+row.id+'" class="btnList" title="${text("测点报警信息")}">查看</a>&nbsp;');
+						if (row.status==0)
+							actions.push('<a href="${ctx}/sys/alarmmeasure/status?id='+row.id+'" class="btnList" title="${text("处理")}" data-confirm="${text("确认标记为已处理吗？")}">处理</a>&nbsp;');
+						return actions.join('');
+                    }}
+            ],
+            defaultExpandLevel: 0,	// 默认展开的层次
+            expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+            ajaxSuccess: function(data){
+
+            }
+        });
+    }
+	// $('#btnImport').click(function(){
+	// 	js.layer.open({
+	// 		type: 1,
+	// 		area: ['400px'],
+	// 		title: '${text("导入用户数据")}',
+	// 		resize: false,
+	// 		scrollbar: true,
+	// 		content: js.template('importTpl'),
+	// 		success: function(layero, index){
+	// 			layero.find('input[type="checkbox"]').iCheck();
+	// 		},
+	// 		btn: ['<i class="fa fa-check"></i> ${text("导入")}',
+	// 			'<i class="fa fa-remove"></i> ${text("关闭")}'],
+	// 		btn1: function(index, layero){
+	// 			var form = {
+	// 				inputForm: layero.find('#inputForm'),
+	// 				file: layero.find('#file').val()
+	// 			};
+	// 			if (form.file == '' || (!js.endWith(form.file, '.xls') && !js.endWith(form.file, '.xlsx'))){
+	// 				js.showMessage("${text('文件不正确，请选择后缀为“xls”或“xlsx”的文件。')}", null, 'warning');
+	// 				return false;
+	// 			}
+	// 			js.ajaxSubmitForm(form.inputForm, function(data){
+	// 				js.showMessage(data.message);
+	// 				if(data.result == Global.TRUE){
+	// 					js.layer.closeAll();
+	// 				}
+	// 				page();
+	// 			}, "json");
+	// 			return true;
+	// 		}
+	// 	});
+	// });
+</script>

@@ -1,0 +1,117 @@
+<% layout('/layouts/default.html', {title: '合同信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-speech"></i> ${text('合同信息')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/contract/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<input type="hidden" name="status" value="2"/>
+			<div class="row">
+				<div class="col-xs-12">
+			<div class="form-group col-xs-3">
+				<label class="control-label col-sm-4 ">${text('合同编码')}：</label>
+				<div class="control-inline ">
+					<#form:input path="contractCode" class="form-control width-150"/>
+				</div>
+			</div>
+					<div class="form-group col-xs-3">
+						<label class="control-label col-sm-4 ">${text('合同类型')}：</label>
+						<div class="control-inline ">
+							<#form:input path="contractType" class="form-control width-150"/>
+						</div>
+					</div>
+						<div class="form-group col-xs-3">
+							<label class="control-label col-sm-4">${text('合同标题')}：</label>
+							<div class="control-inline ">
+								<#form:input path="title" class="form-control width-150"/>
+							</div>
+						</div>
+			</div>
+			</div>
+
+				<div class="form-group ">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("合同编码")}', name:'contractCode', index:'contractCode', width:100, align:"left", frozen:true},
+		{header:'${text("合同类型")}', name:'contractType', index:'a.contractType', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同标题")}', name:'title', index:'title', width:150,fixed:true,  align:"center"//, formatter: function(val, obj, row, act){
+				//return '<a href="${ctx}/contract/view?id='+row.id+'" class="btnList" data-title="${text("编辑合同")}">'
+						//+(val||row.id)+'</a>'+(row.isAttac==1?' <i class="fa fa-paperclip"></i>':'');}
+			},
+		{header:'${text("合同金额")}', name:'money', index:'a.money', width:150, fixed:true, align:"center"},
+		{header:'${text("合同对象")}', name:'contractObject', index:'contractObject', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同跟进人")}', name:'follow', index:'a.follow', width:150,fixed:true,  align:"center"},
+		{header:'${text("合同客户")}', name:'customer', index:'customer', width:150, fixed:true, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			actions.push('<a href="http://192.168.1.2:9020/horizon-workflow-boot/workflow/module/workflow/index.html?flowId=hetongbiangeng&id='+row.id+'" target="_blank" title="${text("编辑合同")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+			//actions.push('<a href="${ctx}/contract/delete?id='+row.id+'" class="btnList" title="${text("删除消息")}" data-confirm="${text("确认要删除该消息吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+				//actions.push('<a href="${ctx}/contract/view?id='+row.id+'" class="btnList" title="${text("查看")}"><i class="fa fa-book"></i></a>&nbsp;');
+				//actions.push('<a href="${ctx}/contract/view?id='+row.id+'" class="btnList" title="${text("查看变更")}"><i class="fa fa-book"></i></a>&nbsp;');
+
+				return actions.join('');
+		}}
+
+
+	],
+
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+
+$(function () {
+	$.ajax({
+		url: 'http://192.168.1.167:9914/contract/selectContract?id='+id,
+		cache: false,
+		type: 'get',
+		success: function (data) {
+
+			console.log(data);
+			$('input[name="contractCode"]').val(data.contractCode);
+			$('input[name="contractType"]').val(data.contractType);
+			$('input[name="title"]').val(data.title);
+			$('input[name="money"]').val(data.money);
+			$('input[name="contractObject"]').val(data.contractObject);
+			$('input[name="follow"]').val(data.follow);
+			$('input[name="customer"]').val(data.customer);
+			$('input[name="owner"]').val(data.owner);
+			$('input[name="ownerAddress"]').val(data.ownerAddress);
+			$('input[name="ownerPhone"]').val(data.ownerPhone);
+			$('input[name="ownerSign"]').val(data.ownerSign);
+			$('input[name="ownerSigntime"]').val(data.ownerSigntime);
+			$('input[name="otherOwner"]').val(data.otherOwner);
+			$('input[name="otherOwnerAddress"]').val(data.otherOwnerAddress);
+			$('input[name="otherOwnerPhone"]').val(data.otherOwnerPhone);
+			$('input[name="otherOwnerSign"]').val(data.otherOwnerSign);
+			$('input[name="otherOwnerSigntime"]').val(data.otherOwnerSigntime);
+			$('input[name="itemUpload"]').val(data.itemUpload);
+			$('input[name="text"]').val(data.text);
+			$('input[name="contractId"]').val(data.id);
+		}});
+
+})
+
+</script>

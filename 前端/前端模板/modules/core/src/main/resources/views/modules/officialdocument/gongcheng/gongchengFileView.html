@@ -1,0 +1,254 @@
+<% layout('/layouts/default.html', {title: '案卷卷内文件管理', libs: ['validate','fileupload']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i> 查看卷内文件
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${clerkDocumentFile}" action="${ctx}/projectfile/fileSave" method="post" class="form-horizontal">
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+			<#form:hidden name="id" value="${clerkDocumentFile!=null?clerkDocumentFile.id:id}"/>
+			<#form:hidden name="createBy" value="${clerkDocumentFile!=null?clerkDocumentFile.createBy:''}"/>
+			<#form:hidden name="createDate" value="${clerkDocumentFile!=null?clerkDocumentFile.createDate:''}"/>
+			<input type="hidden" name="docClass" value="gongcheng"/>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('所属案卷')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input id="clerkDocumentId" name="clerkDocumentId" class="form-control required"
+							value="${title!=null?title:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('案卷号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="archivesNo" maxlength="150" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.archivesNo:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('档号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="boxNo" maxlength="50" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.boxNo:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('案卷题名')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="title" maxlength="150" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.title:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('年度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input id="year" path="year" readonly="true" maxlength="20" class="form-control required"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('责任者')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="responsiblePerson" maxlength="50" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.responsiblePerson:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('是否为公共档案')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="isPublic" dictType="document_is_public" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.isPublic:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('序号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="sort" maxlength="8" class="form-control required digits" value="${clerkDocumentFile!=null?clerkDocumentFile.sort:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('工程档案分类')}：<i class="fa icon-question hide"></i>
+						</label>
+						<div class="col-sm-8">
+							<#form:input name="documentType" dictType="eng_file_type" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.documentType:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('保管期限')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="storageTime" id="storageTime" dictType="storage_time" class="form-control required" onchange="check()" value="${clerkDocumentFile!=null?clerkDocumentFile.storageTime:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('起始时间')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8" id="divstartdate">
+							<#form:input id="startDate" path="startDate" readonly="true" maxlength="20" class="form-control"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('终止时间')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8" id="divenddate">
+							<#form:input id="endDate" path="endDate" readonly="true" maxlength="20" class="form-control"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('存放地点')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="place" maxlength="100" class="form-control" value="${clerkDocumentFile!=null?clerkDocumentFile.place:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('件数')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="pieceNo" maxlength="6" class="form-control digits" value="${clerkDocumentFile!=null?clerkDocumentFile.pieceNo:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('页数')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="pages" maxlength="6" class="form-control digits" value="${clerkDocumentFile!=null?clerkDocumentFile.pages:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-1" title="">
+							<span class="required hide">*</span> ${text('备注')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="remarks" rows="4" maxlength="500" class="form-control" value="${clerkDocumentFile!=null?clerkDocumentFile.remarks:''}"
+							readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-1">${text('相关附件')}：</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="form-group col-sm-11" style="left: 13%">
+					<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+							src="${ctx}/upload/list3?pid=${clerkDocumentFile!=null?clerkDocumentFile.id:id}&readOnly=1"></iframe>
+				</div>
+			</div>
+
+			<!--授权范围-->
+			<!--<div class="form-unit">${text('文件授权范围')}</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required ">*</span> ${text('接收者')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:radio path="receivetype" dictType="msg_inner_receiver_type" class="form-control required" id="receivetype" />
+							<#form:treeselect id="receive" title="${text('接收者选择')}"
+							path="receiveCodes" labelPath="receiveNames"
+							url="${ctx}/sys/office/treeData?isLoadUser=true"
+							class=" required" allowClear="true" checkbox="true"/>
+						</div>
+					</div>
+				</div>
+			</div>-->
+		</div>
+
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+<input type="hidden" id="clerkDocumentId" value="${clerkDocumentId}"/>
+</div>
+<% } %>
+<script>
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+
+	/*年费和起始时间初始化*/
+	document.getElementById("year").value="${clerkDocumentFile!=null?clerkDocumentFile.year:''}";
+	document.getElementById("startDate").value="${clerkDocumentFile!=null?clerkDocumentFile.startDate:''}";
+	document.getElementById("endDate").value="${clerkDocumentFile!=null?clerkDocumentFile.endDate:''}";
+</script>

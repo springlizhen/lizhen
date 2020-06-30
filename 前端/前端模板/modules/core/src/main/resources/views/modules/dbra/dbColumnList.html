@@ -1,0 +1,166 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('字段管理')}
+            </div>
+            <br/>
+            <hr/>
+            <div class="row">
+                <div class="col-xs-12 pull-left">
+                    <div class="form-group col-xs-3">
+                        <label class="control-label col-sm-5" title="">
+                            ${text('数据库')}：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-6">
+                            <select onchange="findByDBId()" name="dbId" id="dbName" class="form-control required">
+                                <option value="">请选择</option>
+                                <% if(dbs != null) {
+                                for(db in dbs){ %>
+                                <option value="${db.id}">${db.name}</option>
+                                <% } }%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-3">
+                        <label class="control-label col-sm-5" title="">
+                            ${text('数据表')}：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-6">
+                            <select onchange="findByTbId()" name="tbId" id="tbName" class="form-control required">
+                                <option value="">请选择</option>
+                                <% if(tbs != null) {
+                                for(tb in tbs){
+
+                                %>
+                                <option value="${tb.id}">${tb.name}</option>
+                                <% } }%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-3">
+                        <label class="control-label col-sm-5" title="">
+                            ${text('字段')}：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-6">
+                            <select onchange="findById()" name="clId" id="clName" class="form-control required">
+                                <option value="">请选择</option>
+                                <% if(cls != null) {
+                                for(cl in cls){
+
+                                %>
+                                <option value="${cl.id}">${cl.name}</option>
+                                <% } }%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <a href="${ctx}/cl/form" class="btn btn-default btnTool" title="${text('新增')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/cl/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}"
+            data-order-by="${parameter.orderBy}">
+            <#form:hidden name="id" id="id" maxlength="100" class="form-control" value=""/>
+            <#form:hidden name="dbid" id="dbid" maxlength="100" class="form-control" value=""/>
+            <#form:hidden name="tbid" id="tbid" maxlength="100" class="form-control" value=""/>
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header: '${text("字段名称")}', name: 'name', index: 'name', width: 160, align: "center",sortable:false},
+            {header: '${text("字段中文名称")}', name: 'nameCn', index: 'describe', width: 200, align: "center",sortable:false},
+            {header: '${text("字段注释")}', name: 'describe', index: 'category', width: 150, align: "center",sortable:false},
+            {header: '${text("是否主键(0否 1是)")}', name: 'isKey', index: 'type', width: 150, align: "center",sortable:false},
+            {header: '${text("字段类型")}', name: 'type', index: 'address', width: 150, align: "center",sortable:false},
+            {header: '${text("字段长度")}', name: 'length', index: 'remarks', width: 150, align: "center",sortable:false},
+            {header: '${text("备注")}', name: 'remarks', index: 'remarks', width: 150, align: "center",sortable:false},
+            {
+                header: '${text("操作")}',
+                name: 'action',
+                width: 120,
+                sortable: false,
+                title: false,
+                align: "center",
+                formatter: function (val, obj, row, act) {
+                    var actions = [];
+                    actions.push('<a href="${ctx}/cl/form?id=' + row.id + '" class="btnList" title="${text("编辑")}">编辑</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/cl/delete?id=' + row.id + '" class="btnList" title="${text("删除")}" data-confirm="${text("确认要删除该字段配置吗？")}">删除</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/cl/info?id=' + row.id + '" class="btnList" title="${text("详情")}">详情</a>&nbsp;&nbsp;');
+                    return actions.join('');
+                }
+            }
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function (data) {
+
+        }
+    });
+
+    function findByDBId() {
+        $("#dbid").val($('#dbName  option:selected').val());
+        $("#tbid").val('');
+        $("#id").val('');
+        var dbid = $('#dbName  option:selected').val();
+        var table =${tbs};
+        var column =${cls};
+        $('#tbName').find("option").remove();
+        $('#tbName').append("<option value='' selected='true'>请选择</option>");
+        for (var i = 0; i < table.length; i++) {
+            if (dbid != '') {
+                if (table[i].dbId == dbid) {
+                    $('#tbName').append("<option value='" + table[i].id + "'>" + table[i].name + "</option>");
+                }
+            } else {
+                $('#tbName').append("<option value='" + table[i].id + "'>" + table[i].name + "</option>");
+            }
+        }
+        $('#clName').find("option").remove();
+        $('#clName').append("<option value='' selected='true'>请选择</option>");
+        for (var i = 0; i < column.length; i++) {
+            if (dbid != '') {
+                if (column[i].dbId == dbid) {
+                    $('#clName').append("<option value='" + column[i].id + "'>" + column[i].name + "</option>");
+                }
+            } else {
+                $('#clName').append("<option value='" + column[i].id + "'>" + column[i].name + "</option>");
+            }
+        }
+        $('#dataGrid').dataGrid('refresh');
+    }
+
+    function findByTbId() {
+        $("#tbid").val($('#tbName  option:selected').val());
+        $("#id").val('');
+        var tbid = $('#tbName  option:selected').val();
+        var column =${cls};
+        $('#clName').find("option").remove();
+        $('#clName').append("<option value='' selected='true'>请选择</option>");
+        for (var i = 0; i < column.length; i++) {
+            if (tbid != '') {
+                if (column[i].tbId == tbid) {
+                    $('#clName').append("<option value='" + column[i].id + "'>" + column[i].name + "</option>");
+                }
+            } else {
+                $('#clName').append("<option value='" + column[i].id + "'>" + column[i].name + "</option>");
+            }
+        }
+        $('#dataGrid').dataGrid('refresh');
+    }
+
+    function findById() {
+        $("#id").val($('#clName  option:selected').val());
+        $('#dataGrid').dataGrid('refresh');
+    }
+</script>

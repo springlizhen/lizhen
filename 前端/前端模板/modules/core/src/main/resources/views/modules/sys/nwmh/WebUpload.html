@@ -1,0 +1,255 @@
+<% layout('/layouts/default.html', {title: '用户管理', libs: ['dataGrid']}){ %>
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/file/css/webuploader.css">
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/file/css/bootstrap.css">
+<script type="text/javascript" src="${ctxStatic}/file/js/jquery.min.js"></script>
+<script type="text/javascript" src="${ctxStatic}/file/js/webuploader.js"></script>
+<script type="text/javascript" src="${ctxStatic}/file/js/bootstrap.js"></script>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div id="uploader" class="wu-example col-xs-12">
+                <div class="btns  col-sm-5">
+                        <% if (reonly == '0') { %>
+							<div id="picker" class="btn col-sm-3">选择文件</div>
+						<% } %>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/upload/listData" method="post">
+            <#form:hidden name="pid" id="pid" maxlength="100" class="form-control" value="${pid}"/>
+            <#form:hidden name="num" id="num" maxlength="100" class="form-control" value="0"/>
+            <#form:hidden name="reonly" id="reonly" maxlength="100" class="form-control" value="${reonly}"/>
+
+            </#form:form>
+        <table id="dataGrid"></table>
+    </div>
+</div>
+<% } %>
+<script>
+    function IsInArray(arr,val){
+
+        var testStr=','+arr.join(",")+",";
+
+        return testStr.indexOf(","+val+",")!=-1;
+
+    }
+    var readOn=${reonly};
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("文件名称")}', name:'name', index:'name', width:300, align:"center",sortable:false},
+            {header:'${text("上传时间")}', name:'createDate', index:'createDate', width:200, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:100, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act) {
+                    var actions = [];
+                    if (readOn==0) {
+                        actions.push('<a href="${ctx}/nwmh/upload/del?id=' + row.id + '" class="btnList" title="${text("删除")}" data-confirm="${text("确认要删除吗？")}">&nbsp;&nbsp;删除</a>&nbsp;&nbsp;');
+                    }
+                    actions.push('<a href="${fileService}/file/download?id=' + row.id + '" title="${text("下载")}" >下载</a>&nbsp;&nbsp;');
+                    var ext = row.name.substring(row.name.lastIndexOf(".")+1);
+                    if (row.status == 0) {
+                        actions.push('<a href="${ctx}/nwmh/upload/yulan?path='+ row.pdfAddress+'" class="btnList" title="${text("预览")}" >预览</a>&nbsp;&nbsp;');
+                    }
+                    return actions.join('');
+                }}
+        ],
+        rowNum: -1,
+        shrinkToFit: true,
+        showRownum: false,
+        sortableColumn: false,
+        showFooter: false,
+        autoGridHeight: true, // 自动表格高度（设置为false后，不自动调整表格高度），为函数时返回'100%',则自动高度。
+        autoGridHeightFix: 0, // 自动表格高度宽度（自动调整高度时修正的高度值）
+        autoGridWidth: true,  // 自动表格宽度（设置为false后，不自动调整表格宽度）
+        autoGridWidthFix: 0,  // 自动表格修复宽度（自动调整宽度时修正的宽度值）
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>
+<script type="text/javascript">
+    var re='${reonly}';
+    var fileMd5;
+    var $list=$("#dataGrid");
+    var state = 'pending'; //初始按钮状态
+    var $btn=$("#btn");
+    var fileName;
+    var pId='${pid}';
+    var num=0; // 需要上传文件计数器
+    var num1=0; // 已上传文件计数器
+    var list = [];
+    //监听分块上传过程中的三个时间点
+    WebUploader.Uploader.register({
+        "before-send-file" : "beforeSendFile",
+        "before-send" : "beforeSend",
+        "after-send-file" : "afterSendFile",
+    }, {
+        //时间点1：所有分块进行上传之前调用此函数
+        beforeSendFile : function(file) {
+            var deferred = WebUploader.Deferred();
+            //1、计算文件的唯一标记，用于断点续传
+            (new WebUploader.Uploader()).md5File(file, 0, 10 * 1024 * 1024)
+                .progress(function(percentage) {
+                    $('#' + file.id).find("p.state").text("正在读取文件信息...");
+                }).then(function(val) {
+                $('#' + file.id).find("p.state").text("成功获取文件信息...");
+                //获取文件信息后进入下一步
+                var data = {fileMd5:val, fileName:file.name, pid: pId};
+                fileMd5 = val;
+                var data = {fileMd5:val, fileName:file.name, pid: pId};
+                list.push(data);
+                deferred.resolve();
+            });
+            return deferred.promise();
+        },
+        //时间点2：如果有分块上传，则每个分块上传之前调用此函数
+        beforeSend : function(block) {
+            var deferred = WebUploader.Deferred();
+
+            $.ajax({
+                type : "POST",
+                url : "${fileService}/file/check?action=checkChunk",
+                data : {
+                    //文件唯一标记
+                    fileMd5 : fileMd5,
+                    //当前分块下标
+                    chunk : block.chunk,
+                    //当前分块大小
+                    chunkSize : block.end - block.start
+                },
+                dataType : "json",
+                success : function(response) {
+                    if (response.ifExist) {
+                        //分块存在，跳过
+                        deferred.reject();
+                    } else {
+                        //分块不存在或不完整，重新发送该分块内容
+                        deferred.resolve();
+                    }
+                }
+            });
+            this.owner.options.formData.fileMd5 = fileMd5;
+            deferred.resolve();
+            return deferred.promise();
+        },
+        //时间点3：所有分块上传成功后调用此函数
+        afterSendFile : function() {
+            num1++;
+        }
+    });
+
+    var uploader = WebUploader
+        .create({
+            // swf文件路径
+            swf : '/Uploader.swf',
+            // 文件接收服务端。
+            server : '${fileService}/file/upload',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick : {
+                id : '#picker',//这个id是你要点击上传文件的id
+                multiple : true
+            },
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize : true,
+            auto : true,
+            //开启分片上传
+            chunked : true,
+            chunkSize : 10 * 1024 * 1024, // 10M 为一个分片
+            fileNumLimit: 1024,
+            fileSizeLimit: 5000 * 1024 * 1024,    // 500 M
+            fileSingleSizeLimit: 5000 * 1024 * 1024,    // 500 M
+            threads: 1,
+            accept : {
+                extensions : "txt,jpg,jpeg,bmp,png,zip,rar,war,pdf,cebx,doc,docx,ppt,pptx,xls,xlsx,jar,mp4,rmvb",
+                mimeTypes : '.txt,.jpg,.jpeg,.bmp,.png,.zip,.rar,.war,.pdf,.cebx,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jar,.mp4,.rmvb'
+            }
+        });
+
+    // 当有文件被添加进队列的时候
+    uploader.on('fileQueued', function(file) {
+        $list.append(
+            '<tr role="row" id="' + file.id + '" class="ui-widget-content jqgrow ui-row-ltr">'
+            + '<td role="gridcell" style="text-align:center;">' + file.name + '</td>'
+            + '<td id="run" role="gridcell" style="text-align:center;">'
+            + '  <p class="state">等待上传...</p>'
+            + '</td>'
+            + '<td role="gridcell" style="text-align:center;"></td></tr>');
+        num++;
+    });
+
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function(file, percentage) {
+        $('#' + file.id).find('p.state').text('上传中 : ' + "(percentage * 100).toFixed(2)" + '%');
+        var $li = $( '#'+file.id ).find("#run"),
+            $percent = $li.find('.progress .progress-bar');
+
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo( $li ).find('.progress-bar');
+        }
+
+        $li.find('p.state').text('上传中');
+        $percent.css( 'width', percentage * 100 + '%' );
+        $percent.css( 'height',  '10px' );
+        $percent.css( 'margin-bottom',  '20px' );
+    });
+
+    uploader.on('uploadSuccess', function(file) {
+        $('#' + file.id).find('p.state').text("上传成功，后台合并文件中");
+        if (num == num1) {
+            for (var i = 0; i<list.length; i++) {
+                $.ajax({
+                    type : "POST",
+                    url : "${fileService}/file/check?action=mergeChunks",
+                    data : list[i],
+                    success : function(response) {
+                    }
+                });
+            }
+            list=[];
+            num=0;
+            num1=0;
+            setTimeout("$('#dataGrid').dataGrid('refresh')", 5000);
+        }
+    });
+
+    uploader.on('uploadError', function(file) {
+        $('#' + file.id).find('p.state').text('上传出错');
+    });
+
+    uploader.on('uploadComplete', function(file) {
+        $('#' + file.id).find('.progress').fadeOut();
+    });
+
+
+    uploader.on('all', function(type) {
+        if (type === 'startUpload') {
+            state = 'uploading';
+        } else if (type === 'stopUpload') {
+            state = 'paused';
+        } else if (type === 'uploadFinished') {
+            state = 'done';
+            $("#num").val(1);
+        }
+
+        if (state === 'uploading') {
+            $btn.text('暂停上传');
+        } else {
+            $btn.text('开始上传');
+        }
+    });
+
+    $btn.on('click', function(){
+        if (state === 'uploading'){
+            uploader.stop(true);
+        } else {
+            uploader.upload();
+        }
+    });
+</script>

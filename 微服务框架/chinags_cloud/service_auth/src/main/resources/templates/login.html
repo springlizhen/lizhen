@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>统一登录-山东省调水工程运行维护中心</title>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css">
+    <script src="/static/js/jquery-1.10.2.js"></script>
+    <script src="/static/layer/layui.all.js"></script>
+</head>
+<body>
+    <div style="float: right;display: inline-block;">
+        <a href="/static/google/UserManual.pdf" target="_blank" title="使用手册" download="用户使用手册" style="color: white;">使用手册</a>
+    </div>
+    <div class="bgimgBox">
+        <div class="logoBox"><img src="/static/images/logo.png"/></div>
+        <div class="loginBox">
+            <input type="text" class="userName" id="username" placeholder="用户名"><br>
+            <input type="password" class="passWord" id="password" placeholder="密码"><br>
+            <br>
+            <input type="button" class="loginBtn" onclick="login()" value="立即登录">
+            <input type="hidden" name="systemname" id="systemname" th:value="${systemname}"/>
+            <div style="text-align: center;color: white;font-size: 12px;padding-right: 8%;">办公系统请使用WPS编辑正文，<a href="/static/google/W.P.S.9208.12012.2019.exe" style="color: white;text-decoration: underline;">点击下载</a></div>
+            <div style="text-align: center;color: white;font-size: 12px;padding-right: 8%;">请使用chrome浏览器访问本系统，<a href="/static/google/chrome.exe" style="color: white;text-decoration: underline;">点击下载</a></div>
+        </div>
+    </div>
+    <!--修改密码-->
+    <div class="modify-pwd-layer aux-self" id="modifypwdlayer" style="display: none">
+        <br>
+        <span style="margin-left: 30px; font-size: 13px">您尚未修改初始密码，请按照密码校验规则进行密码修改</span>
+        <br>
+        <span style="margin-left: 30px; font-size: 13px">密码校验规则：大于8位，且包含大小写字母+数字+符号</span>
+        <br><br>
+        <input style="margin-left: 50px" type="password" class="passWord" id="newPassword" placeholder="新密码"><br>
+        <input style="margin-left: 50px" type="password" class="passWord" id="confirmPassword" placeholder="再次输入">
+    </div>
+</body>
+<script>
+
+    var isOperate = 0;
+
+    function login() {
+        if (isOperate === 0) {
+            isOperate = 1;
+            $.ajax({
+                url: "/sso/ssologin",
+                type: "post",
+                data: {
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                    systemname: $("#systemname").val()
+                },
+                dataType: "json",
+                success: function(result) {
+                    if (result.status) {
+                        var isInitialPassword = result.data.isInitialPassword;
+                        if (isInitialPassword === 0) {
+                            layer.msg(result.message, {
+                                icon: 1,
+                                time: 2000
+                            }, function(){
+                                isOperate = 0;
+                                window.location.replace(result.data.systemUrl);
+                            });
+                        } else {
+                            var sysUser = result.data.sysUser;
+                            showModifyLayer(sysUser.userCode, sysUser.userName, sysUser.loginCode);
+                        }
+                    } else {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 2000
+                        }, function(){
+                            isOperate = 0;
+                        });
+                    }
+                },
+                error: function () {
+                    isOperate = 0;
+                }
+            })
+        }
+    }
+
+    function editPassword(index, usercode, username, logincode) {
+        var data = {
+            oldPassword: $("#password").val(),
+            password: $("#newPassword").val(),
+            confirmPassword: $("#confirmPassword").val(),
+            systemname: $("#systemname").val(),
+            usercode: usercode,
+            username: username,
+            logincode: logincode
+        };
+        $.ajax({
+            url: "/sso/loginEditPassword",
+            type: "post",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json;",
+            success: function(result) {
+                if (result.status) {
+                    layer.msg(result.message, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        isOperate = 0;
+                        window.location.replace(result.data);
+                    });
+                } else {
+                    layer.msg(result.message, {
+                        icon: 2,
+                        time: 2000
+                    }, function(){
+                        isOperate = 0;
+                    });
+                }
+            },
+            error: function () {
+                isOperate = 0;
+            }
+        })
+    }
+
+    function showModifyLayer(usercode, username, logincode) {
+        layer.open({
+            type: 1,
+            btn: ['确定', '取消'],
+            title: "修改密码",
+            area: ["400px", "300px"],
+            content: $("#modifypwdlayer"),
+            success: function(layero, index){
+                $("#newPassword").val('');
+                $("#confirmPassword").val('');
+            },
+            cancel: function(index, layero){
+                isOperate = 0;
+            },
+            yes: function (index) {
+                editPassword(index, usercode, username, logincode);
+            },btn2: function (index) {
+                isOperate = 0;
+                layer.close(index);
+            }
+        });
+    }
+
+</script>
+</html>

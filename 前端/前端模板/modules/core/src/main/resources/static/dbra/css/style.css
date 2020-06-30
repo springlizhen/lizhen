@@ -1,0 +1,574 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  outline: none;
+  text-decoration: none; }
+
+body {
+  min-width: 1200px;
+  background: url(../img/bgImg.png); }
+
+.content {
+  width: 100%; }
+.content .title {
+  width: 100%;
+  height: 100px;
+  margin-left: 1%;
+  background: url(../img/topImg.png) no-repeat; }
+.content .main-left {
+  width: 28%;
+  margin-left: 1.5%;
+  float: left;
+  padding-bottom: 10px; }
+.content .main-left .leftBox01 {
+  width: 90%;
+  height: 298px;
+  padding-left: 5%;
+  padding-right: 5%;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  border: solid 1px #07d8f7;
+  margin-left: 1%; }
+.content .main-left .leftBox01 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main-left .leftBox01 .titleBox .iconBox {
+  float: left; }
+.content .main-left .leftBox01 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-dataError.png) no-repeat; }
+.content .main-left .leftBox01 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main-left .leftBox01 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main-left .leftBox01 .TopBox {
+  margin-top: 12px; }
+.content .main-left .leftBox01 .TopBox .top {
+  margin-top: 6px;
+  background: rgba(7, 216, 247, 0.06);
+  line-height: 36px;
+  height: 36px; }
+.content .main-left .leftBox01 .TopBox .top .left {
+  color: #fff;
+  font-size: 16px;
+  float: left;
+  margin-left: 2%;
+  line-height: 36px; }
+.content .main-left .leftBox01 .TopBox .top .upStyle {
+  float: right;
+  font-size: 18px;
+  line-height: 36px;
+  margin-right: 20%;
+  color: #fe6501;
+  font-weight: bold; }
+.content .main-left .leftBox01 .TopBox .top .center {
+  float: right;
+  font-size: 18px;
+  line-height: 36px;
+  margin-right: 20%;
+  color: #fff;
+  font-weight: bold; }
+.content .main-left .leftBox01 .TopBox .top .right {
+  float: right;
+  margin-right: 8%; }
+.content .main-left .leftBox01 .TopBox .top .right img {
+  margin-top: 7px; }
+.content .main-left .leftBox02 {
+  width: 90%;
+  height: 298px;
+  padding-left: 5%;
+  padding-right: 5%;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  border: solid 1px #07d8f7;
+  margin-left: 1%;
+  margin-top: 30px; }
+.content .main-left .leftBox02 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main-left .leftBox02 .titleBox .iconBox {
+  float: left; }
+.content .main-left .leftBox02 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-left02.png) no-repeat; }
+.content .main-left .leftBox02 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main-left .leftBox02 .titleBox .rightTab {
+  float: right;
+  width: 60px;
+  height: 24px;
+  border: 1px solid #0e6d81;
+  overflow: hidden; }
+.content .main-left .leftBox02 .titleBox .rightTab div {
+  width: 30px;
+  float: left;
+  line-height: 24px;
+  color: #07d8f7;
+  text-align: center; }
+.content .main-left .leftBox02 .titleBox .rightTab .active {
+  background: #0c6577;
+  color: #fff; }
+.content .main-left .leftBox02 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main-left .leftBox02 .left-colorBox {
+  width: 28%;
+  line-height: 60px;
+  overflow: hidden;
+  color: #fff;
+  margin-top: 30px;
+  float: left; }
+.content .main-left .leftBox02 .left-colorBox .color01 {
+  width: 20px;
+  height: 10px;
+  background: #0d86d5;
+  display: block;
+  float: left;
+  margin-top: 25px;
+  margin-right: 10px; }
+.content .main-left .leftBox02 .left-colorBox .color02 {
+  width: 20px;
+  height: 10px;
+  background: #f0a32e;
+  display: block;
+  float: left;
+  margin-top: 25px;
+  margin-right: 10px; }
+.content .main-left .leftBox02 .left-colorBox .color03 {
+  width: 20px;
+  height: 10px;
+  background: #cf9bff;
+  display: block;
+  float: left;
+  margin-top: 25px;
+  margin-right: 10px; }
+.content .main-left .leftBox02 .right-chart {
+  width: 70%;
+  float: left;
+  height: 220px; }
+.content .main-left .leftBox02 .right-chart img {
+  width: 80%; }
+.content .main-left .leftBox03 {
+  width: 90%;
+  height: 298px;
+  padding-left: 5%;
+  padding-right: 5%;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  border: solid 1px #07d8f7;
+  margin-left: 1%;
+  margin-top: 30px; }
+.content .main-left .leftBox03 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main-left .leftBox03 .titleBox .iconBox {
+  float: left; }
+.content .main-left .leftBox03 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-left03.png) no-repeat; }
+.content .main-left .leftBox03 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main-left .leftBox03 .titleBox .rightTab {
+  float: right;
+  width: 60px;
+  height: 24px;
+  border: 1px solid #0e6d81;
+  overflow: hidden; }
+.content .main-left .leftBox03 .titleBox .rightTab div {
+  width: 30px;
+  float: left;
+  line-height: 24px;
+  color: #07d8f7;
+  text-align: center; }
+.content .main-left .leftBox03 .titleBox .rightTab .active {
+  background: #0c6577;
+  color: #fff; }
+.content .main-left .leftBox03 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main-left .leftBox03 .left03Chart img {
+  width: 90%; }
+.content .main {
+  width: 37%;
+  float: left;
+  margin-left: 2%;
+  margin-right: 2%;
+  height: 956px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  border: solid 1px #07d8f7; }
+.content .main .mainBox01 {
+  position: relative;
+  background: url(../img/mapImg.png) no-repeat;
+  background-size: 100%;
+  width: 90%;
+  height: 427px;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 462px; }
+.content .main .mainBox01 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main .mainBox01 .titleBox .iconBox {
+  float: left; }
+.content .main .mainBox01 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-dataError.png) no-repeat; }
+.content .main .mainBox01 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main .mainBox01 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main .mainBox01 .numberBox {
+  position: absolute;
+  right: 0%;
+  bottom: 20px;
+  width: 340px; }
+.content .main .mainBox01 .numberBox .number-text {
+  color: #fff;
+  line-height: 70px; }
+.content .main .mainBox01 .numberBox .number-show {
+  width: 100%; }
+.content .main .mainBox01 .numberBox .number-show .n-01 {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  float: left;
+  font-size: 24px;
+  margin-right: 3%;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  background-image: linear-gradient(-6deg, #ff5400 0%, #fd6f01 33%, #fb8902 100%), linear-gradient(#fff9f8, #fff9f8);
+  background-blend-mode: normal, normal; }
+.content .main .mainBox01 .numberBox .number-show .n-02 {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  float: left;
+  margin-right: 3%;
+  width: 36px;
+  font-size: 24px;
+  height: 36px;
+  border-radius: 4px;
+  background-image: linear-gradient(-6deg, #ff5400 0%, #fd6f01 33%, #fb8902 100%), linear-gradient(#fff9f8, #fff9f8);
+  background-blend-mode: normal, normal; }
+.content .main .mainBox01 .numberBox .number-show .n-03 {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  float: left;
+  margin-right: 2%;
+  width: 36px;
+  font-size: 24px;
+  height: 36px;
+  border-radius: 4px;
+  background-image: linear-gradient(-6deg, #ff5400 0%, #fd6f01 33%, #fb8902 100%), linear-gradient(#fff9f8, #fff9f8);
+  background-blend-mode: normal, normal; }
+.content .main .mainBox01 .numberBox .number-show .n-04 {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  float: left;
+  margin-right: 2%;
+  width: 36px;
+  height: 36px; }
+.content .main .mainBox02 {
+  width: 90%;
+  height: 400px;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 235px;
+  overflow: hidden; }
+.content .main .mainBox02 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main .mainBox02 .titleBox .iconBox {
+  float: left; }
+.content .main .mainBox02 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-dataError.png) no-repeat; }
+.content .main .mainBox02 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main .mainBox02 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main .mainBox02 .titleBox .text .data-color {
+  color: #fe6501; }
+.content .main .mainBox02 .mainBox02-table thead tr {
+  height: 36px;
+  line-height: 36px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main .mainBox02 .mainBox02-table thead tr th {
+  color: #fff;
+  text-align: left;
+  padding-left: 1%;
+  height: 36px; }
+.content .main .mainBox02 .mainBox02-table tbody {
+  background: rgba(7, 216, 247, 0.06);
+  overflow-y: scroll; }
+.content .main .mainBox02 .mainBox02-table tbody tr {
+  height: 36px;
+  line-height: 36px; }
+.content .main .mainBox02 .mainBox02-table tbody tr td {
+  color: #fff;
+  text-align: left;
+  padding-left: 1%;
+  height: 30px;
+  line-height: 30px; }
+.content .main .mainBox03 {
+  width: 90%;
+  height: 427px;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 235px;
+  overflow: hidden;
+  margin-top: 20px; }
+.content .main .mainBox03 .titleBox {
+  overflow: hidden; }
+.content .main .mainBox03 .titleBox .iconBox {
+  float: left; }
+.content .main .mainBox03 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-dataError.png) no-repeat; }
+.content .main .mainBox03 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main .mainBox03 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main .mainBox03 .titleBox .text .data-color {
+  color: #fe6501; }
+.content .main .mainBox03 .mainBox03-table thead tr {
+  height: 36px;
+  line-height: 36px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main .mainBox03 .mainBox03-table thead tr th {
+  color: #fff;
+  text-align: left;
+  padding-left: 1%;
+  height: 36px; }
+.content .main .mainBox03 .mainBox03-table tbody {
+  background: rgba(7, 216, 247, 0.06);
+  overflow-y: scroll; }
+.content .main .mainBox03 .mainBox03-table tbody tr {
+  height: 36px;
+  line-height: 36px; }
+.content .main .mainBox03 .mainBox03-table tbody tr td {
+  color: #fff;
+  text-align: left;
+  padding-left: 1%;
+  height: 30px;
+  line-height: 30px; }
+.content .main-right {
+  width: 28%;
+  float: left; }
+.content .main-right .rightBox01 {
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 462px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  border: solid 1px #07d8f7; }
+.content .main-right .rightBox01 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main-right .rightBox01 .titleBox .iconBox {
+  float: left; }
+.content .main-right .rightBox01 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-left03.png) no-repeat; }
+.content .main-right .rightBox01 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main-right .rightBox01 .titleBox .rightTab {
+  float: right;
+  width: 60px;
+  height: 24px;
+  border: 1px solid #0e6d81;
+  overflow: hidden; }
+.content .main-right .rightBox01 .titleBox .rightTab div {
+  width: 30px;
+  float: left;
+  line-height: 24px;
+  color: #07d8f7;
+  text-align: center; }
+.content .main-right .rightBox01 .titleBox .rightTab .active {
+  background: #0c6577;
+  color: #fff; }
+.content .main-right .rightBox01 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main-right .rightBox01 .chartBox .colorBox {
+  float: right;
+  line-height: 30px; }
+.content .main-right .rightBox01 .chartBox .colorBox p {
+  float: left;
+  margin-right: 20px;
+  font-size-adjust: 14px;
+  color: #fff; }
+.content .main-right .rightBox01 .chartBox .colorBox .c-01 {
+  width: 14px;
+  height: 14px;
+  background: #0d86d5;
+  display: block;
+  float: left;
+  margin-top: 8px;
+  margin-right: 10px; }
+.content .main-right .rightBox01 .chartBox .colorBox .c-02 {
+  width: 14px;
+  height: 14px;
+  background: #ff9745;
+  display: block;
+  float: left;
+  margin-top: 8px;
+  margin-right: 10px; }
+.content .main-right .rightBox01 .chartBox .colorBox .c-03 {
+  width: 14px;
+  height: 14px;
+  background: #cf9bff;
+  display: block;
+  float: left;
+  margin-top: 8px;
+  margin-right: 10px; }
+.content .main-right .rightBox01 .chartBox img {
+  width: 90%; }
+.content .main-right .rightBox02 {
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 462px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  border: solid 1px #07d8f7;
+  margin-top: 30px; }
+.content .main-right .rightBox02 .titleBox {
+  overflow: hidden;
+  margin-top: 24px; }
+.content .main-right .rightBox02 .titleBox .iconBox {
+  float: left; }
+.content .main-right .rightBox02 .titleBox .iconBox .icon {
+  width: 18px;
+  height: 20px;
+  background: url(../img/icon-dataError.png) no-repeat; }
+.content .main-right .rightBox02 .titleBox .iconBox .bottom_border {
+  width: 18px;
+  height: 4px;
+  background: #07d8f7;
+  margin-top: 6px; }
+.content .main-right .rightBox02 .titleBox .text {
+  float: left;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  height: 29px;
+  padding-left: 7px;
+  border-bottom: 1px solid #07d8f7; }
+.content .main-right .rightBox02 img {
+  width: 90%; }
+
+.m {
+  width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  color: #fff;
+  line-height: 40px; }
+
+.demo1 {
+  visibility: visible;
+  overflow: hidden;
+  position: relative;
+  line-height: 30px;
+  z-index: 2;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  margin-left: 0px;
+  background: rgba(7, 216, 247, 0.06); }
+
+.td01 {
+  width: 12%;
+  float: left; }
+
+.td02 {
+  width: 28%;
+  float: left; }
+
+.td03 {
+  width: 28%;
+  float: left; }
+
+.td04 {
+  width: 32%;
+  float: left; }
+
+/*# sourceMappingURL=style.css.map */

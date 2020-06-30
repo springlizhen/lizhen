@@ -1,0 +1,50 @@
+<% layout('/layouts/default.html', {title: '系统信息', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-speech"></i> ${text('数据资源管理')}
+            </div>
+            <br/>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" action="${ctx}/re/listData" method="post" class="form-inline hide"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("资源中文名")}', name:'nameCn', index:'nameCn', width:150, align:"center",sortable:false},
+            {header:'${text("简介")}', name:'sumup', index:'sumup', width:150, align:"center",sortable:false},
+            {header:'${text("提供单位")}', name:'provider', index:'provider', width:150, align:"center",sortable:false},
+            {header:'${text("所属行业")}', name:'subBusiness', index:'subBusiness', width:150, align:"center",sortable:false},
+            {header:'${text("开放状态")}', name:'status', index:'status', width:100, align:"center",sortable:false},
+            {header:'${text("发布时间")}', name:'createDate', index:'createDate', width:150, align:"center",sortable:false},
+            {header:'${text("更新时间")}', name:'updateDate', index:'updateDate', width:150, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'action', width:180, align: "center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    actions.push('<a href="${ctx}/re/form?dbId='+row.dbId+'&tbId='+row.tbId+'&id='+row.id+'" class="btnList" title="${text("数据资源编辑")}">编辑</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/re/info?id='+row.id+'" class="btnList" title="${text("数据资源详情")}">详情</a>&nbsp;&nbsp;');
+                    actions.push('<a href="${ctx}/re/api?dbId='+row.dbId+'&tbId='+row.tbId+'&reId='+row.id+'" class="btnList" title="${text("数据资源共享")}">共享</a>&nbsp;&nbsp;');
+                    if (row.status == '禁用'){
+                        actions.push('<a href="${ctx}/re/upStatus?id='+row.id+'&status=开放" class="btnList" title="${text("开放")}" data-confirm="${text("确认要开放该服务吗？")}">开放</a>&nbsp;&nbsp;');
+                    } else {
+                        actions.push('<a href="${ctx}/re/upStatus?id='+row.id+'&status=禁用" class="btnList" title="${text("禁用")}" data-confirm="${text("确认要禁用该服务吗？")}">禁用</a>&nbsp;&nbsp;');
+                    }
+                    return actions.join('');
+                }}
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+</script>

@@ -1,0 +1,362 @@
+<% layout('/layouts/default.html', {title: '案卷卷内文件管理', libs: ['validate','fileupload']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i> 添加卷内文件
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${clerkDocumentFile}" action="${ctx}/projectfile/fileSave" method="post" class="form-horizontal">
+		<div class="box-body">
+			<div class="form-unit">${text('基本信息')}</div>
+			<#form:hidden name="id" value="${clerkDocumentFile!=null?clerkDocumentFile.id:id}"/>
+			<#form:hidden name="createBy" value="${clerkDocumentFile!=null?clerkDocumentFile.createBy:''}"/>
+			<#form:hidden name="createDate" value="${clerkDocumentFile!=null?clerkDocumentFile.createDate:''}"/>
+			<input type="hidden" name="docClass" value="gongcheng"/>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('所属案卷')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:treeselect id="clerkDocumentId" title="${text('案卷列表')}" name="clerkDocumentId"
+							url="${ctx}/projectfile/listData2" value="${clerkDocumentFile!=null?clerkDocumentFile.clerkDocumentId:clerkDocumentId}"
+							class="required" allowClear="true" canSelectParent="false"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('案卷号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="archivesNo" maxlength="150" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.archivesNo:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('档号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="boxNo" maxlength="50" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.boxNo:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('案卷题名')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="title" maxlength="150" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.title:''}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('年度')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input id="year" path="year" readonly="true" maxlength="20" class="form-control Wdate required"
+							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('责任者')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="responsiblePerson" maxlength="50" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.responsiblePerson:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('是否为公共档案')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="isPublic" dictType="document_is_public" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.isPublic:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('序号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="sort" maxlength="8" class="form-control required digits" value="${clerkDocumentFile!=null?clerkDocumentFile.sort:''}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('工程档案分类')}：<i class="fa icon-question hide"></i>
+						</label>
+						<div class="col-sm-8">
+							<#form:select name="documentType" dictType="eng_file_type" class="form-control required" value="${clerkDocumentFile!=null?clerkDocumentFile.documentType:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required ">*</span> ${text('保管期限')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:select name="storageTime" id="storageTime" dictType="storage_time" class="form-control required" onchange="check()" value="${clerkDocumentFile!=null?clerkDocumentFile.storageTime:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('起始时间')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8" id="divstartdate">
+							<#form:input id="startDate" path="startDate" readonly="true" maxlength="20" class="form-control Wdate" id="startDate"
+							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						</div>
+						<div class="col-sm-8" style="display: none" id="divstartdate2">
+							<#form:input maxlength="50" class="form-control" readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hidden">*</span> ${text('终止时间')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8" id="divenddate">
+							<#form:input id="endDate" path="endDate" readonly="true" maxlength="20" class="form-control Wdate" id="endDate"
+							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						</div>
+						<div class="col-sm-8" style="display: none" id="divenddate2">
+							<#form:input maxlength="50" class="form-control" readonly="true" style="background-color: white"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('存放地点')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="place" maxlength="100" class="form-control" value="${clerkDocumentFile!=null?clerkDocumentFile.place:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('件数')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="pieceNo" maxlength="6" class="form-control digits" value="${clerkDocumentFile!=null?clerkDocumentFile.pieceNo:''}"/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span class="required hide">*</span> ${text('页数')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input name="pages" maxlength="6" class="form-control digits" value="${clerkDocumentFile!=null?clerkDocumentFile.pages:''}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-1" title="">
+							<span class="required hide">*</span> ${text('备注')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:textarea name="remarks" placeholder="不能大于500字符!" rows="4" maxlength="500" class="form-control" value="${clerkDocumentFile!=null?clerkDocumentFile.remarks:''}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-1">${text('附件上传')}：</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="form-group col-sm-11" style="left: 13%">
+					<iframe id="upload" name="upload" class="form-control" style="width: 88%;height: 350px"
+							src="${ctx}/upload/list2?pid=${clerkDocumentFile!=null?clerkDocumentFile.id:id}&readOnly=1"></iframe>
+				</div>
+			</div>
+
+			<!--授权范围-->
+			<div class="form-unit">${text('文件授权范围')}</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<label class="control-label col-sm-2" title="">
+							<span class="required ">*</span> ${text('接收者')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-10">
+							<#form:radio dictType="msg_inner_receiver_type" class="form-control required"
+								value="${clerkDocumentFile!=null?clerkDocumentFile.receivetype:''}" name="receivetype" id="receivetype"/>
+							<#form:treeselect id="receive" title="${text('接收者选择')}"
+							path="receiveCodes" labelPath="receiveNames"
+							url="${ctx}/sys/office/treeData?isLoadUser=true" canSelectParent="true" canSelectRoot="true"
+							class=" required" allowClear="true" checkbox="true"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" onclick="save();" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+				</div>
+			</div>
+		</div>
+	</#form:form>
+</div>
+<input type="hidden" id="clerkDocumentId" value="${clerkDocumentId}"/>
+
+<input type="hidden" id="choosetype" value="${clerkDocumentFile!=null?clerkDocumentFile.receivetype:''}"/>
+<input type="hidden" id="receiveCodes2" value="${clerkDocumentFile!=null?clerkDocumentFile.receiveCodes:''}"/>
+<input type="hidden" id="receiveNames2" value="${clerkDocumentFile!=null?clerkDocumentFile.receiveNames:''}"/>
+</div>
+<% } %>
+<script>
+	$('#receivetype input').on('ifCreated ifChecked', function(event){
+		if ($(this).is(':checked')){
+			var url, val = $(this).val(); // 接受者类型（1用户 2部门 3角色 4岗位）
+			$('#receiveName-error').remove();
+			if (val == 0){
+				$('#receiveDiv').hide();
+				$('#receiveName').removeClass('required');
+			}else{
+				$('#receiveDiv').show();
+				$('#receiveName').addClass('required');
+				if (val == 1){
+					url = '${ctx}/sys/office/treeDataPeople?isLoadUser=true&isAll=true';
+				}else if (val == 2){
+					url = '${ctx}/sys/office/treeData?isAll=true';
+				}
+				$('#receiveDiv').attr('data-url', url);
+			}
+			if (event.type != 'ifCreated'){
+				$('#receiveCode,#receiveName').val('');
+			}
+		}
+	});
+
+	$("#inputForm").validate({
+		submitHandler: function(form){
+			js.ajaxSubmitForm($(form), function(data){
+				js.showMessage(data.message);
+				if(data.result == Global.TRUE){
+					js.closeCurrentTabPage(function(contentWindow){
+						contentWindow.page();
+					});
+				}
+			}, "json");
+		}
+	});
+
+	$(function () {
+		//初始化文件授权选择框
+		var choosetype = $("#choosetype").val();
+		var receiveCodes2 = $("#receiveCodes2").val();
+		if(receiveCodes2){
+			$("#receiveCode").val(receiveCodes2);
+			$("#receiveName").val($("#receiveNames2").val());
+		}
+
+
+		var clerkDocumentId = $("#clerkDocumentId").val();
+		var clerkDocumentName="";
+		$.ajax({
+			url:"${ctx}/projectfile/findCd?id="+clerkDocumentId,
+			type:"get",
+			dataType: "json",
+			async: false,
+			success:function (data) {
+				clerkDocumentName = data.title;
+			}
+		});
+		$("#clerkDocumentIdName").val(clerkDocumentName);
+
+		/*年费初始化*/
+		var year = $("#year").val();
+		if(year){
+			year = year.substring(0,4);
+			$("#year").val(year);
+		}
+
+
+		/*如果开始时间没有值，给起始时间和终止时间赋默认值*/
+		var startDate = $("#startDate").val();
+		if(!startDate){
+			var sDate = $("#sDate").val();
+			var eDate = $("#eDate").val();
+			$("#startDate").val(sDate);
+			$("#endDate").val(eDate);
+		}
+
+		/*进入编辑页面时，当保管期限不是长期时，起始时间、终止时间只读*/
+		var storageTime = $("#storageTime").val();
+		if("永久" == storageTime){
+			$("#divstartdate").hide();
+			$("#divstartdate2").show();
+			$("#divenddate").hide();
+			$("#divenddate2").show();
+		}
+	});
+
+	/*保存时的验证：保管期限为永久时，起始时间、终止时间不填；不为永久时，两个值必填*/
+	function save() {
+		/*获取保管期限*/
+		var storageTime = $("#storageTime").val();
+		if("永久" != storageTime){
+			if(!$("#startDate").val()){
+				js.showMessage("请输入起始时间!");
+				return false;
+			}
+			if(!$("#endDate").val()){
+				js.showMessage("请输入终止时间!");
+				return false;
+			}
+		}
+		$("#inputForm").submit();
+	}
+
+	/*保管期限下拉框验证，当值为长期时，起始时间、终止时间清除且设为只读模式*/
+	function check() {
+		var storageTime = $("#storageTime").val();
+		if("永久" == storageTime){
+			$("#startDate").val("");
+			$("#endDate").val("");
+			$("#divstartdate").hide();
+			$("#divstartdate2").show();
+			$("#divenddate").hide();
+			$("#divenddate2").show();
+		}else{
+			$("#divstartdate2").hide();
+			$("#divstartdate").show();
+			$("#divenddate2").hide();
+			$("#divenddate").show();
+		}
+	}
+
+	/*年费和起始时间初始化*/
+	document.getElementById("year").value="${clerkDocumentFile!=null?clerkDocumentFile.year:''}";
+	document.getElementById("startDate").value="${clerkDocumentFile!=null?clerkDocumentFile.startDate:''}";
+	document.getElementById("endDate").value="${clerkDocumentFile!=null?clerkDocumentFile.endDate:''}";
+</script>

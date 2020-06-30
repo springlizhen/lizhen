@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title data-i18n="resources.title_splinesData"></title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			overflow: hidden;
+			background: #fff;
+			width: 100%;
+			height: 100%
+		}
+
+		#map {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border: 1px solid #3473b7;
+		}
+
+		#toolbar {
+			position: absolute;
+			top: 50px;
+			right: 10px;
+			text-align: center;
+			z-index: 100;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+	<div class='panel-heading'>
+		<h5 class='panel-title text-center' data-i18n="resources.text_splinesData"></h5></div>
+	<div class='panel-body content'>
+		<input type="button" class="btn btn-default" value="标记巡检点" onclick="createPoint()"/>
+		<input type="button" class="btn btn-default" value="清除" onclick="clearAllFeatures()"/>
+	</div>
+</div>
+<div id="map">
+</div>
+<link href="${ctxStatic}/examples/js/bootstrap.min.css" rel="stylesheet" type="text/css">
+<script src="${ctxStatic}/libs/SuperMap.Include.js"></script>
+<script src="${ctxStatic}/examples/js/utils.js"></script>
+<script src="${ctxStatic}/examples/js/jquery.min.js"></script>
+<script src="${ctxStatic}/examples/js/jquery-i18next.min.js"></script>
+<script src="${ctxStatic}/examples/js/i18next.min.js"></script>
+<script src="${ctxStatic}/examples/js/widgets.js"></script>
+<script src="${ctxStatic}/examples/js/bootstrap.min.js"></script>
+<script src="${ctxStatic}/examples/js/util.js"></script>
+<script src="${ctxStatic}/examples/js/util.js"></script>
+<script src="${ctxStatic}/examples/js/util.js"></script>-->
+
+<script>
+	var featuresOrigin = [];
+	var map, local, layer, pointLayer, drawPoint, lineLayer, markerLayer, vector, select;
+	var pointArray = [];
+	var styleDraw = {
+		strokeColor: "#304DBE",
+		strokeWidth: 2,
+		pointerEvents: "visiblePainted",
+		fillColor: "#304DBE",
+		fillOpacity: 0.8,
+		pointRadius: 6
+	};
+	style = {
+		strokeColor: "#304DBE",
+		strokeWidth: 2,
+		pointerEvents: "visiblePainted",
+		fillColor: "#304DBE",
+		fillOpacity: 0.8
+	};
+
+	var style_green = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#545BF4'
+	};
+
+	var style_green1 = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#50E7F8'
+	};
+
+	var style_green2 = {
+		strokeColor: "#FFF",
+		strokeOpacity: 1,
+		strokeWidth: 2,
+		pointRadius: 6,
+		pointerEvents: "visiblePainted",
+		fillColor: '#0C9CFE'
+	};
+	var style1 = {
+		fillColor: '#F00',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+
+	var style2 = {
+		fillColor: '#0F0',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+
+	var style3 = {
+		fillColor: '#00F',
+		fillOpacity: 0.6,
+		strokeWidth: 0
+	};
+	var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+			url = "http://10.0.2.4:8090/iserver/services/map-china400/rest/maps/China"
+	// host + "/iserver/services/map-china400/rest/maps/China";
+
+
+		//新建点矢量图层
+		pointLayer = new SuperMap.Layer.Vector("pointLayer");
+		//对点图层应用样式styleDraw（前面有定义）
+		pointLayer.style = styleDraw;
+		drawPoint = new SuperMap.Control.DrawFeature(pointLayer, SuperMap.Handler.Point);
+		drawPoint.events.on({"featureadded": drawCompleted});
+		//新建线矢量图层
+
+
+	var tiandituLayer = new SuperMap.Layer.WMTS({
+		name: "vec",
+		url: "http://10.0.6.6:81/TileService/SDMap2000",
+		layer: "vec",
+		style: "default",
+		matrixSet: "c",
+		format: "tiles",
+		opacity: 1,
+		requestEncoding: "KVP"
+	});
+		//为图层初始化完毕添加addLayer()事件
+		map = new SuperMap.Map("map", {
+			controls: [
+				new SuperMap.Control.OverviewMap(),
+				new SuperMap.Control.ScaleLine(),
+				new SuperMap.Control.Zoom(),
+				new SuperMap.Control.Navigation({
+					dragPanOptions: {
+						enableKinetic: true
+					}
+				}), drawPoint
+			],allOverlays: true
+		});
+		map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+
+	var longitude = parent.document.getElementById("longitude").value;
+	var latitude=parent.document.getElementById("latitude").value;
+	var vector = new SuperMap.Layer.Vector("vector");
+	var point = new SuperMap.Geometry.Point(longitude, latitude);
+	var pointVector = new SuperMap.Feature.Vector(point);
+	vector.addFeatures([pointVector ]);
+		map.addLayers([tiandituLayer, pointLayer,vector]);
+		map.setCenter(new SuperMap.LonLat(120, 36), 8);
+
+	//绘制点
+	function createPoint() {
+		widgets.alert.clearAlert();
+		drawPoint.activate();
+	}
+	//绘制B样条线
+	function drawCompleted(drawGeometryArgs) {
+		var feature = drawGeometryArgs.feature;
+		var geometry = feature.geometry;
+		//将每次绘制的点存起来
+		pointArray.push(geometry);
+		var parentIframe = parent.document.getElementById("longitude");
+		var parentlatitude=parent.document.getElementById("latitude");
+		parentIframe.value=geometry.x;
+		parentlatitude.value=geometry.y;
+
+		//$("#longitude").val(geometry.x);
+		//$("#latitude").val(geometry.y);
+		//停止画点面控制
+		drawPoint.deactivate();
+	}
+
+	//移除整个图层要素
+	function clearAllFeatures() {
+		widgets.alert.clearAlert();
+		pointArray = [];
+		pointLayer.removeAllFeatures();
+		vector.removeAllFeatures();
+
+	}
+
+</script>
+</body>
+</html>

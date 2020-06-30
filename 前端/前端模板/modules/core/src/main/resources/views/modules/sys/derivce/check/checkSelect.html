@@ -1,0 +1,75 @@
+<% layout('/layouts/default.html', {title: '巡检维护', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+
+		<div class="box-body">
+			<div class="form-inline">
+			<div class="form-group">
+				<label class="control-label">${text('巡检人员')}：</label>
+				<div class="control-inline">
+					<#form:input path="checkPerson" maxlength="100" class="form-control width-90"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('巡检日期')}：</label>
+				<div class="control-inline">
+					<#form:input name="createDate"  maxlength="20" class="form-control Wdate required"
+					 onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<button   class="btn btn-primary btn-sm" onclick=" checkNote(); ">${text('查询')}</button>
+				<button type="reset"  class="btn btn-default btn-sm" onclick="reset();" >${text('重置')  }</button>
+			</div>
+			</div>
+		<iframe id="mainFrame" name="mainFrame"
+				src="${ctx}/sys/check/listCheckNote" style="width: 100%;height: 600px"></iframe>
+
+</div>
+</div>
+<% } %>
+<script>
+	function reset(){
+		$("#checkPerson").val("");
+		$("#createDate").val("");
+
+	}
+	function checkNote(){
+		document.getElementById('mainFrame').contentWindow.location.reload(true);
+
+	}
+	function treeselectfield(id, act, index, layero, nodes){
+		$('#field').show();
+		if (act == 'ok'){
+			log(nodes[0].id);  // 选择的节点数据
+			$.ajax({
+				type: 'GET',
+				url: "${ctx}/sys/field/treeData?deviceId=" + nodes[0].id,
+				async: false,
+				error: function (data) {
+					js.showErrorMessage(data.responseText);
+				},
+				success: function (data) {
+					log(nodes[0].id);
+					$('#fieldCode').children().remove();
+					var string = '<option value="">-请选择-</option>';;
+					JSON.parse(data).forEach(d=>{
+						string += '<option value="'+d.id+'">'+d.name+'</option>';
+					});
+					$('#fieldCode').append(string);
+					$("#fieldCode").select2();
+				}
+			});
+		}
+	}
+</script>
+
+<!--查询时重置页码，否则有可能数据无法显示出来-->
+<script type="text/javascript">
+	function change() {
+		$("#pageNo").val("");
+		$("#pageSize").val("");
+	}
+</script>

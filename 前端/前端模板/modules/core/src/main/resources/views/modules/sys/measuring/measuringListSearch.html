@@ -1,0 +1,319 @@
+<% layout('/layouts/default.html', {title: '测点信息综合查询', libs: ['dataGrid']}){ %>
+<style>
+	.button-bg-border{
+		border: solid #ccc 1px;
+		border-bottom: 0px;
+		height: 36px;
+		padding: 0px;
+	}
+	.button-border{
+		float: left;
+		padding: 7px;
+	}
+	.button-color{
+		background-color: #cccccc57;
+	}
+</style>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-grid"></i> ${text('测点信息综合查询')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" action="${ctx}/sys/measuring/listDataByYear" method="post" class="form-inline hide">
+            <#form:hidden name="such" maxlength="100" class="form-control" value="高程"/>
+			<div>
+				<div class="form-group">
+					<label class="control-label">${text('分 中 心 ')}：</label>
+					<div class="control-inline" style="width: 180px">
+						<select onchange="FindStationBySub()" name="subCenter" id="subCenter"  class="form-control" >
+							<option value="">请选择</option>
+							<% if (checkCenter != null) { for(e in checkCenter){ %>
+							<option value=${e.officeCode}>${e.officeName}</option>
+							<% }} %>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('管 理 站')}：</label>
+					<div class="control-inline  " style="width: 180px">
+						<select onchange="FindOfficeByStation()" name="station" id="station" class="form-control">
+							<option value="">请选择</option>
+							<!--<% if(manageStation != null) { for(e in manageStation){ %>
+							<option value=${e.officeCode}>${e.officeName}</option>
+							<% }} %>-->
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('管 理 所')}：</label>
+					<div class="control-inline" style="width: 180px">
+						<select onchange="FindEquByOffice()" name="office" id="office" class="form-control ">
+							<option value="">请选择</option>
+							<!--<% if(manageOffice != null) { for(e in manageOffice){ %>
+							<option value=${e.officeCode}>${e.officeName}</option>
+							<% }} %>-->
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('设   施')}：</label>
+					<div class="control-inline" style="width: 180px">
+						<select name="equ" id="equ" class="form-control ">
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<a onclick="tabledo()"><button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button></a>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="control-label">${text('测点类型')}：</label>
+				<div class="control-inline">
+					<#form:input path="type" maxlength="50" class="form-control width-120"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">${text('测点编号')}：</label>
+				<div class="control-inline">
+					<#form:input path="pointId" maxlength="20" class="form-control width-120"/>
+				</div>
+			</div>-->
+			<div class="form-group">
+				<label class="control-label">${text('查询年份')}：</label>
+				<div class="control-inline">
+					<#form:input path="year" readonly="true" maxlength="4" class="form-control width-200 Wdate "
+					dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+				</div>
+			</div>
+		</#form:form>
+		<div class="button-bg-border">
+            <div id="sp" onclick="sespcd()" class="button-border">水平测点</div>
+            <div id="gc" onclick="segccd()" class="button-border button-color">高程测点</div>
+			<div style="float: right;padding: 2px;">
+<!--				<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>  导入</button>-->
+			</div>
+		</div>
+		<table id="dataGrid"></table>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+	document.getElementById("year").value='${inyear}';
+	var years = $('#year').val();
+	var dataList = [];
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+			{header:'${text("观测点编号")}', name:'sctionId', width:120, align:"center",sortable:false},
+			{header:'${text("基准点编号")}', name:'pointId',  width:120, align:"center",sortable:false},
+			{header:'${text("初始值(m)")}', name:'inValue',  width:100, align:"center",sortable:false},
+			{header:'${text("高程(m)")}', name:'altitude1',  width:120, align:"center",sortable:false},
+			{header:'${text("高程中误差(m)")}', name:'altitudeError1',  width:120, align:"center",sortable:false},
+			{header:'${text("本期沉降(m)")}', name:'upDown1',  width:120, align:"center",sortable:false},
+			{header:'${text("累计沉降(m)")}', name:'upDownSum1',  width:120, align:"center",sortable:false},
+			{header:'${text("高程(m)")}', name:'altitude2',  width:120, align:"center",sortable:false},
+			{header:'${text("高程中误差(m)")}', name:'altitudeError2',  width:120, align:"center",sortable:false},
+			{header:'${text("本期沉降(m)")}', name:'upDown2',  width:120, align:"center",sortable:false},
+			{header:'${text("累计沉降(m)")}', name:'upDownSum2',  width:120, align:"center",sortable:false},
+			{header:'${text("高程(m)")}', name:'altitude3',  width:120, align:"center",sortable:false},
+			{header:'${text("高程中误差(m)")}', name:'altitudeError3',  width:120, align:"center",sortable:false},
+			{header:'${text("本期沉降(m)")}', name:'upDown3',  width:120, align:"center",sortable:false},
+			{header:'${text("累计沉降(m)")}', name:'upDownSum3',  width:120, align:"center",sortable:false},
+            {header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+					actions.push('<a href="${ctx}/sys/measuring/reads?pid='+row.pid+'&year='+row.year+'&such=高程" class="btnList" title="${text("测点信息明细")}"><i class="fa fa-clock-o"></i></a>&nbsp;');
+					return actions.join('');
+                }}
+        ],
+		groupHeaders: {
+			twoLevel:[
+                {startColumnName: 'altitude1', numberOfColumns: 2, titleText: $('#year').val() + '01观测值'},
+                {startColumnName: 'altitude2', numberOfColumns: 2, titleText: $('#year').val() + '02观测值'},
+                {startColumnName: 'altitude3', numberOfColumns: 2, titleText: $('#year').val() + '03观测值'}
+            ]
+		},
+        defaultExpandLevel: 0,	// 默认展开的层次
+        expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+        ajaxSuccess: function(data){
+
+        }
+    });
+    
+    function tabledo() {
+		var such = $('#such').val();
+		if (such == "水平") {
+			sespcd();
+		} else {
+			segccd();
+		}
+    }
+
+	function FindStationBySub() {
+		var sub=$('#subCenter  option:selected').val();
+		var stations=${manageStation};
+		$('#station').find("option").remove();
+		$('#station').append("<option value='' selected='true'>请选择</option>");
+		$('#office').find("option").remove();
+		$('#office').append("<option value='' selected='true'>请选择</option>");
+		$('#equ').find("option").remove();
+		$('#equ').append("<option value='' selected='true'>请选择</option>");
+		if (sub != '') {
+			for (var i=0;i<stations.length;i++) {
+				if (stations[i].parentCode==sub) {
+					$('#station').append("<option value='"+stations[i].officeCode+"'>"+stations[i].officeName+"</option>");
+				}
+			}
+		}
+	}
+
+	function FindOfficeByStation() {
+		var station=$('#station option:selected').val();
+		var offices=${manageOffice};
+		$('#office').find("option").remove();
+		$('#office').append("<option value='' selected='true'>请选择</option>");
+		$('#equ').find("option").remove();
+		$('#equ').append("<option value='' selected='true'>请选择</option>");
+		if (station!='') {
+			for (var i=0;i<offices.length;i++) {
+				if (offices[i].parentCode==station) {
+					$('#office').append("<option value='"+offices[i].officeCode+"'>"+offices[i].officeName+"</option>");
+				}
+			}
+		}
+	}
+
+	function FindEquByOffice() {
+		var office=$('#office option:selected').val();
+		$('#equ').find("option").remove();
+		$('#equ').append("<option value='' selected='true'>请选择</option>");
+		$.ajax({
+			url: '${ctx}/sys/measuring/findEquByofficeCode?officeCode=' + office,
+			type: 'GET',
+			dataType: 'json',
+			success: function (data) {
+				for (var i=0;i<data.length;i++) {
+					$('#equ').append("<option value='"+data[i].deviceId+"'>"+data[i].deviceName+"</option>");
+				}
+			}
+		});
+	}
+
+    function sespcd() {
+		var year = $('#year').val();
+		if (year==""){
+			document.getElementById("year").value='${inyear}';
+		}
+        document.getElementById("such").value = '水平';
+        document.getElementById("sp").className = 'button-border button-color';
+        document.getElementById("gc").className = 'button-border';
+        $('#dataGrid').jqGrid('GridUnload');
+        $('#dataGrid').dataGrid({
+            searchForm: $("#searchForm"),
+            columnModel: [
+                {header:'${text("观测点编号")}', name:'sctionId', width:120, align:"center",sortable:false},
+                {header:'${text("基准点编号")}', name:'pointId',  width:120, align:"center",sortable:false},
+                {header:'${text("X轴初始值(m)")}', name:'inValue',  width:100, align:"center",sortable:false},
+				{header:'${text("Y轴初始值(m)")}', name:'yinValue',  width:100, align:"center",sortable:false},
+                {header:'${text("X轴(m)")}', name:'altitude1',  width:120, align:"center",sortable:false},
+                /*{header:'${text("X轴中误差")}', name:'altitudeError1',  width:120, align:"center",sortable:false},*/
+                {header:'${text("Y轴(m)")}', name:'yaltitude1',  width:120, align:"center",sortable:false},
+                /*{header:'${text("Y轴中误差")}', name:'yaltitudeError1',  width:120, align:"center",sortable:false},*/
+                {header:'${text("X变形量(m)")}', name:'upDown1',  width:120, align:"center",sortable:false},
+                {header:'${text("X累计变形量(m)")}', name:'upDownSum1',  width:120, align:"center",sortable:false},
+                {header:'${text("Y变形量(m)")}', name:'yupDown1',  width:120, align:"center",sortable:false},
+                {header:'${text("Y累计变形量(m)")}', name:'yupDownSum1',  width:120, align:"center",sortable:false},
+                {header:'${text("X轴(m)")}', name:'altitude2',  width:120, align:"center",sortable:false},
+                /*{header:'${text("X轴中误差")}', name:'altitudeError2',  width:120, align:"center",sortable:false},*/
+                {header:'${text("Y轴(m)")}', name:'yaltitude2',  width:120, align:"center",sortable:false},
+                /*{header:'${text("Y轴中误差")}', name:'yaltitudeError2',  width:120, align:"center",sortable:false},*/
+                {header:'${text("X变形量(m)")}', name:'upDown2',  width:120, align:"center",sortable:false},
+                {header:'${text("X累计变形量(m)")}', name:'upDownSum2',  width:120, align:"center",sortable:false},
+                {header:'${text("Y变形量(m)")}', name:'yupDown2',  width:120, align:"center",sortable:false},
+                {header:'${text("Y累计变形量(m)")}', name:'yupDownSum2',  width:120, align:"center",sortable:false},
+                {header:'${text("X轴(m)")}', name:'altitude3',  width:120, align:"center",sortable:false},
+                /*{header:'${text("X轴中误差")}', name:'altitudeError3',  width:120, align:"center",sortable:false},*/
+                {header:'${text("Y轴(m)")}', name:'yaltitude3',  width:120, align:"center",sortable:false},
+                /*{header:'${text("Y轴中误差")}', name:'yaltitudeError3',  width:120, align:"center",sortable:false},*/
+                {header:'${text("X变形量(m)")}', name:'upDown3',  width:120, align:"center",sortable:false},
+                {header:'${text("X累计变形量(m)")}', name:'upDownSum3',  width:120, align:"center",sortable:false},
+                {header:'${text("Y变形量(m)")}', name:'yupDown3',  width:120, align:"center",sortable:false},
+                {header:'${text("Y累计变形量(m)")}', name:'yupDownSum3',  width:120, align:"center",sortable:false},
+                {header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+                        actions.push('<a href="${ctx}/sys/measuring/reads?pid='+row.pid+'&year='+row.year+'&such=水平" class="btnList" title="${text("测点信息明细")}"><i class="fa fa-clock-o"></i></a>&nbsp;');
+                        return actions.join('');
+                    }}
+            ],
+            groupHeaders: {
+                twoLevel:[
+                    {startColumnName: 'altitude1', numberOfColumns: 2, titleText: $('#year').val() + '01观测值'},
+                    {startColumnName: 'altitude2', numberOfColumns: 2, titleText: $('#year').val() + '02观测值'},
+                    {startColumnName: 'altitude3', numberOfColumns: 2, titleText: $('#year').val() + '03观测值'}
+                ]
+            },
+            defaultExpandLevel: 0,	// 默认展开的层次
+            expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+            ajaxSuccess: function(data){
+
+            }
+        });
+    }
+
+    function segccd() {
+		var year = $('#year').val();
+		if (year==""){
+			document.getElementById("year").value='${inyear}';
+		}
+        document.getElementById("such").value = '高程';
+        document.getElementById("gc").className = 'button-border button-color';
+        document.getElementById("sp").className = 'button-border';
+        $('#dataGrid').jqGrid('GridUnload');
+        $('#dataGrid').dataGrid({
+            searchForm: $("#searchForm"),
+            columnModel: [
+                {header:'${text("观测点编号")}', name:'sctionId', width:120, align:"center",sortable:false},
+                {header:'${text("基准点编号")}', name:'pointId',  width:120, align:"center",sortable:false},
+                {header:'${text("初始值(m)")}', name:'inValue',  width:100, align:"center",sortable:false},
+                {header:'${text("高程(m)")}', name:'altitude1',  width:120, align:"center",sortable:false},
+                {header:'${text("高程中误差(m)")}', name:'altitudeError1',  width:120, align:"center",sortable:false},
+                {header:'${text("本期沉降(m)")}', name:'upDown1',  width:120, align:"center",sortable:false},
+                {header:'${text("累计沉降(m)")}', name:'upDownSum1',  width:120, align:"center",sortable:false},
+                {header:'${text("高程(m)")}', name:'altitude2',  width:120, align:"center",sortable:false},
+                {header:'${text("高程中误差(m)")}', name:'altitudeError2',  width:120, align:"center",sortable:false},
+                {header:'${text("本期沉降(m)")}', name:'upDown2',  width:120, align:"center",sortable:false},
+                {header:'${text("累计沉降(m)")}', name:'upDownSum2',  width:120, align:"center",sortable:false},
+                {header:'${text("高程(m)")}', name:'altitude3',  width:120, align:"center",sortable:false},
+                {header:'${text("高程中误差(m)")}', name:'altitudeError3',  width:120, align:"center",sortable:false},
+                {header:'${text("本期沉降(m)")}', name:'upDown3',  width:120, align:"center",sortable:false},
+                {header:'${text("累计沉降(m)")}', name:'upDownSum3',  width:120, align:"center",sortable:false},
+                {header:'${text("操作")}', name:'actions', width:100, align:"center", sortable:false, title:false, formatter: function(val, obj, row, act){
+                        var actions = [];
+                        actions.push('<a href="${ctx}/sys/measuring/reads?pid='+row.pid+'&year='+row.year+'&such=高程" class="btnList" title="${text("测点信息明细")}"><i class="fa fa-clock-o"></i></a>&nbsp;');
+                        return actions.join('');
+                    }}
+            ],
+            groupHeaders: {
+                twoLevel:[
+                    {startColumnName: 'altitude1', numberOfColumns: 2, titleText: $('#year').val() + '01观测值'},
+                    {startColumnName: 'altitude2', numberOfColumns: 2, titleText: $('#year').val() + '02观测值'},
+                    {startColumnName: 'altitude3', numberOfColumns: 2, titleText: $('#year').val() + '03观测值'}
+                ]
+            },
+            defaultExpandLevel: 0,	// 默认展开的层次
+            expandNodeClearPostData: 'viewCode,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+            ajaxSuccess: function(data){
+
+            }
+        });
+    }
+</script>
