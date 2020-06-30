@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/Hello" />
+    <file type="web" url="file://$PROJECT_DIR$/p2p-dataservice" />
+    <file type="web" url="file://$PROJECT_DIR$/p2p-par" />
+    <file type="web" url="file://$PROJECT_DIR$/p2p-timer" />
+    <file type="web" url="file://$PROJECT_DIR$/p2p-web" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/p2p-project/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-common/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-mybatiesGrenreator/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-exterface/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-dataservice/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-web/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-par/pom.xml" />
+        <option value="$PROJECT_DIR$/p2p-timer/pom.xml" />
+        <option value="$PROJECT_DIR$/../code-3/p2p-httpClient/pom.xml" />
+        <option value="$PROJECT_DIR$/../25-p2p/HttpClient/pom.xml" />
+        <option value="F:/ja7/26-NT/10-P2PAdmin/16-p2p-admin/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Android</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

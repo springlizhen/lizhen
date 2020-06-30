@@ -1,0 +1,9 @@
+com\bjpowernode\p2p\model\loan\LoanInfo.class
+com\bjpowernode\p2p\model\loan\RechargeRecord.class
+com\bjpowernode\p2p\model\user\FinanceAccount.class
+com\bjpowernode\p2p\service\loan\BidInforService.class
+com\bjpowernode\p2p\model\loan\BidInfo.class
+com\bjpowernode\p2p\model\user\User.class
+com\bjpowernode\p2p\service\user\UserService.class
+com\bjpowernode\p2p\model\loan\IncomeRecord.class
+com\bjpowernode\p2p\service\loan\LoanInfoService.class
